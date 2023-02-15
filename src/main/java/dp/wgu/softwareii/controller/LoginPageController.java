@@ -7,24 +7,36 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Optional;
 
+/**
+ * The controller for the Login Page.
+ */
 public class LoginPageController extends BaseController{
 
+    /**Field for user to input username*/
     @FXML
     private TextField userField;
+
+    /**Field for user to input password*/
     @FXML
     private TextField passwordField;
+
+    /**Label for local time display*/
     @FXML
     private Label loginTime;
 
+    /**Button to attempt login*/
     @FXML
     private Button loginButton;
+
+    /**Button to exit the program*/
     @FXML
     private Button exitButton;
 
     /**
-     * Exits the program.
+     * Attempt a Login.
+     * Successful login passes user validation and directs to the Dashboard.
+     * Unsuccessful login fails user validation and displays error.
      * @param actionEvent the event that triggers the method
      * @throws IOException
      */
@@ -35,7 +47,7 @@ public class LoginPageController extends BaseController{
         // navigate to the Dashboard
         Parent newScene = this.loadScene("DashboardPage");
         Stage stage = this.getStageWithSetScene(actionEvent, newScene);
-        stage.setTitle("DashBoard");
+        stage.setTitle("Dashboard");
         stage.show();
     }
 
