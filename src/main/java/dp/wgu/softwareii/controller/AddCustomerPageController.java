@@ -1,40 +1,77 @@
 package dp.wgu.softwareii.controller;
 
 import javafx.event.ActionEvent;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.fxml.FXML;
+import javafx.stage.Stage;
 
+import java.io.IOException;
+
+/**
+ * The controller for the Add Customer Page.
+ */
 public class AddCustomerPageController extends BaseController {
-    @javafx.fxml.FXML
-    private Label partTypeLabel;
-    @javafx.fxml.FXML
+
+    /**Field for user to input name*/
+    @FXML
     private TextField nameField;
-    @javafx.fxml.FXML
+
+    /**Field for user to input address*/
+    @FXML
     private TextField addressField;
-    @javafx.fxml.FXML
+
+    /**Field for user to input postal code*/
+    @FXML
     private TextField postalField;
-    @javafx.fxml.FXML
+
+    /**Field for user to input phone num*/
+    @FXML
     private TextField phoneField;
-    @javafx.fxml.FXML
-    private Label partTypeLabel1;
-    @javafx.fxml.FXML
+
+    /**Combo box for user to select country*/
+    @FXML
     private ComboBox countryComboBox;
-    @javafx.fxml.FXML
+
+    /**Combo box for user to select country*/
+    @FXML
     private ComboBox stateComboBox;
-    @javafx.fxml.FXML
+
+    /**Button to add customer*/
+    @FXML
     private Button AddButton;
-    @javafx.fxml.FXML
+
+    /**Button to cancel adding the customer*/
+    @FXML
     private Button CancelBtn;
 
-    @javafx.fxml.FXML
-    public void OnSaveClick(ActionEvent actionEvent) {
-        // TODO: save customer and return to Dashboard
+    /**
+     * Retrieve the form data and save as a new Customer.
+     * Return to Dashboard after saving customer.
+     * @param actionEvent
+     */
+    @FXML
+    public void OnSaveClick(ActionEvent actionEvent) throws IOException {
+        // TODO: save customer
+        // return to Dashboard
+        Parent newScene = this.loadScene("DashboardPage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("Dashboard");
+        stage.show();
     }
 
-    @javafx.fxml.FXML
-    public void OnCancelClick(ActionEvent actionEvent) {
-        // TODO: return to DashBoard
+    /**
+     * Cancel and return to Dashboard.
+     * @param actionEvent
+     */
+    @FXML
+    public void OnCancelClick(ActionEvent actionEvent) throws IOException{
+        // return to Dashboard
+        Parent newScene = this.loadScene("DashboardPage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("Dashboard");
+        stage.show();
     }
 }

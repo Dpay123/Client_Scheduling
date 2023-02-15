@@ -1,43 +1,83 @@
 package dp.wgu.softwareii.controller;
 
 import javafx.event.ActionEvent;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.fxml.FXML;
+import javafx.stage.Stage;
 
+import java.io.IOException;
+
+/**
+ * The controller for the Add Appt Page.
+ */
 public class AddAppointmentPageController extends BaseController{
-    @javafx.fxml.FXML
-    private Label typeField;
-    @javafx.fxml.FXML
-    private Label partTypeLabel;
-    @javafx.fxml.FXML
+
+    /**Field for user to input title*/
+    @FXML
     private TextField titleField;
-    @javafx.fxml.FXML
+
+    /**Field for user to input location*/
+    @FXML
     private TextField locationField;
-    @javafx.fxml.FXML
-    private Label partTypeLabel1;
-    @javafx.fxml.FXML
+
+    /**Field for user to input description*/
+    @FXML
     private TextArea descriptionField;
-    @javafx.fxml.FXML
+
+    /**Combo box for user to select type*/
+    @FXML
     private ComboBox typeCB;
-    @javafx.fxml.FXML
+
+    /**Combo box for user to select customer*/
+    @FXML
     private ComboBox customerCB;
-    @javafx.fxml.FXML
+
+    /**Datepicker for user to select date*/
+    @FXML
     private DatePicker datePick;
-    @javafx.fxml.FXML
+
+    /**Field for user to input time*/
+    @FXML
     private TextField timeField;
-    @javafx.fxml.FXML
+
+    /**Combo box for user to select contact*/
+    @FXML
     private ComboBox contactCB;
-    @javafx.fxml.FXML
+
+    /**Button to save Appt*/
+    @FXML
     private Button saveBtn;
-    @javafx.fxml.FXML
+
+    /**Button to cancel*/
+    @FXML
     private Button cancelBtn;
 
-    @javafx.fxml.FXML
-    public void OnSaveClick(ActionEvent actionEvent) {
-        // TODO: save appointment and return to Dashboard
+    /**
+     * Retrieve the form data and save as a new Appointment.
+     * Return to Dashboard after saving.
+     * @param actionEvent
+     */
+    @FXML
+    public void OnSaveClick(ActionEvent actionEvent) throws IOException {
+        // TODO: save appointment
+        // return to Dashboard
+        Parent newScene = this.loadScene("DashboardPage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("Dashboard");
+        stage.show();
     }
 
-    @javafx.fxml.FXML
-    public void OnCancelClick(ActionEvent actionEvent) {
-        // TODO: return to Dashboard
+    /**
+     * Cancel and return to Dashboard.
+     * @param actionEvent
+     */
+    @FXML
+    public void OnCancelClick(ActionEvent actionEvent) throws IOException{
+        // return to Dashboard
+        Parent newScene = this.loadScene("DashboardPage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("Dashboard");
+        stage.show();
     }
 }
