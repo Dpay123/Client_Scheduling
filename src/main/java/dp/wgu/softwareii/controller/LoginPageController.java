@@ -2,11 +2,14 @@ package dp.wgu.softwareii.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 
-public class LoginPageController {
+import java.io.IOException;
+import java.util.Optional;
+
+public class LoginPageController extends BaseController{
 
     @FXML
     private TextField userField;
@@ -20,14 +23,28 @@ public class LoginPageController {
     @FXML
     private Button exitButton;
 
+    /**
+     * Exits the program.
+     * @param actionEvent the event that triggers the method
+     * @throws IOException
+     */
     @FXML
-    public void onLoginClick(ActionEvent actionEvent) {
+    public void onLoginClick(ActionEvent actionEvent) throws IOException {
         // TODO: user validation
         // TODO: error popup if invalid user
+        // navigate to the Dashboard
+        Parent newScene = this.loadScene("DashboardPage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("DashBoard");
+        stage.show();
     }
 
+    /**
+     Exits the program.
+     @param actionEvent the event that triggers the method.
+     */
     @FXML
     public void onExitClick(ActionEvent actionEvent) {
-        // TODO: close the program
+        System.exit(0);
     }
 }

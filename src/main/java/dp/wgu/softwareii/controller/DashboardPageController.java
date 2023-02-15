@@ -3,7 +3,7 @@ package dp.wgu.softwareii.controller;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 
-public class DashboardPageController {
+public class DashboardPageController extends BaseController{
     @javafx.fxml.FXML
     private Label dashTime;
     @javafx.fxml.FXML

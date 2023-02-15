@@ -11,6 +11,8 @@ target/
 *.iws
 *.iml
 *.ipr
+.sr
+**/src/main/java/dp/wgu/softwareii/OLD/
 
 ### Eclipse ###
 .apt_generated

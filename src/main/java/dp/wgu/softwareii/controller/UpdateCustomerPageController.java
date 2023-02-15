@@ -6,7 +6,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-public class UpdateCustomerPageController {
+public class UpdateCustomerPageController extends BaseController{
     @javafx.fxml.FXML
     private Label partTypeLabel;
     @javafx.fxml.FXML

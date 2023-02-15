@@ -3,7 +3,7 @@ package dp.wgu.softwareii.controller;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 
-public class UpdateAppointmentPageController {
+public class UpdateAppointmentPageController extends BaseController {
     @javafx.fxml.FXML
     private Label typeField;
     @javafx.fxml.FXML
