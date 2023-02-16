@@ -1,6 +1,8 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.dbAccess.DBCountries;
+import dp.wgu.softwareii.model.Appointment;
 import dp.wgu.softwareii.model.Country;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -45,8 +47,11 @@ public class LoginPageController extends BaseController{
 
         // TEST:
         // get a list of countries from the db
-        ObservableList<Country> countries = DBCountries.getAllCountries();
+        ObservableList<Country> countries = DBCountries.getAll();
         for (Country c : countries) System.out.println(c.getName());
+        // get a list of appts from the db
+        ObservableList<Appointment> appts = DBAppointments.getAll();
+        for (Appointment a : appts) System.out.println(a.getTitle());
     }
 
     /**
