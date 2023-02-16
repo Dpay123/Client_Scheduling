@@ -45,10 +45,7 @@ public class LoginPageController extends BaseController{
         // TODO: user validation
         // TODO: error popup if invalid user
         // navigate to the Dashboard
-        Parent newScene = this.loadScene("DashboardPage");
-        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
-        stage.setTitle("Dashboard");
-        stage.show();
+        this.goToMainMenu(actionEvent);
     }
 
     /**

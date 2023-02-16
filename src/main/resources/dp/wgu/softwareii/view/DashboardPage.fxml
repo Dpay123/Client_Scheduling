@@ -5,15 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity"
-            maxWidth="-Infinity"
-            minHeight="-Infinity"
-            minWidth="-Infinity"
-            prefHeight="800.0"
-            prefWidth="1500.0"
-            xmlns="http://javafx.com/javafx/11.0.14-internal"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="dp.wgu.softwareii.controller.DashboardPageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dp.wgu.softwareii.controller.DashboardPageController">
    <children>
       <VBox prefHeight="800.0" prefWidth="1500.0" spacing="10.0">
          <children>
@@ -92,10 +84,10 @@
                               </HBox>
                               <TableView fx:id="customerTV" prefHeight="200.0" prefWidth="200.0">
                                 <columns>
-                                  <TableColumn fx:id="partIdCol" prefWidth="92.0" text="col1" />
-                                  <TableColumn fx:id="partNameCol" prefWidth="154.0" text="col2" />
-                                    <TableColumn fx:id="partInvCol" prefWidth="161.0" text="col3" />
-                                    <TableColumn fx:id="partPriceCol" prefWidth="172.0" text="col4" />
+                                  <TableColumn prefWidth="92.0" text="col1" />
+                                  <TableColumn prefWidth="154.0" text="col2" />
+                                    <TableColumn prefWidth="161.0" text="col3" />
+                                    <TableColumn prefWidth="172.0" text="col4" />
                                 </columns>
                               </TableView>
                               <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
@@ -135,12 +127,12 @@
                                     <RadioButton fx:id="apptFilterMonthRb" layoutX="399.0" layoutY="33.0" mnemonicParsing="false" onAction="#OnApptFilterMonthClick" text="This Month" toggleGroup="$apptFilter" />
                                  </children>
                               </HBox>
-                              <TableView fx:id="productTableView" prefHeight="200.0" prefWidth="200.0">
+                              <TableView fx:id="apptTV" prefHeight="200.0" prefWidth="200.0">
                                  <columns>
-                                    <TableColumn fx:id="productIdCol" prefWidth="92.0" text="col1" />
-                                    <TableColumn fx:id="productNameCol" prefWidth="154.0" text="col2" />
-                                    <TableColumn fx:id="productInvCol" prefWidth="161.0" text="col3" />
-                                    <TableColumn fx:id="productPriceCol" prefWidth="172.0" text="col4" />
+                                    <TableColumn prefWidth="92.0" text="col1" />
+                                    <TableColumn prefWidth="154.0" text="col2" />
+                                    <TableColumn prefWidth="161.0" text="col3" />
+                                    <TableColumn prefWidth="172.0" text="col4" />
                                  </columns>
                               </TableView>
                               <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">

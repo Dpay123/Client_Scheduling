@@ -1,11 +1,8 @@
 package dp.wgu.softwareii.controller;
 
 import javafx.event.ActionEvent;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 
 /**
@@ -62,10 +59,7 @@ public class AddAppointmentPageController extends BaseController{
     public void OnSaveClick(ActionEvent actionEvent) throws IOException {
         // TODO: save appointment
         // return to Dashboard
-        Parent newScene = this.loadScene("DashboardPage");
-        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
-        stage.setTitle("Dashboard");
-        stage.show();
+        this.goToMainMenu(actionEvent);
     }
 
     /**
@@ -75,9 +69,6 @@ public class AddAppointmentPageController extends BaseController{
     @FXML
     public void OnCancelClick(ActionEvent actionEvent) throws IOException{
         // return to Dashboard
-        Parent newScene = this.loadScene("DashboardPage");
-        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
-        stage.setTitle("Dashboard");
-        stage.show();
+        this.goToMainMenu(actionEvent);
     }
 }

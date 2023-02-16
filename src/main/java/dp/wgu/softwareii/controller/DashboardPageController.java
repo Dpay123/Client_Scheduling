@@ -12,54 +12,71 @@ import java.io.IOException;
  * The controller for the Dashboard Page.
  */
 public class DashboardPageController extends BaseController{
+
+    /**Label for user local time display*/
     @FXML
     private Label dashTime;
+
+    /**Label for greeting/displaying user name*/
     @FXML
     private Label dashGreeting;
+
+    /**Button for log out*/
     @FXML
     private Button logoutBtn;
+
+    /**Button for exit*/
     @FXML
     private Button exitBtn;
+
+    /**Tableview for displaying customers from db*/
     @FXML
     private TableView customerTV;
-    @FXML
-    private TableColumn partIdCol;
-    @FXML
-    private TableColumn partNameCol;
-    @FXML
-    private TableColumn partInvCol;
-    @FXML
-    private TableColumn partPriceCol;
+
+    /**Button for adding customer*/
     @FXML
     private Button custAddBtn;
+
+    /**Button for updating customer*/
     @FXML
     private Button custUpdateBtn;
+
+    /**Button for deleting customer*/
     @FXML
     private Button custDeleteBtn;
+
+    /**Tableview for displaying appts from db*/
     @FXML
-    private RadioButton apptFilterAll;
+    private TableView apptTV;
+
+    /**Toggle group for appt filtering*/
     @FXML
     private ToggleGroup apptFilter;
+
+    /**Button for filtering appts by all*/
+    @FXML
+    private RadioButton apptFilterAll;
+
+    /**Button for filtering appts by week*/
     @FXML
     private RadioButton apptFilterWeek;
+
+    /**Button for filtering appts by month*/
     @FXML
     private RadioButton apptFilterMonthRb;
-    @FXML
-    private TableView productTableView;
-    @FXML
-    private TableColumn productIdCol;
-    @FXML
-    private TableColumn productNameCol;
-    @FXML
-    private TableColumn productInvCol;
-    @FXML
-    private TableColumn productPriceCol;
+
+    /**Button for adding appt*/
     @FXML
     private Button apptAddBtn;
+
+    /**Button for updating appt*/
     @FXML
     private Button apptUpdateBtn;
+
+    /**Button for deleting appt*/
     @FXML
     private Button apptDeleteBtn;
+
 
     /**
      * Logout and return to the Login Screen.

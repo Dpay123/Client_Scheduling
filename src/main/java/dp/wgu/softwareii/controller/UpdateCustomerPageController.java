@@ -57,10 +57,7 @@ public class UpdateCustomerPageController extends BaseController{
     public void OnSaveClick(ActionEvent actionEvent) throws IOException {
         // TODO: update current Customer obj, save to db
         // return to Dashboard
-        Parent newScene = this.loadScene("DashboardPage");
-        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
-        stage.setTitle("Dashboard");
-        stage.show();
+        this.goToMainMenu(actionEvent);
     }
 
     /**
@@ -70,9 +67,6 @@ public class UpdateCustomerPageController extends BaseController{
     @FXML
     public void OnCancelClick(ActionEvent actionEvent) throws IOException {
         // return to Dashboard
-        Parent newScene = this.loadScene("DashboardPage");
-        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
-        stage.setTitle("Dashboard");
-        stage.show();
+        this.goToMainMenu(actionEvent);
     }
 }
