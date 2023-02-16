@@ -1,6 +1,7 @@
 module dp.wgu.softwareii {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
 
 
     opens dp.wgu.softwareii to javafx.fxml;
