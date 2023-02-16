@@ -1,9 +1,14 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.dbAccess.DBCountries;
+import dp.wgu.softwareii.model.Country;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * The controller for the Login Page.
@@ -29,6 +34,20 @@ public class LoginPageController extends BaseController{
     /**Button to exit the program*/
     @FXML
     private Button exitButton;
+
+    /**
+     * Code to execute upon initializing the page.
+     * @param url the URL
+     * @param resourceBundle the ResourceBundle
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        // TEST:
+        // get a list of countries from the db
+        ObservableList<Country> countries = DBCountries.getAllCountries();
+        for (Country c : countries) System.out.println(c.getName());
+    }
 
     /**
      * Attempt a Login.
