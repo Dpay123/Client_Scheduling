@@ -1,5 +1,6 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.dbAccess.DBCustomers;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
@@ -69,10 +70,6 @@ public class DashboardPageController extends BaseController{
     @FXML
     private Button custDeleteBtn;
 
-    /**Tableview for displaying appts from db*/
-    @FXML
-    private TableView apptTV;
-
     /**Toggle group for appt filtering*/
     @FXML
     private ToggleGroup apptFilter;
@@ -101,6 +98,49 @@ public class DashboardPageController extends BaseController{
     @FXML
     private Button apptDeleteBtn;
 
+    /**Tableview for displaying appts from db*/
+    @FXML
+    private TableView apptTV;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn apptIDCol;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn apptTitleCol;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn apptDescriptionCol;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn apptLocationCol;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn apptContactCol;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn apptTypeCol;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn apptStartCol;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn apptEndCol;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn apptCustIDCol;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn apptUserIdCol;
 
     /**
      * Populates the dashboard data.
@@ -114,6 +154,19 @@ public class DashboardPageController extends BaseController{
         custPostCol.setCellValueFactory(new PropertyValueFactory<>("postcode"));
         custPhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
         custDivisionCol.setCellValueFactory(new PropertyValueFactory<>("division"));
+
+        // set the data source for the appts table
+        apptTV.setItems(DBAppointments.getAll());
+        apptIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        apptLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        apptContactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        apptStartCol.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+        apptEndCol.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+        apptCustIDCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
     }
 
     /**

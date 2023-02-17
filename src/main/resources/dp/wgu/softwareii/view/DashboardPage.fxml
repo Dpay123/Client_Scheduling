@@ -130,11 +130,20 @@
                               </HBox>
                               <TableView fx:id="apptTV" prefHeight="200.0" prefWidth="200.0">
                                  <columns>
-                                    <TableColumn prefWidth="92.0" text="col1" />
-                                    <TableColumn prefWidth="154.0" text="col2" />
-                                    <TableColumn prefWidth="161.0" text="col3" />
-                                    <TableColumn prefWidth="172.0" text="col4" />
+                                    <TableColumn fx:id="apptIDCol" prefWidth="50.0" text="ID" />
+                                    <TableColumn fx:id="apptTitleCol" prefWidth="100.0" text="Title" />
+                                    <TableColumn fx:id="apptDescriptionCol" prefWidth="161.0" text="Description" />
+                                    <TableColumn fx:id="apptLocationCol" prefWidth="100.0" text="Location" />
+                                    <TableColumn fx:id="apptContactCol" prefWidth="100.0" text="Contact" />
+                                    <TableColumn fx:id="apptTypeCol" prefWidth="100.0" text="Type" />
+                                    <TableColumn fx:id="apptStartCol" prefWidth="100.0" text="Start" />
+                                    <TableColumn fx:id="apptEndCol" prefWidth="100.0" text="End" />
+                                    <TableColumn fx:id="apptCustIDCol" prefWidth="100.0" text="Customer ID" />
+                                    <TableColumn fx:id="apptUserIdCol" prefWidth="100.0" text="User ID" />
                                  </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
                               </TableView>
                               <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
                                  <padding>
