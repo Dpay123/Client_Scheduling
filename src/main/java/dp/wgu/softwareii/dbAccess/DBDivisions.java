@@ -17,14 +17,15 @@ public class DBDivisions {
 
     /**
      * Query the db for a list of all divisions and return the result set.
+     * @param country the id of the country to fetch the divisions of
      * @return an ObservableList of divisions.
      */
-    public static ObservableList<Division> getAll() {
+    public static ObservableList<Division> getAll(int country) {
         ObservableList<Division> dList = FXCollections.observableArrayList();
 
         try {
             // use a prepared statement to execute an sql query
-            String sql = "SELECT * from first_level_divisions";
+            String sql = "SELECT * from first_level_divisions WHERE COUNTRY_ID = " + country;
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 

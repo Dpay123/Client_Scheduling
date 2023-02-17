@@ -1,7 +1,9 @@
 package dp.wgu.softwareii.controller;
 
 import dp.wgu.softwareii.dbAccess.DBCountries;
+import dp.wgu.softwareii.dbAccess.DBDivisions;
 import dp.wgu.softwareii.model.Country;
+import dp.wgu.softwareii.model.Division;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
@@ -88,5 +90,15 @@ public class AddCustomerPageController extends BaseController {
         Stage stage = this.getStageWithSetScene(actionEvent, newScene);
         stage.setTitle("Customers");
         stage.show();
+    }
+
+    /**Upon selection of countryComboBox, set the data for the division combo box.
+     * @param actionEvent
+     */
+    @FXML
+    public void OnCountrySelect(ActionEvent actionEvent) {
+        Country countryToChoose = (Country)countryComboBox.getSelectionModel().getSelectedItem();
+        ObservableList<Division> divisions = DBDivisions.getAll(countryToChoose.getId());
+        stateComboBox.setItems(divisions);
     }
 }

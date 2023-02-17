@@ -43,4 +43,9 @@ public class Division {
     public void setCountryId(int countryId) {
         this.countryId = countryId;
     }
+
+    @Override
+    public String toString() {
+        return this.getName();
+    }
 }
