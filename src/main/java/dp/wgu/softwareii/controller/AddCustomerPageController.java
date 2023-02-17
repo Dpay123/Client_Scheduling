@@ -1,5 +1,8 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.dbAccess.DBCountries;
+import dp.wgu.softwareii.model.Country;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -9,11 +12,16 @@ import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * The controller for the Add Customer Page.
  */
 public class AddCustomerPageController extends BaseController {
+
+    /**A list of countries to populate the combo box*/
+    ObservableList<Country> countries;
 
     /**Field for user to input name*/
     @FXML
@@ -46,6 +54,13 @@ public class AddCustomerPageController extends BaseController {
     /**Button to cancel adding the customer*/
     @FXML
     private Button CancelBtn;
+
+    /**Initializes the combo box data set*/
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        countries = DBCountries.getAll();
+        countryComboBox.setItems(countries);
+    }
 
     /**
      * Retrieve the form data and save as a new Customer.

@@ -29,4 +29,10 @@ public class Country {
      * @return the name as String
      */
     public String getName() { return name; }
+
+    /**Return a string representation for the GUI*/
+    @Override
+    public String toString() {
+        return this.getName();
+    }
 }
