@@ -84,10 +84,11 @@
                               </HBox>
                               <TableView fx:id="customerTV" prefHeight="200.0" prefWidth="200.0">
                                 <columns>
-                                  <TableColumn prefWidth="92.0" text="col1" />
-                                  <TableColumn prefWidth="154.0" text="col2" />
-                                    <TableColumn prefWidth="161.0" text="col3" />
-                                    <TableColumn prefWidth="172.0" text="col4" />
+                                  <TableColumn fx:id="custIDCol" minWidth="9.0" prefWidth="50.0" text="ID" />
+                                  <TableColumn fx:id="custNameCol" prefWidth="150.0" text="Name" />
+                                    <TableColumn fx:id="custPostCol" prefWidth="90.0" text="Post Code" />
+                                    <TableColumn fx:id="custPhoneCol" prefWidth="125.0" text="Phone" />
+                                    <TableColumn fx:id="custDivisionCol" prefWidth="165.0" text="Division" />
                                 </columns>
                               </TableView>
                               <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">

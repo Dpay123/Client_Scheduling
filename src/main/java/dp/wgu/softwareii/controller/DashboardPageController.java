@@ -1,12 +1,16 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.dbAccess.DBCustomers;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * The controller for the Dashboard Page.
@@ -32,6 +36,26 @@ public class DashboardPageController extends BaseController{
     /**Tableview for displaying customers from db*/
     @FXML
     private TableView customerTV;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn custIDCol;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn custNameCol;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn custPostCol;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn custPhoneCol;
+
+    /**Customer TableView column*/
+    @FXML
+    private TableColumn custDivisionCol;
 
     /**Button for adding customer*/
     @FXML
@@ -77,6 +101,20 @@ public class DashboardPageController extends BaseController{
     @FXML
     private Button apptDeleteBtn;
 
+
+    /**
+     * Populates the dashboard data.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // set the data source for the customers table
+        customerTV.setItems(DBCustomers.getAll());
+        custIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        custNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        custPostCol.setCellValueFactory(new PropertyValueFactory<>("postcode"));
+        custPhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        custDivisionCol.setCellValueFactory(new PropertyValueFactory<>("division"));
+    }
 
     /**
      * Logout and return to the Login Screen.
