@@ -8,7 +8,6 @@ import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -70,77 +69,17 @@ public class DashboardPageController extends BaseController{
     @FXML
     private Button custDeleteBtn;
 
-    /**Toggle group for appt filtering*/
+    /**Button for navigating to Appointments page*/
     @FXML
-    private ToggleGroup apptFilter;
+    private Button appointmentsBtn;
 
-    /**Button for filtering appts by all*/
+    /**Button for navigating to Customer page*/
     @FXML
-    private RadioButton apptFilterAll;
+    private Button customersBtn;
 
-    /**Button for filtering appts by week*/
+    /**Button for navigating to Reports page*/
     @FXML
-    private RadioButton apptFilterWeek;
-
-    /**Button for filtering appts by month*/
-    @FXML
-    private RadioButton apptFilterMonthRb;
-
-    /**Button for adding appt*/
-    @FXML
-    private Button apptAddBtn;
-
-    /**Button for updating appt*/
-    @FXML
-    private Button apptUpdateBtn;
-
-    /**Button for deleting appt*/
-    @FXML
-    private Button apptDeleteBtn;
-
-    /**Tableview for displaying appts from db*/
-    @FXML
-    private TableView apptTV;
-
-    /**Customer TableView column*/
-    @FXML
-    private TableColumn apptIDCol;
-
-    /**Customer TableView column*/
-    @FXML
-    private TableColumn apptTitleCol;
-
-    /**Customer TableView column*/
-    @FXML
-    private TableColumn apptDescriptionCol;
-
-    /**Customer TableView column*/
-    @FXML
-    private TableColumn apptLocationCol;
-
-    /**Customer TableView column*/
-    @FXML
-    private TableColumn apptContactCol;
-
-    /**Customer TableView column*/
-    @FXML
-    private TableColumn apptTypeCol;
-
-    /**Customer TableView column*/
-    @FXML
-    private TableColumn apptStartCol;
-
-    /**Customer TableView column*/
-    @FXML
-    private TableColumn apptEndCol;
-
-    /**Customer TableView column*/
-    @FXML
-    private TableColumn apptCustIDCol;
-
-    /**Customer TableView column*/
-    @FXML
-    private TableColumn apptUserIdCol;
+    private Button reportsBtn;
 
     /**
      * Populates the dashboard data.
@@ -154,19 +93,6 @@ public class DashboardPageController extends BaseController{
         custPostCol.setCellValueFactory(new PropertyValueFactory<>("postcode"));
         custPhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
         custDivisionCol.setCellValueFactory(new PropertyValueFactory<>("division"));
-
-        // set the data source for the appts table
-        apptTV.setItems(DBAppointments.getAll());
-        apptIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-        apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
-        apptLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
-        apptContactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
-        apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-        apptStartCol.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
-        apptEndCol.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
-        apptCustIDCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
     }
 
     /**
@@ -232,66 +158,30 @@ public class DashboardPageController extends BaseController{
     }
 
     /**
-     * Filter the Appointments table to select all
+     * Navigate to the Appointments page.
      * @param actionEvent
      */
     @FXML
-    public void OnApptFilterAllClick(ActionEvent actionEvent) {
-        // TODO: filter functionality
-    }
-
-    /**
-     * Filter the Appointments table to select those within a week
-     * @param actionEvent
-     */
-    @FXML
-    public void OnApptFilterWeekClick(ActionEvent actionEvent) {
-        // TODO: filter functionality
-    }
-
-    /**
-     * Filter the Appointments table to select those within month
-     * @param actionEvent
-     */
-    @FXML
-    public void OnApptFilterMonthClick(ActionEvent actionEvent) {
-        // TODO: filter functionality
-    }
-
-    /**
-     * Navigate to the Add Appointment page
-     * @param actionEvent
-     */
-    @FXML
-    public void OnApptAddClick(ActionEvent actionEvent) throws IOException{
-        Parent newScene = this.loadScene("AddAppointmentPage");
+    public void OnAppointmentsBtnClick(ActionEvent actionEvent) throws  IOException{
+        Parent newScene = this.loadScene("AppointmentsPage");
         Stage stage = this.getStageWithSetScene(actionEvent, newScene);
-        stage.setTitle("Add Appointment");
+        stage.setTitle("Appointments");
         stage.show();
     }
 
     /**
-     * Navigate to the Update Appointment page for a selected Appointment
+     * Navigate to the Customers page.
      * @param actionEvent
      */
     @FXML
-    public void OnApptUpdateClick(ActionEvent actionEvent) throws IOException{
-        // TODO: retrieve the selected appointment and send to the update page
-        // navigate to the update customer page
-        Parent newScene = this.loadScene("UpdateAppointmentPage");
-        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
-        stage.setTitle("Update Appointment");
-        stage.show();
+    public void OnCustomersBtnClick(ActionEvent actionEvent) {
     }
 
     /**
-     * Delete an appointment.
-     * User must confirm prior to deletion.
+     * Navigate to the Reports page.
      * @param actionEvent
      */
     @FXML
-    public void OnApptDeleteClick(ActionEvent actionEvent) {
-        // TODO: confirmation of deletion
-        // TODO: delete appt
+    public void OnReportsBtnClick(ActionEvent actionEvent) {
     }
 }

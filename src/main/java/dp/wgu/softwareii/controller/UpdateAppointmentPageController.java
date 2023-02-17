@@ -55,23 +55,29 @@ public class UpdateAppointmentPageController extends BaseController {
 
     /**
      * Retrieve the form data and update the Appointment.
-     * Return to Dashboard after saving.
+     * Return to Appointments after saving.
      * @param actionEvent
      */
     @FXML
     public void OnSaveClick(ActionEvent actionEvent) throws IOException {
         // TODO: Modify current Appointment obj, save,
-        // return to Dashboard
-        this.goToMainMenu(actionEvent);
+        // return to appointments page
+        Parent newScene = this.loadScene("AppointmentsPage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("Appointments");
+        stage.show();
     }
 
     /**
-     * Cancel and return to Dashboard.
+     * Cancel and return to Appointments.
      * @param actionEvent
      */
     @FXML
     public void OnCancelClick(ActionEvent actionEvent) throws IOException {
-        // return to Dashboard
-        this.goToMainMenu(actionEvent);
+        // return to appointments page
+        Parent newScene = this.loadScene("AppointmentsPage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("Appointments");
+        stage.show();
     }
 }

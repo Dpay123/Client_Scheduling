@@ -1,8 +1,11 @@
 package dp.wgu.softwareii.controller;
 
 import javafx.event.ActionEvent;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 
 /**
@@ -52,23 +55,29 @@ public class AddAppointmentPageController extends BaseController{
 
     /**
      * Retrieve the form data and save as a new Appointment.
-     * Return to Dashboard after saving.
+     * Return to Appointments after saving.
      * @param actionEvent
      */
     @FXML
     public void OnSaveClick(ActionEvent actionEvent) throws IOException {
         // TODO: save appointment
-        // return to Dashboard
-        this.goToMainMenu(actionEvent);
+        // return to appointments page
+        Parent newScene = this.loadScene("AppointmentsPage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("Appointments");
+        stage.show();
     }
 
     /**
-     * Cancel and return to Dashboard.
+     * Cancel and return to Appointments page.
      * @param actionEvent
      */
     @FXML
     public void OnCancelClick(ActionEvent actionEvent) throws IOException{
-        // return to Dashboard
-        this.goToMainMenu(actionEvent);
+        // return to appointments page
+        Parent newScene = this.loadScene("AppointmentsPage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("Appointments");
+        stage.show();
     }
 }
