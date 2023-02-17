@@ -42,6 +42,9 @@ public class DashboardPageController extends BaseController{
     @FXML
     private Button reportsBtn;
 
+    @FXML
+    private Button reportsBtn1;
+
     /**
      * Perform actions upon page initialization.
      */
