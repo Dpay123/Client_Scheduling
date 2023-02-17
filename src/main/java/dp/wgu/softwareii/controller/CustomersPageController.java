@@ -1,9 +1,11 @@
 package dp.wgu.softwareii.controller;
 
 import dp.wgu.softwareii.dbAccess.DBCustomers;
+import dp.wgu.softwareii.model.Customer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -83,12 +85,28 @@ public class CustomersPageController extends BaseController {
     }
 
     /**
-     * Navigate to the Update Customer page for a selected customer
+     * Navigate to the Update Customer page for a selected customer.
+     * Sets the selected customer as a static data member in the Update Customer page controller.
+     * If a cust is not selected, displays an error box suggesting to choose an appt
      * @param actionEvent
+     * @throws IOException
      */
     @FXML
     public void OnCustUpdateClick(ActionEvent actionEvent) throws IOException {
-        // TODO: retrieve the selected customer and send to the update page
+        // retrieve selected customer
+        Customer cust = (Customer)customerTV.getSelectionModel().getSelectedItem();
+
+        // ensure cust is selected
+        if (cust == null) {
+            Alert error = new Alert(Alert.AlertType.ERROR, "Please select a customer to update.");
+            error.setTitle("No Customer selected");
+            error.showAndWait();
+            return;
+        }
+
+        // set cust in modify controller
+        UpdateCustomerPageController.customer = cust;
+
         // navigate to the update customer page
         Parent newScene = this.loadScene("UpdateCustomerPage");
         Stage stage = this.getStageWithSetScene(actionEvent, newScene);

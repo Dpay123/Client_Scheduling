@@ -1,5 +1,6 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.model.Customer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -9,11 +10,20 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * The controller for the Update Customer Page.
  */
 public class UpdateCustomerPageController extends BaseController{
+
+    /**The customer obj to be updated*/
+    public static Customer customer;
+
+    /**Field to display the assigned id*/
+    @FXML
+    private TextField IDField;
 
     /**Field for user to input name*/
     @FXML
@@ -46,6 +56,22 @@ public class UpdateCustomerPageController extends BaseController{
     /**Button to cancel adding the customer*/
     @FXML
     private Button CancelBtn;
+
+    /**
+     * Populates the data fields with the current customer data to be updated.
+     * @param url
+     * @param resourceBundle
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // populate the data
+        IDField.setText(String.valueOf(customer.getId()));
+        nameField.setText(customer.getName());
+        addressField.setText(customer.getAddress());
+        postalField.setText(customer.getPostcode());
+        phoneField.setText(customer.getPhone());
+        // TODO: set combo boxes
+    }
 
     /**
      * Retrieve the form data and update the Customer.
