@@ -49,23 +49,29 @@ public class AddCustomerPageController extends BaseController {
 
     /**
      * Retrieve the form data and save as a new Customer.
-     * Return to Dashboard after saving customer.
+     * Return to Customers page.
      * @param actionEvent
      */
     @FXML
     public void OnSaveClick(ActionEvent actionEvent) throws IOException {
         // TODO: save customer
-        // return to Dashboard
-        this.goToMainMenu(actionEvent);
+        // return to customers page
+        Parent newScene = this.loadScene("CustomersPage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("Customers");
+        stage.show();
     }
 
     /**
-     * Cancel and return to Dashboard.
+     * Cancel and return to Customers page.
      * @param actionEvent
      */
     @FXML
     public void OnCancelClick(ActionEvent actionEvent) throws IOException{
-        // return to Dashboard
-        this.goToMainMenu(actionEvent);
+        // return to customers page
+        Parent newScene = this.loadScene("CustomersPage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("Customers");
+        stage.show();
     }
 }

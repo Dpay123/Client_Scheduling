@@ -58,7 +58,7 @@
                            </padding>
                            <children>
                               <Button fx:id="apptAddBtn" mnemonicParsing="false" onAction="#OnApptAddClick" prefWidth="72.0" text="Add" />
-                              <Button fx:id="apptUpdateBtn" mnemonicParsing="false" onAction="#OnApptUpdateClick" prefWidth="72.0" text="Modify" />
+                              <Button fx:id="apptUpdateBtn" mnemonicParsing="false" onAction="#OnApptUpdateClick" prefWidth="80.0" text="Update" />
                               <Button fx:id="apptDeleteBtn" mnemonicParsing="false" onAction="#OnApptDeleteClick" prefWidth="72.0" text="Delete" />
                            </children>
                         </HBox>

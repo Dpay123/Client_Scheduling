@@ -2,9 +2,12 @@ package dp.wgu.softwareii.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 
 /**
@@ -46,23 +49,29 @@ public class UpdateCustomerPageController extends BaseController{
 
     /**
      * Retrieve the form data and update the Customer.
-     * Return to Dashboard after saving customer.
+     * Return to Customers page after saving customer.
      * @param actionEvent
      */
     @FXML
     public void OnSaveClick(ActionEvent actionEvent) throws IOException {
         // TODO: update current Customer obj, save to db
-        // return to Dashboard
-        this.goToMainMenu(actionEvent);
+        // return to customers page
+        Parent newScene = this.loadScene("CustomersPage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("Customers");
+        stage.show();
     }
 
     /**
-     * Cancel and return to Dashboard.
+     * Cancel and return to Customers page.
      * @param actionEvent
      */
     @FXML
-    public void OnCancelClick(ActionEvent actionEvent) throws IOException {
-        // return to Dashboard
-        this.goToMainMenu(actionEvent);
+    public void OnCancelClick(ActionEvent actionEvent) throws IOException{
+        // return to customers page
+        Parent newScene = this.loadScene("CustomersPage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("Customers");
+        stage.show();
     }
 }

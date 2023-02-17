@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dp.wgu.softwareii.controller.DashboardPageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dp.wgu.softwareii.controller.DashboardPageController">
    <children>
-      <VBox prefHeight="800.0" prefWidth="1500.0" spacing="10.0">
+      <VBox prefHeight="800.0" prefWidth="800.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="80.0" prefWidth="1500.0" spacing="200.0">
+            <HBox prefHeight="80.0" prefWidth="1500.0">
                <children>
                   <Label text="Dashboard" underline="true">
                      <font>
@@ -21,9 +20,6 @@
                   <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#OnLogoutClick" text="Log Out" />
                   <Button fx:id="exitBtn" mnemonicParsing="false" onAction="#OnExitClick" prefWidth="47.0" text="Exit" />
                </children>
-               <padding>
-                  <Insets left="20.0" top="20.0" />
-               </padding>
             </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="90.0" prefHeight="320.0" prefWidth="1500.0" spacing="70.0">
                <children>
@@ -39,63 +35,6 @@
                               <Button fx:id="appointmentsBtn" mnemonicParsing="false" onAction="#OnAppointmentsBtnClick" prefHeight="35.0" prefWidth="448.0" text="Appointments" />
                               <Button fx:id="customersBtn" mnemonicParsing="false" onAction="#OnCustomersBtnClick" prefHeight="35.0" prefWidth="448.0" text="Customers" />
                               <Button fx:id="reportsBtn" layoutX="10.0" layoutY="75.0" mnemonicParsing="false" onAction="#OnReportsBtnClick" prefHeight="35.0" prefWidth="448.0" text="Reports/Metrics" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="320.0" prefWidth="660.0" style=" -fx-border-color: black; -fx-border-width: 1; -fx-border-style: solid; -fx-border-radius: 10;">
-                     <children>
-                        <VBox layoutX="40.0" layoutY="2.0" prefHeight="320.0" prefWidth="580.0" spacing="10.0">
-                           <children>
-                              <HBox alignment="BOTTOM_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="250.0">
-                                 <children>
-                                    <Label alignment="BOTTOM_LEFT" prefHeight="30.0" prefWidth="209.0" text="Reports/Metrics">
-                                       <font>
-                                          <Font name="System Bold" size="20.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="320.0" prefWidth="1500.0" spacing="70.0">
-               <children>
-                  <AnchorPane prefHeight="320.0" prefWidth="660.0" style=" -fx-border-color: black; -fx-border-width: 1; -fx-border-style: solid; -fx-border-radius: 10;">
-                     <children>
-                        <VBox layoutX="40.0" layoutY="2.0" prefHeight="320.0" prefWidth="580.0" spacing="10.0">
-                           <children>
-                              <HBox alignment="BOTTOM_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="250.0">
-                                 <children>
-                                    <Label alignment="BOTTOM_LEFT" prefHeight="25.0" prefWidth="112.0" text="Customers">
-                                       <font>
-                                          <Font name="System Bold" size="20.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <TableView fx:id="customerTV" prefHeight="200.0" prefWidth="200.0">
-                                <columns>
-                                  <TableColumn fx:id="custIDCol" minWidth="9.0" prefWidth="50.0" text="ID" />
-                                  <TableColumn fx:id="custNameCol" prefWidth="150.0" text="Name" />
-                                    <TableColumn fx:id="custPostCol" prefWidth="90.0" text="Post Code" />
-                                    <TableColumn fx:id="custPhoneCol" prefWidth="125.0" text="Phone" />
-                                    <TableColumn fx:id="custDivisionCol" prefWidth="165.0" text="Division" />
-                                </columns>
-                              </TableView>
-                              <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
-                                 <padding>
-                                    <Insets bottom="10.0" top="10.0" />
-                                 </padding>
-                                 <children>
-                                    <Button fx:id="custAddBtn" mnemonicParsing="false" onAction="#OnCustAddClick" prefWidth="80.0" text="Add" />
-                                    <Button fx:id="custUpdateBtn" mnemonicParsing="false" onAction="#OnCustUpdateClick" prefWidth="80.0" text="Update" />
-                                    <Button fx:id="custDeleteBtn" mnemonicParsing="false" onAction="#OnCustDeleteClick" prefWidth="80.0" text="Delete" />
-                                 </children>
-                              </HBox>
                            </children>
                         </VBox>
                      </children>

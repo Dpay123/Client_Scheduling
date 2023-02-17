@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dp.wgu.softwareii.controller.CustomersPageController">
+   <children>
+      <VBox layoutX="10.0" prefHeight="600.0" prefWidth="800.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane prefHeight="500.0" prefWidth="1150.0" style=" -fx-border-color: black; -fx-border-width: 1; -fx-border-style: solid; -fx-border-radius: 10;">
+               <children>
+                  <VBox alignment="TOP_CENTER" layoutX="40.0" layoutY="2.0" prefHeight="500.0" prefWidth="780.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <HBox alignment="BOTTOM_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <Label alignment="BOTTOM_LEFT" prefHeight="30.0" prefWidth="205.0" text="Customers">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="55.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                        </HBox>
+                        <TableView fx:id="customerTV" prefHeight="350.0" prefWidth="650.0">
+                           <columns>
+                              <TableColumn fx:id="custIDCol" minWidth="9.0" prefWidth="50.0" text="ID" />
+                              <TableColumn fx:id="custNameCol" prefWidth="150.0" text="Name" />
+                              <TableColumn fx:id="custPostCol" prefWidth="90.0" text="Post Code" />
+                              <TableColumn fx:id="custPhoneCol" prefWidth="125.0" text="Phone" />
+                              <TableColumn fx:id="custDivisionCol" prefWidth="165.0" text="Division" />
+                           </columns>
+                        </TableView>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                           <children>
+                              <Button fx:id="custAddBtn" mnemonicParsing="false" onAction="#OnCustAddClick" prefWidth="72.0" text="Add" />
+                              <Button fx:id="custUpdateBtn" mnemonicParsing="false" onAction="#OnCustUpdateClick" prefWidth="80.0" text="Update" />
+                              <Button fx:id="custDeleteBtn" mnemonicParsing="false" onAction="#OnCustDeleteClick" prefWidth="72.0" text="Delete" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+               <children>
+                  <Button fx:id="dashboardBtn" mnemonicParsing="false" onAction="#OnDashboardBtnClick" prefWidth="200.0" text="Return to Dashboard" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding></VBox>
+   </children>
+   <padding>
+      <Insets left="10.0" right="10.0" />
+   </padding>
+</AnchorPane>
