@@ -1,6 +1,7 @@
 package dp.wgu.softwareii.controller;
 
 import dp.wgu.softwareii.dbAccess.DBAppointments;
+import dp.wgu.softwareii.model.Appointment;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -149,12 +150,28 @@ public class AppointmentsPageController extends BaseController {
     }
 
     /**
-     * Navigate to the Update Appointment page for a selected Appointment
+     * Navigate to the Update Appointment page for a selected Appointment.
+     * Sets the appt chosen as a static data member in the Update Appointment Menu Controller.
+     * If an appt is not selected, displays an error box suggesting to choose an appt.
      * @param actionEvent
+     * @throws IOException
      */
     @FXML
     public void OnApptUpdateClick(ActionEvent actionEvent) throws IOException{
-        // TODO: retrieve the selected appointment and send to the update page
+        // retrieve selected appt
+        Appointment appt = (Appointment)apptTV.getSelectionModel().getSelectedItem();
+
+        // ensure appt is selected
+        if (appt == null) {
+            Alert error = new Alert(Alert.AlertType.ERROR, "Please select an appointment to update.");
+            error.setTitle("No Appointment selected");
+            error.showAndWait();
+            return;
+        }
+
+        // set appt in modify controller
+        UpdateAppointmentPageController.appt = appt;
+
         // navigate to the update customer page
         Parent newScene = this.loadScene("UpdateAppointmentPage");
         Stage stage = this.getStageWithSetScene(actionEvent, newScene);

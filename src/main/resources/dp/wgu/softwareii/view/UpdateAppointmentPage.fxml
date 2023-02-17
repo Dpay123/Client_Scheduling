@@ -42,7 +42,7 @@
                   <Label prefHeight="25.0" prefWidth="96.0" text="Location" GridPane.rowIndex="6" />
                   <Label fx:id="typeField" text="Type" GridPane.rowIndex="7" />
                   <Label fx:id="partTypeLabel" text="Date" GridPane.rowIndex="8" />
-                  <TextField disable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="162.0" GridPane.columnIndex="1" />
+                  <TextField fx:id="IDField" disable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="162.0" GridPane.columnIndex="1" />
                   <TextField fx:id="titleField" layoutX="71.0" layoutY="15.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <TextField fx:id="locationField" layoutX="71.0" layoutY="85.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   <Label fx:id="partTypeLabel1" layoutX="10.0" layoutY="234.0" prefHeight="25.0" prefWidth="127.0" text="Time (hh:mm)" GridPane.rowIndex="9" />
