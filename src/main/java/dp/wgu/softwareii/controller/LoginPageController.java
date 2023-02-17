@@ -3,9 +3,11 @@ package dp.wgu.softwareii.controller;
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.dbAccess.DBCountries;
 import dp.wgu.softwareii.dbAccess.DBCustomers;
+import dp.wgu.softwareii.dbAccess.DBDivisions;
 import dp.wgu.softwareii.model.Appointment;
 import dp.wgu.softwareii.model.Country;
 import dp.wgu.softwareii.model.Customer;
+import dp.wgu.softwareii.model.Division;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,7 +48,6 @@ public class LoginPageController extends BaseController{
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         // TEST:
         // get a list of countries from the db
         ObservableList<Country> countries = DBCountries.getAll();
@@ -57,6 +58,9 @@ public class LoginPageController extends BaseController{
         // get a list of customers from the db
         ObservableList<Customer> customers = DBCustomers.getAll();
         for (Customer c : customers) System.out.println(c.getName());
+        // divisions
+        ObservableList<Division> devs = DBDivisions.getAll();
+        for (Division d : devs) System.out.println(d.getName());
     }
 
     /**
