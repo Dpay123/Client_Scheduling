@@ -44,7 +44,7 @@
                   <TextField fx:id="postalField" layoutX="71.0" layoutY="85.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <TextField fx:id="phoneField" layoutX="71.0" layoutY="120.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label fx:id="partTypeLabel1" layoutX="10.0" layoutY="234.0" text="State/Province" GridPane.rowIndex="6" />
-                  <ComboBox fx:id="countryComboBox" prefWidth="220.0" promptText="Select Country" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <ComboBox fx:id="countryComboBox" onAction="#OnCountrySelect" prefWidth="220.0" promptText="Select Country" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                   <ComboBox fx:id="stateComboBox" prefWidth="220.0" promptText="Select State/Province" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                </children>
             </GridPane>

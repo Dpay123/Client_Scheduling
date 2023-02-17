@@ -1,7 +1,6 @@
 package dp.wgu.softwareii.dbAccess;
 
 import dp.wgu.softwareii.database.JDBC;
-import dp.wgu.softwareii.model.Customer;
 import dp.wgu.softwareii.model.Division;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,4 +44,45 @@ public class DBDivisions {
         return dList;
     }
 
+    /**
+     * Given a division ID, fetch the division object, parse the country ID, and return it
+     * @param divisionID
+     * @return the country id of the division object
+     */
+    public static int getCountryByDivisionID(int divisionID) {
+
+        Division d = DBDivisions.getDivisionByID(divisionID);
+        return d.getCountryId();
+
+    }
+
+    /**
+     * Given a division ID, fetch the division object.
+     * @param divisionID
+     * @return
+     */
+    public static Division getDivisionByID(int divisionID) {
+
+        try {
+            // use a prepared statement to excute an sql query
+            String sql = "SELECT * from first_level_divisions WHERE Division_ID = " + divisionID;
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("Division_ID");
+                String division = rs.getString("Division");
+                int countryId = rs.getInt("Country_ID");
+                return new Division(id, division, countryId);
+            }
+            else {
+                System.out.println("No query results for division ID: " + divisionID);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

@@ -1,6 +1,11 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.dbAccess.DBCountries;
+import dp.wgu.softwareii.dbAccess.DBDivisions;
+import dp.wgu.softwareii.model.Country;
 import dp.wgu.softwareii.model.Customer;
+import dp.wgu.softwareii.model.Division;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -17,6 +22,9 @@ import java.util.ResourceBundle;
  * The controller for the Update Customer Page.
  */
 public class UpdateCustomerPageController extends BaseController{
+
+    /**A list of countries to populate the combo box*/
+    ObservableList<Country> countries;
 
     /**The customer obj to be updated*/
     public static Customer customer;
@@ -70,7 +78,29 @@ public class UpdateCustomerPageController extends BaseController{
         addressField.setText(customer.getAddress());
         postalField.setText(customer.getPostcode());
         phoneField.setText(customer.getPhone());
-        // TODO: set combo boxes
+
+        // Set the country and division selector using the current data
+        // start with division_id from customer obj
+        int divisionID = customer.getDivision();
+        // fetch the division object using divisionID
+        Division d = DBDivisions.getDivisionByID(divisionID);
+        // fetch the country object using division
+        Country c = DBCountries.getCountryByID(d.getCountryId());
+        // populate country cb with all countries and pre-select
+        countries = DBCountries.getAll();
+        countryComboBox.setItems(countries);
+        for (Country country : countries) {
+            if (c.getId() == country.getId()) {
+                countryComboBox.setValue(country);
+                // set the division combo box using the selected country
+                ObservableList<Division> divisions = DBDivisions.getAll(country.getId());
+                stateComboBox.setItems(divisions);
+                for (Division division : divisions) {
+                    if (d.getId() == divisionID) stateComboBox.setValue(division);
+                }
+            }
+        }
+
     }
 
     /**
@@ -99,5 +129,15 @@ public class UpdateCustomerPageController extends BaseController{
         Stage stage = this.getStageWithSetScene(actionEvent, newScene);
         stage.setTitle("Customers");
         stage.show();
+    }
+
+    /**Upon selection of countryComboBox, set the data for the division combo box.
+     * @param actionEvent
+     */
+    @FXML
+    public void OnCountrySelect(ActionEvent actionEvent) {
+        Country countryToChoose = (Country)countryComboBox.getSelectionModel().getSelectedItem();
+        ObservableList<Division> divisions = DBDivisions.getAll(countryToChoose.getId());
+        stateComboBox.setItems(divisions);
     }
 }

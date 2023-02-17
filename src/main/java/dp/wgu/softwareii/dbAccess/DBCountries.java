@@ -42,4 +42,31 @@ public class DBCountries {
         return cList;
     }
 
+    /**
+     * Query the db for a country given an id.
+     * @return a Country obj.
+     */
+    public static Country getCountryByID(int id) {
+        Country c;
+
+        try {
+            // use a prepared Statement to execute an sql query
+            String sql = "SELECT * from countries WHERE Country_ID = " + id;
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                c = new Country(rs.getInt("Country_ID"), rs.getString("Country"));
+                return c;
+            }
+            else {
+                System.out.println("Country not found with id: " + id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }
