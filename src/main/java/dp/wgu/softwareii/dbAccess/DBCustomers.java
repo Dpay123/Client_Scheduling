@@ -99,4 +99,39 @@ public class DBCustomers {
             return false;
         }
     }
+
+    /**
+     * Delete a customer from the db based upon id, return true if success, else false.
+     * @param id
+     * @param name
+     * @param address
+     * @param postal
+     * @param phone
+     * @param division
+     */
+    public static boolean updateCustomer(int id, String name, String address, String postal, String phone, int division) {
+        String sql = "UPDATE customers "
+                + "SET Customer_Name = ?, "
+                + "Address = ?, "
+                + "Postal_Code = ?, "
+                + "Phone = ?, "
+                + "Division_ID = ? WHERE Customer_ID = " + id;
+
+        try {
+            // set parameters
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setString(1, name);
+            ps.setString(2, address);
+            ps.setString(3, postal);
+            ps.setString(4, phone);
+            ps.setInt(5, division);
+            // execute
+            ps.executeUpdate();
+            System.out.println("Updated successful");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

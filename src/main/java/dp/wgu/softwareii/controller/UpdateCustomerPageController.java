@@ -1,6 +1,7 @@
 package dp.wgu.softwareii.controller;
 
 import dp.wgu.softwareii.dbAccess.DBCountries;
+import dp.wgu.softwareii.dbAccess.DBCustomers;
 import dp.wgu.softwareii.dbAccess.DBDivisions;
 import dp.wgu.softwareii.model.Country;
 import dp.wgu.softwareii.model.Customer;
@@ -9,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -95,9 +97,7 @@ public class UpdateCustomerPageController extends BaseController{
                 // set the division combo box using the selected country
                 ObservableList<Division> divisions = DBDivisions.getAll(country.getId());
                 stateComboBox.setItems(divisions);
-                for (Division division : divisions) {
-                    if (d.getId() == divisionID) stateComboBox.setValue(division);
-                }
+                stateComboBox.setValue(d);
             }
         }
 
@@ -110,12 +110,26 @@ public class UpdateCustomerPageController extends BaseController{
      */
     @FXML
     public void OnSaveClick(ActionEvent actionEvent) throws IOException {
-        // TODO: update current Customer obj, save to db
-        // return to customers page
-        Parent newScene = this.loadScene("CustomersPage");
-        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
-        stage.setTitle("Customers");
-        stage.show();
+        // update current Customer obj, save to db
+        String name = nameField.getText();
+        String address = addressField.getText();
+        String postal = postalField.getText();
+        String phone = phoneField.getText();
+        var division = (Division)stateComboBox.getSelectionModel().getSelectedItem();
+        boolean updated =  DBCustomers.updateCustomer(customer.getId(), name, address, postal, phone, division.getId());
+        if (!updated) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setContentText("Could not update.");
+            error.showAndWait();
+        }
+        else {
+            // return to customers page
+            Parent newScene = this.loadScene("CustomersPage");
+            Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+            stage.setTitle("Customers");
+            stage.show();
+        }
     }
 
     /**

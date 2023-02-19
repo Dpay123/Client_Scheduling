@@ -74,7 +74,6 @@ public class AddCustomerPageController extends BaseController {
      */
     @FXML
     public void OnSaveClick(ActionEvent actionEvent) throws IOException {
-        // TODO: save customer
         String name = nameField.getText();
         String address = addressField.getText();
         String postal = postalField.getText();
