@@ -79,4 +79,24 @@ public class DBCustomers {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Delete a customer reccord in the db based upon id.
+     * @param id
+     * @return true if successful else false
+     */
+    public static boolean delCustomer(int id) {
+
+        String sql = "DELETE FROM customers WHERE Customer_ID = " + id;
+
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.executeUpdate();
+            System.out.println("Removed successfully");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

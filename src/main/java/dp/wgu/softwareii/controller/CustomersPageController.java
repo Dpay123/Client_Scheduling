@@ -5,15 +5,13 @@ import dp.wgu.softwareii.model.Customer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CustomersPageController extends BaseController {
@@ -122,9 +120,29 @@ public class CustomersPageController extends BaseController {
      */
     @FXML
     public void OnCustDeleteClick(ActionEvent actionEvent) {
+        // retrieve selected customer
+        Customer customer = (Customer)customerTV.getSelectionModel().getSelectedItem();
+
+        // check for null
+        if (customer == null) {
+            Alert error = new Alert(Alert.AlertType.ERROR, "Please select a customer to delete");
+            error.setTitle("No customer selected");
+            error.showAndWait();
+            return;
+        }
         // TODO: require confirmation for deletion
-        // TODO: check for all deleted appts prior to customer deletion
-        // TODO: delete the customer
+        // TODO: customer cannot be deleted if it has associated appointments
+
+        // Attempt to delete the customer from db - if so, remove from GUI
+        boolean deleted = DBCustomers.delCustomer(customer.getId());
+        if (deleted) {
+            customerTV.getItems().remove(customer);
+        }
+        else {
+            Alert error = new Alert(Alert.AlertType.ERROR, "Could not delete");
+            error.setTitle("Deletion error");
+            error.showAndWait();
+        }
     }
 
     /**
