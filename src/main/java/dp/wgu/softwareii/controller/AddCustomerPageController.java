@@ -1,8 +1,10 @@
 package dp.wgu.softwareii.controller;
 
 import dp.wgu.softwareii.dbAccess.DBCountries;
+import dp.wgu.softwareii.dbAccess.DBCustomers;
 import dp.wgu.softwareii.dbAccess.DBDivisions;
 import dp.wgu.softwareii.model.Country;
+import dp.wgu.softwareii.model.Customer;
 import dp.wgu.softwareii.model.Division;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.ResourceBundle;
 
 /**
@@ -72,6 +75,13 @@ public class AddCustomerPageController extends BaseController {
     @FXML
     public void OnSaveClick(ActionEvent actionEvent) throws IOException {
         // TODO: save customer
+        String name = nameField.getText();
+        String address = addressField.getText();
+        String postal = postalField.getText();
+        String phone = phoneField.getText();
+        var division = (Division)stateComboBox.getSelectionModel().getSelectedItem();
+        DBCustomers.addCustomer(name, address, postal, phone, division.getId());
+
         // return to customers page
         Parent newScene = this.loadScene("CustomersPage");
         Stage stage = this.getStageWithSetScene(actionEvent, newScene);

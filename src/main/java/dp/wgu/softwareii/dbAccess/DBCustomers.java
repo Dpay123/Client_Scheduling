@@ -46,4 +46,37 @@ public class DBCustomers {
         return cList;
     }
 
+    /**
+     * Create a customer record in the db.
+     * @param name
+     * @param address
+     * @param postal
+     * @param phone
+     * @param id
+     */
+    public static void addCustomer(String name, String address, String postal, String phone, int id) {
+
+        String sql = "INSERT INTO customers ("
+                + "Customer_Name,"
+                + "Address, "
+                + "Postal_Code, "
+                + "Phone, "
+                + "Division_ID) VALUES ("
+                + "?, ?, ?, ?, ?)";
+
+        try {
+            // set the parameters
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setString(1, name);
+            ps.setString(2, address);
+            ps.setString(3, postal);
+            ps.setString(4, phone);
+            ps.setInt(5, id);
+            // execute
+            ps.executeUpdate();
+            System.out.println("Added successfully)");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
