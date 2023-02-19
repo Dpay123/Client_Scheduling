@@ -130,18 +130,28 @@ public class CustomersPageController extends BaseController {
             error.showAndWait();
             return;
         }
-        // TODO: require confirmation for deletion
+
         // TODO: customer cannot be deleted if it has associated appointments
 
-        // Attempt to delete the customer from db - if so, remove from GUI
-        boolean deleted = DBCustomers.delCustomer(customer.getId());
-        if (deleted) {
-            customerTV.getItems().remove(customer);
-        }
-        else {
-            Alert error = new Alert(Alert.AlertType.ERROR, "Could not delete");
-            error.setTitle("Deletion error");
-            error.showAndWait();
+        // pop up box to confirm deletion
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this customer?");
+        confirm.setTitle("Confirm Deletion");
+        Optional<ButtonType> result = confirm.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Attempt to delete the customer from db
+            boolean deleted = DBCustomers.delCustomer(customer.getId());
+            if (!deleted) {
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setContentText("Could not delete.");
+                error.showAndWait();
+            }
+            else {
+                customerTV.getItems().remove(customer);
+                Alert success = new Alert(Alert.AlertType.INFORMATION, "Customer deleted.");
+                success.setTitle("Customer deleted success");
+                success.showAndWait();
+            }
         }
     }
 
