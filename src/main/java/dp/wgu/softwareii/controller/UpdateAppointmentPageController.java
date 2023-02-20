@@ -3,10 +3,7 @@ package dp.wgu.softwareii.controller;
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.dbAccess.DBContacts;
 import dp.wgu.softwareii.dbAccess.DBCustomers;
-import dp.wgu.softwareii.model.Appointment;
-import dp.wgu.softwareii.model.Contact;
-import dp.wgu.softwareii.model.Customer;
-import dp.wgu.softwareii.model.Type;
+import dp.wgu.softwareii.model.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
@@ -130,8 +127,7 @@ public class UpdateAppointmentPageController extends BaseController {
         Type type = (Type)typeCB.getSelectionModel().getSelectedItem();
         // TODO: dates/times
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
-        // TODO: userID
-        int testUser = 1;
+        User user = DashboardPageController.user;
         Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();
 
         // attempt to update the appointment
@@ -142,7 +138,7 @@ public class UpdateAppointmentPageController extends BaseController {
                 description,
                 type.toString(),
                 customer.getId(),
-                testUser,
+                user.getId(),
                 contact.getId());
         if (!updated) {
             Alert error = new Alert(Alert.AlertType.ERROR);

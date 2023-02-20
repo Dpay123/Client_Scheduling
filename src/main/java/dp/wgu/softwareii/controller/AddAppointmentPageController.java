@@ -6,6 +6,7 @@ import dp.wgu.softwareii.dbAccess.DBCustomers;
 import dp.wgu.softwareii.model.Contact;
 import dp.wgu.softwareii.model.Customer;
 import dp.wgu.softwareii.model.Type;
+import dp.wgu.softwareii.model.User;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
@@ -61,14 +62,6 @@ public class AddAppointmentPageController extends BaseController{
     @FXML
     private ComboBox contactCB;
 
-    /**Button to save Appt*/
-    @FXML
-    private Button saveBtn;
-
-    /**Button to cancel*/
-    @FXML
-    private Button cancelBtn;
-
     /**
      * Initialize the combo boxes.
      * @param url
@@ -99,8 +92,7 @@ public class AddAppointmentPageController extends BaseController{
         Type type = (Type)typeCB.getSelectionModel().getSelectedItem();
         // TODO: dates/times
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
-        // TODO: userID
-        int testUser = 1;
+        User user = DashboardPageController.user;
         Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();
 
         // attempt to save the appointment
@@ -110,7 +102,7 @@ public class AddAppointmentPageController extends BaseController{
                 description,
                 type.toString(),
                 customer.getId(),
-                testUser,
+                user.getId(),
                 contact.getId());
         if (!saved) {
             Alert error = new Alert(Alert.AlertType.ERROR);
