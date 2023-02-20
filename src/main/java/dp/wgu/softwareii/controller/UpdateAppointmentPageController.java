@@ -78,7 +78,9 @@ public class UpdateAppointmentPageController extends BaseController {
         locationField.setText(appt.getLocation());
         descriptionField.setText(appt.getDescription());
         timeField.setText(appt.getStartDateTime());
-        // TODO: set dates, times, combo boxes
+
+
+        // TODO: set dates, times
     }
 
     /**

@@ -98,4 +98,24 @@ public class DBAppointments {
         }
         return false;
     }
+
+    /**
+     * Delete an appt record in the db based upon id.
+     * @param id
+     * @return true if succesful else false
+     */
+    public static boolean delAppointment(int id) {
+
+        String sql = "DELETE FROM appointments WHERE Appointment_ID = " + id;
+
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.executeUpdate();
+            System.out.println("Removed succesfully");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

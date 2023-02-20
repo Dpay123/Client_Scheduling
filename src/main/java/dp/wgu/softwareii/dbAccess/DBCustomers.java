@@ -103,7 +103,7 @@ public class DBCustomers {
     }
 
     /**
-     * Delete a customer from the db based upon id, return true if success, else false.
+     * Update a customer from the db based upon id, return true if success, else false.
      * @param id
      * @param name
      * @param address

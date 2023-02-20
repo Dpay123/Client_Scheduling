@@ -1,6 +1,7 @@
 package dp.wgu.softwareii.controller;
 
 import dp.wgu.softwareii.dbAccess.DBAppointments;
+import dp.wgu.softwareii.dbAccess.DBCustomers;
 import dp.wgu.softwareii.model.Appointment;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AppointmentsPageController extends BaseController {
@@ -186,8 +188,36 @@ public class AppointmentsPageController extends BaseController {
      */
     @FXML
     public void OnApptDeleteClick(ActionEvent actionEvent) {
-        // TODO: confirmation of deletion
-        // TODO: delete appt
+        // retrieve selected appt
+        Appointment appt = (Appointment)apptTV.getSelectionModel().getSelectedItem();
+
+        // check for null
+        if (appt == null) {
+            Alert error = new Alert(Alert.AlertType.ERROR, "Please select an appointment to delete");
+            error.setTitle("No appointment selected");
+            error.showAndWait();
+            return;
+        }
+        // pop up box for confirmation of deletion
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this appointment?");
+        confirm.setTitle("Confirm Deletion");
+        Optional<ButtonType> result = confirm.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Attempt to delete the appt from db
+            boolean deleted = DBAppointments.delAppointment(appt.getId());
+            if (!deleted) {
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setContentText("Could not delete.");
+                error.showAndWait();
+            }
+            else {
+                apptTV.getItems().remove(appt);
+                Alert success = new Alert(Alert.AlertType.INFORMATION, "Appointment deleted.");
+                success.setTitle("Appointment deleted success");
+                success.showAndWait();
+            }
+        }
     }
 
     /**
