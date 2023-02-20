@@ -1,5 +1,6 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.dbAccess.DBCustomers;
 import dp.wgu.softwareii.model.Customer;
 import javafx.event.ActionEvent;
@@ -134,23 +135,35 @@ public class CustomersPageController extends BaseController {
         // TODO: customer cannot be deleted if it has associated appointments
 
         // pop up box to confirm deletion
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this customer?");
+        String message = "Are you sure you want to delete this customer? Any associated appointments will be deleted!!";
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, message);
         confirm.setTitle("Confirm Deletion");
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // Attempt to delete the customer from db
-            boolean deleted = DBCustomers.delCustomer(customer.getId());
-            if (!deleted) {
+
+            // Attempt to delete appointments associated with the  customer
+            boolean deletedCustomerAppointments = DBAppointments.delCustomerAppointments(customer.getId());
+            if (!deletedCustomerAppointments) {
                 Alert error = new Alert(Alert.AlertType.ERROR);
                 error.setTitle("Error");
-                error.setContentText("Could not delete.");
+                error.setContentText("Could not delete the required appointments.");
                 error.showAndWait();
             }
             else {
-                customerTV.getItems().remove(customer);
-                Alert success = new Alert(Alert.AlertType.INFORMATION, "Customer deleted.");
-                success.setTitle("Customer deleted success");
-                success.showAndWait();
+                // Attempt to delete the customer from db
+                boolean deleted = DBCustomers.delCustomer(customer.getId());
+                if (!deleted) {
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setContentText("Could not delete.");
+                    error.showAndWait();
+                }
+                else {
+                    customerTV.getItems().remove(customer);
+                    Alert success = new Alert(Alert.AlertType.INFORMATION, "Customer deleted.");
+                    success.setTitle("Customer deleted success");
+                    success.showAndWait();
+                }
             }
         }
     }

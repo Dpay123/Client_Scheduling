@@ -169,4 +169,23 @@ public class DBAppointments {
         }
         return false;
     }
+
+    /**
+     * Delete all appointments from the db based upon a customer id, return true if success, else false.
+     * @param customerID
+     * @return
+     */
+    public static boolean delCustomerAppointments(int customerID) {
+        String sql = "DELETE FROM appointments WHERE Customer_ID = " + customerID;
+
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.executeUpdate();
+            System.out.println("Deleted user appointments");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
