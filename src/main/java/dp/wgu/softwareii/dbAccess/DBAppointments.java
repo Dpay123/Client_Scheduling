@@ -118,4 +118,55 @@ public class DBAppointments {
         }
         return false;
     }
+
+    /**
+     * Update an appointment from the db based upon id, return true if success, else false.
+     * @param id
+     * @param title
+     * @param location
+     * @param desc
+     * @param type
+     * @param custID
+     * @param userID
+     * @param contactID
+     * @return
+     */
+    public static boolean updateAppointment(
+            int id,
+            String title,
+            String location,
+            String desc,
+            String type,
+            int custID,
+            int userID,
+            int contactID)
+    {
+        String sql = "UPDATE appointments "
+                + "SET Title = ?, "
+                + "Description = ?, "
+                + "Location = ?, "
+                + "Type = ?, "
+                + "Customer_ID = ?, "
+                + "User_ID = ?, "
+                + "Contact_ID = ? WHERE Appointment_ID = " + id;
+
+        try {
+            // set parameters
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setString(1, title);
+            ps.setString(2, desc);
+            ps.setString(3, location);
+            ps.setString(4, type);
+            ps.setInt(5, custID);
+            ps.setInt(6, userID);
+            ps.setInt(7, contactID);
+            // execute
+            ps.executeUpdate();
+            System.out.println("Updated successfully");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

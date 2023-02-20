@@ -96,7 +96,7 @@ public class AddAppointmentPageController extends BaseController{
         String title = titleField.getText();
         String location = locationField.getText();
         String description = descriptionField.getText();
-        String type = typeCB.getSelectionModel().getSelectedItem().toString();
+        Type type = (Type)typeCB.getSelectionModel().getSelectedItem();
         // TODO: dates/times
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
         // TODO: userID
@@ -108,7 +108,7 @@ public class AddAppointmentPageController extends BaseController{
                 title,
                 location,
                 description,
-                type,
+                type.toString(),
                 customer.getId(),
                 testUser,
                 contact.getId());

@@ -8,7 +8,6 @@ public class Appointment {
     private String title;
     private String description;
     private String location;
-    // possibly make an enum
     private String type;
     // String placeholder until class determined
     private String startDateTime;

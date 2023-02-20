@@ -1,7 +1,6 @@
 package dp.wgu.softwareii.controller;
 
 import dp.wgu.softwareii.dbAccess.DBAppointments;
-import dp.wgu.softwareii.dbAccess.DBCustomers;
 import dp.wgu.softwareii.model.Appointment;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
