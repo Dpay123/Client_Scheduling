@@ -1,5 +1,10 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.dbAccess.DBContacts;
+import dp.wgu.softwareii.dbAccess.DBCustomers;
+import dp.wgu.softwareii.model.Contact;
+import dp.wgu.softwareii.model.Customer;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -7,11 +12,19 @@ import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * The controller for the Add Appt Page.
  */
 public class AddAppointmentPageController extends BaseController{
+
+    /**A list of Customers for the combo box*/
+    ObservableList<Customer> customers;
+
+    /**A list of Contacts for the combo box*/
+    ObservableList<Contact> contacts;
 
     /**Field for user to input title*/
     @FXML
@@ -52,6 +65,20 @@ public class AddAppointmentPageController extends BaseController{
     /**Button to cancel*/
     @FXML
     private Button cancelBtn;
+
+    /**
+     * Initialize the combo boxes.
+     * @param url
+     * @param resourceBundle
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        customers = DBCustomers.getAll();
+        customerCB.setItems(customers);
+
+        contacts = DBContacts.getAll();
+        contactCB.setItems(contacts);
+    }
 
     /**
      * Retrieve the form data and save as a new Appointment.
