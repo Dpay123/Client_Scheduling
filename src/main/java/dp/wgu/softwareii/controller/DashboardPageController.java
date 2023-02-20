@@ -1,5 +1,6 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.model.User;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -13,6 +14,9 @@ import java.util.ResourceBundle;
  * The controller for the Dashboard Page.
  */
 public class DashboardPageController extends BaseController{
+
+    /**The user logged in.*/
+    public static User user;
 
     /**Label for user local time display*/
     @FXML
@@ -50,7 +54,9 @@ public class DashboardPageController extends BaseController{
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        dashGreeting.setText("Hello, " + user + "!");
+        // TODO: set time
+        // TODO: alert for urgent appts
     }
 
     /**

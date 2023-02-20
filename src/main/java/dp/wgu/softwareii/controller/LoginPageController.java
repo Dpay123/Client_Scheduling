@@ -1,5 +1,7 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.dbAccess.DBUsers;
+import dp.wgu.softwareii.model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -39,7 +41,7 @@ public class LoginPageController extends BaseController{
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        // TODO: show time info
     }
 
     /**
@@ -51,10 +53,22 @@ public class LoginPageController extends BaseController{
      */
     @FXML
     public void onLoginClick(ActionEvent actionEvent) throws IOException {
-        // TODO: user validation
-        // TODO: error popup if invalid user
-        // navigate to the Dashboard
-        this.goToMainMenu(actionEvent);
+        // user validation
+        String username = userField.getText();
+        String password = passwordField.getText();
+        User validUser = DBUsers.validate(username, password);
+        if (validUser == null) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Invalid");
+            error.setContentText("Login credentials invalid");
+            error.showAndWait();
+        }
+        else {
+            // pass user to dashboard
+            DashboardPageController.user = validUser;
+            // navigate to the Dashboard
+            this.goToMainMenu(actionEvent);
+        }
     }
 
     /**
