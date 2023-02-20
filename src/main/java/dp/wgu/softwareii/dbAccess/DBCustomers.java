@@ -54,10 +54,10 @@ public class DBCustomers {
      * @param phone
      * @param id
      */
-    public static void addCustomer(String name, String address, String postal, String phone, int id) {
+    public static boolean addCustomer(String name, String address, String postal, String phone, int id) {
 
         String sql = "INSERT INTO customers ("
-                + "Customer_Name,"
+                + "Customer_Name, "
                 + "Address, "
                 + "Postal_Code, "
                 + "Phone, "
@@ -75,9 +75,11 @@ public class DBCustomers {
             // execute
             ps.executeUpdate();
             System.out.println("Added successfully)");
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     /**

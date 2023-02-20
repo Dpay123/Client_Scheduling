@@ -8,6 +8,7 @@ import dp.wgu.softwareii.model.Division;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -77,13 +78,20 @@ public class AddCustomerPageController extends BaseController {
         String postal = postalField.getText();
         String phone = phoneField.getText();
         var division = (Division)stateComboBox.getSelectionModel().getSelectedItem();
-        DBCustomers.addCustomer(name, address, postal, phone, division.getId());
-
-        // return to customers page
-        Parent newScene = this.loadScene("CustomersPage");
-        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
-        stage.setTitle("Customers");
-        stage.show();
+        boolean added = DBCustomers.addCustomer(name, address, postal, phone, division.getId());
+        if (!added) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setContentText("Could not add.");
+            error.showAndWait();
+        }
+        else {
+            // return to customers page
+            Parent newScene = this.loadScene("CustomersPage");
+            Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+            stage.setTitle("Customers");
+            stage.show();
+        }
     }
 
     /**

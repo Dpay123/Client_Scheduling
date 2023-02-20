@@ -52,4 +52,50 @@ public class DBAppointments {
         return aList;
     }
 
+    /**
+     * Create an Appointment record in the db.
+     * @param title
+     * @param location
+     * @param description
+     * @param type
+     * @param custId
+     * @param userId
+     * @param contactId
+     */
+    public static boolean addAppointment(String title,
+                                         String location,
+                                         String description,
+                                         String type,
+                                         int custId,
+                                         int userId,
+                                         int contactId) {
+        String sql = "INSERT INTO appointments ("
+                + "Title, "
+                + "Description, "
+                + "Location, "
+                + "Type, "
+                + "Customer_ID, "
+                + "User_ID, "
+                + "Contact_ID) VALUES ("
+                + "?, ?, ?, ?, ?, ? ,?)";
+
+        try {
+            // use a prepared statement
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setString(1, title);
+            ps.setString(2, location);
+            ps.setString(3, description);
+            ps.setString(4, type);
+            ps.setInt(5, custId);
+            ps.setInt(6, userId);
+            ps.setInt(7, contactId);
+            // execute
+            ps.executeUpdate();
+            System.out.println("Added successfully");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
