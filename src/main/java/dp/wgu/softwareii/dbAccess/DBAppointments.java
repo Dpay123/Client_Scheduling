@@ -5,6 +5,7 @@ import dp.wgu.softwareii.model.Appointment;
 import dp.wgu.softwareii.model.Country;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +22,7 @@ public class DBAppointments {
      * Query the db for a list of all appointments and return the result set.
      * @return an ObservableList of appointments.
      */
-    public static ObservableList<Appointment> getAll() {
+    public static FilteredList<Appointment> getAll() {
 
         ObservableList<Appointment> aList = FXCollections.observableArrayList();
 
@@ -56,7 +57,8 @@ public class DBAppointments {
             e.printStackTrace();
         }
 
-        return aList;
+        FilteredList<Appointment> filtered = new FilteredList<>(aList);
+        return filtered;
     }
 
     /**

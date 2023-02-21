@@ -2,7 +2,7 @@ package dp.wgu.softwareii.controller;
 
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.model.Appointment;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -12,12 +12,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class AppointmentsPageController extends BaseController {
+
+    /**the data set for the tableview.
+     * Can be filtered by Predicate.*/
+    private FilteredList<Appointment> appts;
 
     /**Tableview for displaying appts from db*/
     @FXML
@@ -89,7 +94,8 @@ public class AppointmentsPageController extends BaseController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // set the data source for the appts table
-        apptTV.setItems(DBAppointments.getAll());
+        appts = DBAppointments.getAll();
+        apptTV.setItems(appts);
         apptIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -100,6 +106,8 @@ public class AppointmentsPageController extends BaseController {
         apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
         apptStartCol.setCellValueFactory(new PropertyValueFactory<>("start"));
         apptEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+        // set default filter
+        apptFilterAll.setSelected(true);
     }
 
     /**
@@ -108,16 +116,24 @@ public class AppointmentsPageController extends BaseController {
      */
     @FXML
     public void OnApptFilterAllClick(ActionEvent actionEvent) {
-        // TODO: filter functionality
+        // set the filter to null
+        appts.setPredicate(null);
     }
 
     /**
-     * Filter the Appointments table to select those within a week
+     * Filter the Appointments table to select those within a week.
+     * Uses a lambda expression to set a Predicate which is used to filter the results list.
      * @param actionEvent
      */
     @FXML
     public void OnApptFilterWeekClick(ActionEvent actionEvent) {
-        // TODO: filter functionality
+        // want to filter by any appt with a date that falls within 7 days of todays date
+        Predicate<Appointment> withinWeek = i -> {
+            int today = LocalDate.now().getDayOfYear();
+            int apptDay = i.getStartDateTime().toLocalDate().getDayOfYear();
+            return apptDay >= today && apptDay <= today+6;
+        };
+        appts.setPredicate(withinWeek);
     }
 
     /**
@@ -126,7 +142,13 @@ public class AppointmentsPageController extends BaseController {
      */
     @FXML
     public void OnApptFilterMonthClick(ActionEvent actionEvent) {
-        // TODO: filter functionality
+        // want to filter by any appt with a date that falls within 7 days of todays date
+        Predicate<Appointment> withinMonth = i -> {
+            int thisMonth = LocalDate.now().getMonthValue();
+            int apptMonth = i.getStartDateTime().toLocalDate().getMonthValue();
+            return thisMonth == apptMonth;
+        };
+        appts.setPredicate(withinMonth);
     }
 
     /**
@@ -202,7 +224,10 @@ public class AppointmentsPageController extends BaseController {
                 error.showAndWait();
             }
             else {
-                apptTV.getItems().remove(appt);
+                // reset table data source
+                appts = DBAppointments.getAll();
+                apptTV.setItems(appts);
+                apptFilterAll.setSelected(true);
                 Alert success = new Alert(Alert.AlertType.INFORMATION, "Appointment deleted.");
                 success.setTitle("Appointment deleted success");
                 success.showAndWait();
