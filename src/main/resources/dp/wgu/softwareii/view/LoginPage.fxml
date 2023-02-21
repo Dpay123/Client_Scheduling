@@ -39,8 +39,11 @@
                         <Button fx:id="exitButton" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onExitClick" prefWidth="70.0" text="Exit" />
                      </children>
                   </HBox>
-                  <Label text="Time:" />
-                  <Label fx:id="loginTime" text="TimeObjGoesHere" GridPane.columnIndex="1" />
+                  <Label text="Timezone:" />
+                  <Label fx:id="zoneLabel" text="TimeObjGoesHere" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="System Italic" size="16.0" />
+                     </font></Label>
                </children>
             </GridPane>
          </children>

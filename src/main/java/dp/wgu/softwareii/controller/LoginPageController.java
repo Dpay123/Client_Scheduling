@@ -7,12 +7,19 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.io.IOException;
 import java.net.URL;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
  * The controller for the Login Page.
  */
 public class LoginPageController extends BaseController{
+
+    /**Store the zoneID of the user*/
+    static ZoneId zoneID;
 
     /**Field for user to input username*/
     @FXML
@@ -22,17 +29,9 @@ public class LoginPageController extends BaseController{
     @FXML
     private TextField passwordField;
 
-    /**Label for local time display*/
+    /**Display the timezone*/
     @FXML
-    private Label loginTime;
-
-    /**Button to attempt login*/
-    @FXML
-    private Button loginButton;
-
-    /**Button to exit the program*/
-    @FXML
-    private Button exitButton;
+    private Label zoneLabel;
 
     /**
      * Code to execute upon initializing the page.
@@ -42,6 +41,8 @@ public class LoginPageController extends BaseController{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // TODO: show time info
+        zoneID = ZonedDateTime.now().getZone();
+        zoneLabel.setText(zoneID.getDisplayName(TextStyle.FULL, Locale.ENGLISH));
     }
 
     /**
