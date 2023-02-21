@@ -1,5 +1,7 @@
 package dp.wgu.softwareii.model;
 
+import java.time.ZoneId;
+
 /**
  * POJO class for user data from the db.
  * A user has an id and name.

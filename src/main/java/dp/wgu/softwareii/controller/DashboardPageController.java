@@ -8,6 +8,9 @@ import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.time.ZoneId;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -17,6 +20,9 @@ public class DashboardPageController extends BaseController{
 
     /**The user logged in.*/
     public static User user;
+
+    /**Store the zoneID of the user*/
+    static ZoneId zoneID;
 
     /**Label for user local time display*/
     @FXML
@@ -54,8 +60,8 @@ public class DashboardPageController extends BaseController{
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        dashGreeting.setText("Hello, " + user + "!");
-        // TODO: set time
+        dashGreeting.setText("Logged in as " + user);
+        dashTime.setText("TimeZone: " + zoneID.getDisplayName(TextStyle.FULL, Locale.ENGLISH));
         // TODO: alert for urgent appts
     }
 
