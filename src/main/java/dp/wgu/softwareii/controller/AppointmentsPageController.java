@@ -2,6 +2,7 @@ package dp.wgu.softwareii.controller;
 
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.model.Appointment;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -11,6 +12,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -35,18 +38,6 @@ public class AppointmentsPageController extends BaseController {
     /**Button for filtering appts by month*/
     @FXML
     private RadioButton apptFilterMonthRb;
-
-    /**Button for adding appt*/
-    @FXML
-    private Button apptAddBtn;
-
-    /**Button for updating appt*/
-    @FXML
-    private Button apptUpdateBtn;
-
-    /**Button for deleting appt*/
-    @FXML
-    private Button apptDeleteBtn;
 
     /**Customer TableView column*/
     @FXML
@@ -74,7 +65,7 @@ public class AppointmentsPageController extends BaseController {
 
     /**Customer TableView column*/
     @FXML
-    private TableColumn apptStartCol;
+    private TableColumn<Appointment, LocalDateTime> apptStartCol;
 
     /**Customer TableView column*/
     @FXML
@@ -105,10 +96,10 @@ public class AppointmentsPageController extends BaseController {
         apptLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
         apptContactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
         apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-        apptStartCol.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
-        apptEndCol.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
         apptCustIDCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        apptStartCol.setCellValueFactory(new PropertyValueFactory<>("start"));
+        apptEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
     }
 
     /**

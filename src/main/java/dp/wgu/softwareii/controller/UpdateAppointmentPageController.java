@@ -16,6 +16,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
@@ -106,10 +107,15 @@ public class UpdateAppointmentPageController extends BaseController {
             Type t = (Type)type;
             if (t.toString().equals(appt.getType())) typeCB.setValue(type);
         }
-
-        // TODO: set dates, times
         // get localDate from and set as datePicker value
+        LocalDate date = appt.getStartDateTime().toLocalDate();
+        datePick.setValue(date);
         // get localTime from each and set as start/end time
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime startTime = appt.getStartDateTime().toLocalTime();
+        LocalTime endTime = appt.getEndDateTime().toLocalTime();
+        startTF.setText(startTime.format(dtf));
+        endTF.setText(endTime.format(dtf));
     }
 
     /**

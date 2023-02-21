@@ -1,6 +1,7 @@
 package dp.wgu.softwareii.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * POJO class for appointment data from db
@@ -13,6 +14,8 @@ public class Appointment {
     private String type;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
+    private String start;
+    private String end;
     private int customerId;
     private int userId;
     private int contactId;
@@ -50,6 +53,18 @@ public class Appointment {
         this.customerId = customerId;
         this.userId = userId;
         this.contactId = contactId;
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
+        this.start = startDateTime.format(dtf);
+        this.end = endDateTime.format(dtf);
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public String getEnd() {
+        return end;
     }
 
     public int getId() {
