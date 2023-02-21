@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
@@ -54,13 +55,18 @@ public class AddAppointmentPageController extends BaseController{
     @FXML
     private DatePicker datePick;
 
-    /**Field for user to input time*/
-    @FXML
-    private TextField timeField;
-
     /**Combo box for user to select contact*/
     @FXML
     private ComboBox contactCB;
+
+    /**Field for user to input start time*/
+    @FXML
+    private TextField startTF;
+
+    /**Field for user to input end time*/
+    @FXML
+    private TextField endTF;
+
 
     /**
      * Initialize the combo boxes.
@@ -90,7 +96,9 @@ public class AddAppointmentPageController extends BaseController{
         String location = locationField.getText();
         String description = descriptionField.getText();
         Type type = (Type)typeCB.getSelectionModel().getSelectedItem();
-        // TODO: dates/times
+        // TODO: date
+        LocalDate date = datePick.getValue();
+        // TODO: time
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
         User user = DashboardPageController.user;
         Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();

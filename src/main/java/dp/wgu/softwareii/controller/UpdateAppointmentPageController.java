@@ -60,21 +60,17 @@ public class UpdateAppointmentPageController extends BaseController {
     @FXML
     private DatePicker datePick;
 
-    /**Field for user to input time*/
-    @FXML
-    private TextField timeField;
-
     /**Combo box for user to select contact*/
     @FXML
     private ComboBox contactCB;
 
-    /**Button to save Appt*/
+    /**Field for user to input start time*/
     @FXML
-    private Button saveBtn;
+    private TextField startTF;
 
-    /**Button to cancel*/
+    /**Field for user to input end time*/
     @FXML
-    private Button cancelBtn;
+    private TextField endTF;
 
     /**
      * Populates the data fields with the current appt data to be updated.
@@ -88,7 +84,6 @@ public class UpdateAppointmentPageController extends BaseController {
         titleField.setText(appt.getTitle());
         locationField.setText(appt.getLocation());
         descriptionField.setText(appt.getDescription());
-        timeField.setText(appt.getStartDateTime());
         customers = DBCustomers.getAll();
         customerCB.setItems(customers);
         contacts = DBContacts.getAll();
@@ -110,6 +105,10 @@ public class UpdateAppointmentPageController extends BaseController {
         }
 
         // TODO: set dates, times
+        // retrieve startDateTime and endDateTime as TimeStamps from db
+        // cast them to localDateTime
+        // get localDate from and set as datePicker value
+        // get localTime from each and set as start/end time
     }
 
     /**
