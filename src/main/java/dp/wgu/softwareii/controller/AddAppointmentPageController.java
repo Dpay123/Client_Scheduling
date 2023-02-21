@@ -17,6 +17,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
@@ -93,12 +95,14 @@ public class AddAppointmentPageController extends BaseController{
     public void OnSaveClick(ActionEvent actionEvent) throws IOException {
         // retrieve input data
         String title = titleField.getText();
-        String location = locationField.getText();
         String description = descriptionField.getText();
+        String location = locationField.getText();
         Type type = (Type)typeCB.getSelectionModel().getSelectedItem();
         // TODO: date
         LocalDate date = datePick.getValue();
         // TODO: time
+        LocalTime startTime = LocalTime.parse(startTF.getText());
+        LocalTime endTime = LocalTime.parse(endTF.getText());
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
         User user = DashboardPageController.user;
         Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();
@@ -106,9 +110,11 @@ public class AddAppointmentPageController extends BaseController{
         // attempt to save the appointment
         boolean saved = DBAppointments.addAppointment(
                 title,
-                location,
                 description,
+                location,
                 type.toString(),
+                LocalDateTime.of(date, startTime),
+                LocalDateTime.of(date, endTime),
                 customer.getId(),
                 user.getId(),
                 contact.getId());

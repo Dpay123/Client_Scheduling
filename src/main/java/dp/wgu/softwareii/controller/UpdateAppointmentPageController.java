@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
@@ -105,8 +108,6 @@ public class UpdateAppointmentPageController extends BaseController {
         }
 
         // TODO: set dates, times
-        // retrieve startDateTime and endDateTime as TimeStamps from db
-        // cast them to localDateTime
         // get localDate from and set as datePicker value
         // get localTime from each and set as start/end time
     }
@@ -121,10 +122,14 @@ public class UpdateAppointmentPageController extends BaseController {
         // retrieve input data
         int id = appt.getId();
         String title = titleField.getText();
-        String location = locationField.getText();
         String description = descriptionField.getText();
+        String location = locationField.getText();
         Type type = (Type)typeCB.getSelectionModel().getSelectedItem();
-        // TODO: dates/times
+        // TODO: date
+        LocalDate date = datePick.getValue();
+        // TODO: time
+        LocalTime startTime = LocalTime.parse(startTF.getText());
+        LocalTime endTime = LocalTime.parse(endTF.getText());
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
         User user = DashboardPageController.user;
         Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();
@@ -133,9 +138,11 @@ public class UpdateAppointmentPageController extends BaseController {
         boolean updated = DBAppointments.updateAppointment(
                 id,
                 title,
-                location,
                 description,
+                location,
                 type.toString(),
+                LocalDateTime.of(date, startTime),
+                LocalDateTime.of(date, endTime),
                 customer.getId(),
                 user.getId(),
                 contact.getId());

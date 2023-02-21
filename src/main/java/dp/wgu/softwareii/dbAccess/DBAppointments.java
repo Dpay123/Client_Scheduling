@@ -9,6 +9,8 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * The class for handling access to the Appointments table in the db.
@@ -36,12 +38,17 @@ public class DBAppointments {
                 String description = rs.getString("Description");
                 String location = rs.getString("Location");
                 String type = rs.getString("Type");
-                String start = rs.getString("Start");
-                String end = rs.getString("End");
                 int custID = rs.getInt("Customer_ID");
                 int userID = rs.getInt("User_ID");
                 int contactID = rs.getInt("Contact_ID");
-                Appointment a = new Appointment(id, title, description, location, type, start, end, custID, userID, contactID);
+                // retrieve datetime from db as TimeStamp
+                Timestamp start = rs.getTimestamp("Start");
+                Timestamp end = rs.getTimestamp("End");
+                // convert to localDateTime
+                LocalDateTime startDT = start.toLocalDateTime();
+                LocalDateTime endDT = end.toLocalDateTime();
+                // create appointment obj
+                Appointment a = new Appointment(id, title, description, location, type, startDT, endDT, custID, userID, contactID);
                 aList.add(a);
             }
         }
@@ -53,19 +60,24 @@ public class DBAppointments {
     }
 
     /**
-     * Create an Appointment record in the db.
+     * Add an appt to the db.
      * @param title
-     * @param location
      * @param description
+     * @param location
      * @param type
+     * @param start
+     * @param end
      * @param custId
      * @param userId
      * @param contactId
+     * @return
      */
     public static boolean addAppointment(String title,
-                                         String location,
                                          String description,
+                                         String location,
                                          String type,
+                                         LocalDateTime start,
+                                         LocalDateTime end,
                                          int custId,
                                          int userId,
                                          int contactId) {
@@ -74,21 +86,25 @@ public class DBAppointments {
                 + "Description, "
                 + "Location, "
                 + "Type, "
+                + "Start, "
+                + "End, "
                 + "Customer_ID, "
                 + "User_ID, "
                 + "Contact_ID) VALUES ("
-                + "?, ?, ?, ?, ?, ? ,?)";
+                + "?, ?, ?, ?, ?, ?, ?, ? ,?)";
 
         try {
             // use a prepared statement
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setString(1, title);
-            ps.setString(2, location);
-            ps.setString(3, description);
+            ps.setString(2, description);
+            ps.setString(3, location);
             ps.setString(4, type);
-            ps.setInt(5, custId);
-            ps.setInt(6, userId);
-            ps.setInt(7, contactId);
+            ps.setTimestamp(5, Timestamp.valueOf(start));
+            ps.setTimestamp(6, Timestamp.valueOf(end));
+            ps.setInt(7, custId);
+            ps.setInt(8, userId);
+            ps.setInt(9, contactId);
             // execute
             ps.executeUpdate();
             System.out.println("Added successfully");
@@ -119,13 +135,16 @@ public class DBAppointments {
         return false;
     }
 
+
     /**
-     * Update an appointment from the db based upon id, return true if success, else false.
+     * Update an appt in the db, return true if successful, else false.
      * @param id
      * @param title
+     * @param description
      * @param location
-     * @param desc
      * @param type
+     * @param start
+     * @param end
      * @param custID
      * @param userID
      * @param contactID
@@ -134,9 +153,11 @@ public class DBAppointments {
     public static boolean updateAppointment(
             int id,
             String title,
+            String description,
             String location,
-            String desc,
             String type,
+            LocalDateTime start,
+            LocalDateTime end,
             int custID,
             int userID,
             int contactID)
@@ -146,6 +167,8 @@ public class DBAppointments {
                 + "Description = ?, "
                 + "Location = ?, "
                 + "Type = ?, "
+                + "Start = ?, "
+                + "End = ?, "
                 + "Customer_ID = ?, "
                 + "User_ID = ?, "
                 + "Contact_ID = ? WHERE Appointment_ID = " + id;
@@ -154,12 +177,14 @@ public class DBAppointments {
             // set parameters
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setString(1, title);
-            ps.setString(2, desc);
+            ps.setString(2, description);
             ps.setString(3, location);
             ps.setString(4, type);
-            ps.setInt(5, custID);
-            ps.setInt(6, userID);
-            ps.setInt(7, contactID);
+            ps.setTimestamp(5, Timestamp.valueOf(start));
+            ps.setTimestamp(6, Timestamp.valueOf(end));
+            ps.setInt(7, custID);
+            ps.setInt(8, userID);
+            ps.setInt(9, contactID);
             // execute
             ps.executeUpdate();
             System.out.println("Updated successfully");

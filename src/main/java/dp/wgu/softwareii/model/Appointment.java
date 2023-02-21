@@ -1,5 +1,7 @@
 package dp.wgu.softwareii.model;
 
+import java.time.LocalDateTime;
+
 /**
  * POJO class for appointment data from db
  */
@@ -9,9 +11,8 @@ public class Appointment {
     private String description;
     private String location;
     private String type;
-    // String placeholder until class determined
-    private String startDateTime;
-    private String endDateTime;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
     private int customerId;
     private int userId;
     private int contactId;
@@ -34,8 +35,8 @@ public class Appointment {
                        String description,
                        String location,
                        String type,
-                       String startDateTime,
-                       String endDateTime,
+                       LocalDateTime startDateTime,
+                       LocalDateTime endDateTime,
                        int customerId,
                        int userId,
                        int contactId) {
@@ -91,19 +92,19 @@ public class Appointment {
         this.type = type;
     }
 
-    public String getStartDateTime() {
+    public LocalDateTime getStartDateTime() {
         return startDateTime;
     }
 
-    public void setStartDateTime(String startDateTime) {
+    public void setStartDateTime(LocalDateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
 
-    public String getEndDateTime() {
+    public LocalDateTime getEndDateTime() {
         return endDateTime;
     }
 
-    public void setEndDateTime(String endDateTime) {
+    public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
     }
 
