@@ -10,8 +10,10 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -179,7 +181,12 @@ public class ReportsPageController extends BaseController{
      * @param actionEvent
      */
     @FXML
-    public void OnCreateClick(ActionEvent actionEvent) {
+    public void OnCreateClick(ActionEvent actionEvent) throws IOException {
+        // TODO: retrieve the selected contact id and send to page
+        Parent newScene = this.loadScene("ContactSchedulePage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("Contact Schedule Snapshot");
+        stage.show();
     }
 
     /**

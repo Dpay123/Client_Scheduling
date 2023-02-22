@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity"
+            maxWidth="-Infinity"
+            minHeight="-Infinity"
+            minWidth="-Infinity"
+            prefHeight="457.0"
+            prefWidth="1220.0"
+            xmlns="http://javafx.com/javafx/11.0.14-internal"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="dp.wgu.softwareii.controller.ContactSchedulePageController">
+   <children>
+      <VBox layoutX="10.0" prefHeight="458.0" prefWidth="1200.0" spacing="10.0">
+         <children>
+            <AnchorPane prefHeight="377.0" prefWidth="1200.0" style=" -fx-border-color: black; -fx-border-width: 1; -fx-border-style: solid; -fx-border-radius: 10;">
+               <children>
+                  <VBox alignment="TOP_CENTER" layoutX="2.0" layoutY="2.0" prefHeight="368.0" prefWidth="1198.0" spacing="10.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
+                     <children>
+                        <HBox alignment="BOTTOM_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <Label fx:id="headerLbl" alignment="BOTTOM_LEFT" prefHeight="30.0" prefWidth="412.0" text="Appointments Snapshot for Contact: ">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="55.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                        </HBox>
+                        <TableView fx:id="apptTV" prefHeight="282.0" prefWidth="1186.0">
+                           <columns>
+                              <TableColumn fx:id="apptIDCol" prefWidth="50.0" text="ID" />
+                              <TableColumn fx:id="apptTitleCol" prefWidth="100.0" text="Title" />
+                              <TableColumn fx:id="apptDescriptionCol" prefWidth="161.0" text="Description" />
+                              <TableColumn fx:id="apptLocationCol" prefWidth="100.0" text="Location" />
+                              <TableColumn fx:id="apptTypeCol" prefWidth="100.0" text="Type" />
+                              <TableColumn fx:id="apptStartCol" prefWidth="100.0" text="Start" />
+                              <TableColumn fx:id="apptEndCol" prefWidth="100.0" text="End" />
+                              <TableColumn fx:id="apptCustIDCol" prefWidth="100.0" text="Customer ID" />
+                              <TableColumn fx:id="apptUserIdCol" prefWidth="100.0" text="User ID" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <HBox prefHeight="41.0" prefWidth="1186.0">
+                           <children>
+                              <Label text="Tip: This is just a snapshot of the upcoming schedule for this contact. To modify appointments or filter, try using the Appointments Page!">
+                                 <font>
+                                    <Font name="System Italic" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+               <children>
+                  <Button fx:id="reportsBtn" mnemonicParsing="false" onAction="#OnReportsClick" prefWidth="200.0" text="Return to Reports" />
+                  <Button fx:id="dashboardBtn" layoutX="1010.0" layoutY="20.0" mnemonicParsing="false" onAction="#OnDashboardClick" prefWidth="200.0" text="Return to Dashboard" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding></VBox>
+   </children>
+   <padding>
+      <Insets left="10.0" right="10.0" />
+   </padding>
+</AnchorPane>
