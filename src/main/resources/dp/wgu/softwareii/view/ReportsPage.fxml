@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="380.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dp.wgu.softwareii.controller.ReportsPageController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dp.wgu.softwareii.controller.ReportsPageController">
    <children>
       <VBox layoutX="33.0" layoutY="24.0">
          <children>
@@ -34,8 +34,8 @@
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="396.0" minWidth="10.0" prefWidth="288.0" />
               </columnConstraints>
               <rowConstraints>
-                  <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="35.0" minHeight="0.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="105.0" minHeight="10.0" prefHeight="91.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="35.0" minHeight="0.0" prefHeight="14.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="30.0" minHeight="0.0" prefHeight="0.0" vgrow="ALWAYS" />
                   <RowConstraints maxHeight="80.0" minHeight="30.0" prefHeight="30.0" vgrow="ALWAYS" />
               </rowConstraints>
@@ -49,12 +49,13 @@
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="229.0" minWidth="10.0" prefWidth="198.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="97.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="97.0" minHeight="4.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="97.0" minHeight="10.0" prefHeight="11.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ComboBox fx:id="monthCB" onAction="#OnFilterMonth" prefWidth="150.0" promptText="All" GridPane.columnIndex="1" />
-                        <ComboBox fx:id="typeCB" onAction="#OnFilterType" prefWidth="150.0" promptText="All" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="monthCB" prefWidth="150.0" promptText="All" GridPane.columnIndex="1" />
+                        <ComboBox fx:id="typeCB" prefWidth="150.0" promptText="All" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="By Month" />
                         <Label text="By Type" GridPane.rowIndex="1" />
                      </children>
@@ -67,7 +68,7 @@
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="2" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
                      <children>
                         <ComboBox fx:id="contactCB" prefWidth="200.0" promptText="Select Contact" />
-                        <Button fx:id="createScheduleBtn" mnemonicParsing="false" onAction="#OnCreateClick" prefWidth="70.0" text="Create" />
+                        <Button fx:id="createScheduleBtn" mnemonicParsing="false" onAction="#OnCreateClick" prefWidth="98.0" text="Create" />
                      </children>
                      <GridPane.margin>
                         <Insets />
@@ -81,6 +82,7 @@
                </children>
             </HBox>
          </children></VBox>
+      <Button fx:id="filterBtn" layoutX="548.0" layoutY="112.0" mnemonicParsing="false" onAction="#OnFilterClick" prefWidth="70.0" text="Filter" />
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

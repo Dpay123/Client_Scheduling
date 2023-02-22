@@ -29,6 +29,9 @@ public class ReportsPageController extends BaseController{
     /**The list of contacts to select*/
     private static ObservableList<Contact> contacts;
 
+    /**The list of types to select*/
+    private static ObservableList<String> typeList;
+
     /**The comboBox for filtering appts by month*/
     @FXML
     private ComboBox monthCB;
@@ -65,13 +68,22 @@ public class ReportsPageController extends BaseController{
                 "September", "October", "November", "December"
         );
         monthCB.setItems(months);
-        typeCB.getItems().setAll(Arrays.asList(Type.values()));
+        monthCB.getSelectionModel().selectFirst();
+
+        // Set type cb as list of strings of enum Type and also "All"
+        typeList = FXCollections.observableArrayList(Arrays.asList("All"));
+        for (Type t : Type.values()) typeList.add(t.toString());
+        typeCB.setItems(typeList);
+        typeCB.getSelectionModel().selectFirst();
+
         // busiest month metric - if tie, report the first busiest month
         int monthNum = getBusiestMonth(appts);
         monthLbl.setText(months.get(monthNum));
+
         // populate contact cb for generating schedule
         contacts = DBContacts.getAll();
         contactCB.setItems(contacts);
+
         // busiest contact metric - if tie, report the first busiest contact
         int contactID = getBusiestContact(appts);
         for (Contact c : contacts) {
@@ -128,30 +140,38 @@ public class ReportsPageController extends BaseController{
     }
 
     /**
-     * Filter the appts list by month.
+     * Filter the appts list.
      * @param actionEvent
      */
     @FXML
-    public void OnFilterMonth(ActionEvent actionEvent) {
-        int num = monthCB.getSelectionModel().getSelectedIndex();
-        // if "all", remove filter
-        if (num == 0) appts.setPredicate(null);
-        else {
-            // filter by month number
-            Predicate<Appointment> monthNum = i -> {
-                return i.getStartDateTime().getMonthValue() == num;
-            };
-            appts.setPredicate(monthNum);
-        }
-        apptNumLbl.setText(String.valueOf(appts.size()));
-    }
+    public void OnFilterClick(ActionEvent actionEvent) {
+        int monthNum = monthCB.getSelectionModel().getSelectedIndex();
+        String typeFilter = (String)typeCB.getSelectionModel().getSelectedItem();
 
-    /**
-     * Filter the appts list by type.
-     * @param actionEvent
-     */
-    @FXML
-    public void OnFilterType(ActionEvent actionEvent) {
+        // filter for month selection
+        Predicate<Appointment> month = i -> {
+            return i.getStartDateTime().getMonthValue() == monthNum;
+        };
+        // filter for type selection
+        Predicate<Appointment> type = i -> {
+            return i.getType().equals(typeFilter);
+        };
+
+        if (monthNum == 0 && typeFilter.equals("All")) appts.setPredicate(null);
+        // if only month filtered
+        else if (typeFilter.equals("All")) {
+            appts.setPredicate(month);
+        }
+        // if only type filtered
+        else if (monthNum == 0) {
+            appts.setPredicate(type);
+        }
+        // filter by both
+        else {
+            appts.setPredicate(type.and(month));
+        }
+        // count the filtered data
+        apptNumLbl.setText(String.valueOf(appts.size()));
     }
 
     /**
