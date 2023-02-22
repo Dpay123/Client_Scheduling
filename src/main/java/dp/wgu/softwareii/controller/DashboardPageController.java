@@ -1,6 +1,9 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.dbAccess.DBAppointments;
+import dp.wgu.softwareii.model.Appointment;
 import dp.wgu.softwareii.model.User;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -8,10 +11,12 @@ import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 /**
  * The controller for the Dashboard Page.
@@ -20,6 +25,9 @@ public class DashboardPageController extends BaseController{
 
     /**The user logged in.*/
     public static User user;
+
+    /**Keep track if login or simple navigation to dash*/
+    public static boolean uponLogin;
 
     /**Store the zoneID of the user*/
     static ZoneId zoneID;
@@ -32,28 +40,9 @@ public class DashboardPageController extends BaseController{
     @FXML
     private Label dashGreeting;
 
-    /**Button for log out*/
+    /**Label for notifiying of upcoming appointments*/
     @FXML
-    private Button logoutBtn;
-
-    /**Button for exit*/
-    @FXML
-    private Button exitBtn;
-
-    /**Button for navigating to Appointments page*/
-    @FXML
-    private Button appointmentsBtn;
-
-    /**Button for navigating to Customer page*/
-    @FXML
-    private Button customersBtn;
-
-    /**Button for navigating to Reports page*/
-    @FXML
-    private Button reportsBtn;
-
-    @FXML
-    private Button reportsBtn1;
+    private Label headsUpLabel;
 
     /**
      * Perform actions upon page initialization.
@@ -62,7 +51,34 @@ public class DashboardPageController extends BaseController{
     public void initialize(URL url, ResourceBundle resourceBundle) {
         dashGreeting.setText("Logged in as " + user);
         dashTime.setText("TimeZone: " + zoneID.getDisplayName(TextStyle.FULL, Locale.ENGLISH));
-        // TODO: alert for urgent appts
+
+        FilteredList<Appointment> appts = DBAppointments.getAll();
+        Predicate<Appointment> within15Mins = i -> {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime apptTime = i.getStartDateTime();
+            return (apptTime.isEqual(now) || apptTime.isAfter(now)) && apptTime.isBefore(now.plusMinutes(15));
+        };
+        appts.setPredicate(within15Mins);
+        if (!appts.isEmpty()) {
+            headsUpLabel.setText("Appointments soon!");
+            // show pop up only upon login
+            if (uponLogin) {
+                uponLogin = false;
+                String headsUp = "";
+                for (Appointment a : appts) {
+                    headsUp += "Appt ID: " + a.getId() + " --- Starts: " + a.getStart() + '\n';
+                }
+                Alert warning = new Alert(Alert.AlertType.INFORMATION);
+                warning.setTitle("Appointments soon!");
+                warning.setHeaderText("Upcoming within the next 15 minutes:");
+                warning.setContentText(headsUp);
+                warning.showAndWait();
+            }
+
+        }
+        else {
+            headsUpLabel.setText("No upcoming appointments");
+        }
     }
 
     /**

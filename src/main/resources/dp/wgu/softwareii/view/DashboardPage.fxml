@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dp.wgu.softwareii.controller.DashboardPageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="275.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dp.wgu.softwareii.controller.DashboardPageController">
    <children>
       <VBox alignment="TOP_CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -29,6 +29,15 @@
                      <font>
                         <Font name="System Italic" size="16.0" />
                      </font></Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="20.0" layoutY="100.0">
+               <children>
+                  <Label fx:id="headsUpLabel" alignment="BOTTOM_CENTER" textFill="#bc0000">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
                </children>
             </HBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">

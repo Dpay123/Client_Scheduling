@@ -68,6 +68,7 @@ public class LoginPageController extends BaseController{
             // pass user to dashboard
             DashboardPageController.user = validUser;
             DashboardPageController.zoneID = zoneID;
+            DashboardPageController.uponLogin = true;
             // navigate to the Dashboard
             this.goToMainMenu(actionEvent);
         }
