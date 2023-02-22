@@ -133,6 +133,10 @@ public class DashboardPageController extends BaseController{
      * @param actionEvent
      */
     @FXML
-    public void OnReportsBtnClick(ActionEvent actionEvent) {
+    public void OnReportsBtnClick(ActionEvent actionEvent) throws IOException {
+        Parent newScene = this.loadScene("ReportsPage");
+        Stage stage = this.getStageWithSetScene(actionEvent, newScene);
+        stage.setTitle("Reports/Metrics");
+        stage.show();
     }
 }
