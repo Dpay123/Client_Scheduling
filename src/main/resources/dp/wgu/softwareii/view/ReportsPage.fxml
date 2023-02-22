@@ -5,11 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="380.0"
-            prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/11.0.14-internal"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="dp.wgu.softwareii.controller.ReportsPageController">
+<AnchorPane prefHeight="380.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dp.wgu.softwareii.controller.ReportsPageController">
    <children>
       <VBox layoutX="33.0" layoutY="24.0">
          <children>
@@ -57,8 +53,8 @@
                       <RowConstraints maxHeight="97.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ComboBox fx:id="monthCB" prefWidth="150.0" promptText="All" GridPane.columnIndex="1" />
-                        <ComboBox fx:id="typeCB" prefWidth="150.0" promptText="All" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="monthCB" onAction="#OnFilterMonth" prefWidth="150.0" promptText="All" GridPane.columnIndex="1" />
+                        <ComboBox fx:id="typeCB" onAction="#OnFilterType" prefWidth="150.0" promptText="All" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="By Month" />
                         <Label text="By Type" GridPane.rowIndex="1" />
                      </children>
