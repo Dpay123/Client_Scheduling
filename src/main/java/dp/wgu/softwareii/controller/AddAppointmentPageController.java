@@ -3,10 +3,7 @@ package dp.wgu.softwareii.controller;
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.dbAccess.DBContacts;
 import dp.wgu.softwareii.dbAccess.DBCustomers;
-import dp.wgu.softwareii.model.Contact;
-import dp.wgu.softwareii.model.Customer;
-import dp.wgu.softwareii.model.Type;
-import dp.wgu.softwareii.model.User;
+import dp.wgu.softwareii.model.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
@@ -21,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 /**
  * The controller for the Add Appt Page.
@@ -98,14 +96,33 @@ public class AddAppointmentPageController extends BaseController{
         String description = descriptionField.getText();
         String location = locationField.getText();
         Type type = (Type)typeCB.getSelectionModel().getSelectedItem();
-        // TODO: date
         LocalDate date = datePick.getValue();
-        // TODO: time
         LocalTime startTime = LocalTime.parse(startTF.getText());
         LocalTime endTime = LocalTime.parse(endTF.getText());
+        LocalDateTime startDT =  LocalDateTime.of(date, startTime);
+        LocalDateTime endDT = LocalDateTime.of(date, endTime);
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
         User user = DashboardPageController.user;
         Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();
+
+        // check for appt overlap for that customer
+        var overlappingAppts = DBAppointments.getAll();
+        Predicate<Appointment> overlaps = i -> {
+            return i.getCustomerId() == customer.getId()
+                    && i.getStartDateTime().isBefore(endDT)
+                    && startDT.isBefore(i.getEndDateTime());
+        };
+        overlappingAppts.setPredicate(overlaps);
+
+        if (!overlappingAppts.isEmpty()) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Appointment overlap");
+            String overlap = "The selected times overlaps an existing appointment for this day/customer:\n"
+                    + overlappingAppts.get(0);
+            error.setContentText(overlap);
+            error.showAndWait();
+            return;
+        }
 
         // attempt to save the appointment
         boolean saved = DBAppointments.addAppointment(
@@ -113,8 +130,8 @@ public class AddAppointmentPageController extends BaseController{
                 description,
                 location,
                 type.toString(),
-                LocalDateTime.of(date, startTime),
-                LocalDateTime.of(date, endTime),
+                startDT,
+                endDT,
                 customer.getId(),
                 user.getId(),
                 contact.getId());

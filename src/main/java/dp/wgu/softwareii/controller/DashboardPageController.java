@@ -63,7 +63,6 @@ public class DashboardPageController extends BaseController{
             headsUpLabel.setText("Appointments soon!");
             // show pop up only upon login
             if (uponLogin) {
-                uponLogin = false;
                 String headsUp = "";
                 for (Appointment a : appts) {
                     headsUp += "Appt ID: " + a.getId() + " --- Starts: " + a.getStart() + '\n';
@@ -79,6 +78,7 @@ public class DashboardPageController extends BaseController{
         else {
             headsUpLabel.setText("No upcoming appointments");
         }
+        uponLogin = false;
     }
 
     /**

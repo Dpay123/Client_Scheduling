@@ -149,6 +149,9 @@ public class Appointment {
 
     @Override
     public String toString() {
-        return title + " | " + type + " | " + start;
+        return "ID: " + id
+                + "|" + type
+                + "|" + startDateTime.toLocalTime()
+                + "-" + endDateTime.toLocalTime();
     }
 }
