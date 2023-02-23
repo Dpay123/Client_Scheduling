@@ -146,7 +146,8 @@ public class UpdateAppointmentPageController extends BaseController {
         Predicate<Appointment> overlaps = i -> {
             return i.getCustomerId() == customer.getId()
                     && i.getStartDateTime().isBefore(endDT)
-                    && startDT.isBefore(i.getEndDateTime());
+                    && startDT.isBefore(i.getEndDateTime())
+                    && id != i.getId();
         };
         overlappingAppts.setPredicate(overlaps);
 
