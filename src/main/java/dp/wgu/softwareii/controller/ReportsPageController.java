@@ -182,7 +182,10 @@ public class ReportsPageController extends BaseController{
      */
     @FXML
     public void OnCreateClick(ActionEvent actionEvent) throws IOException {
-        // TODO: retrieve the selected contact id and send to page
+        // retrieve the selected contact and send to page
+        Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();
+        ContactSchedulePageController.contact = contact;
+        // navigate to the contact schedule page
         Parent newScene = this.loadScene("ContactSchedulePage");
         Stage stage = this.getStageWithSetScene(actionEvent, newScene);
         stage.setTitle("Contact Schedule Snapshot");

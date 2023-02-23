@@ -150,8 +150,8 @@ public class Appointment {
     @Override
     public String toString() {
         return "ID: " + id
-                + "|" + type
-                + "|" + startDateTime.toLocalTime()
+                + " | " + type
+                + " | " + startDateTime.toLocalTime()
                 + "-" + endDateTime.toLocalTime();
     }
 }

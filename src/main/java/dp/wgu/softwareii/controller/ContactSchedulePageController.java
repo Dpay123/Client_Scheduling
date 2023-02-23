@@ -1,18 +1,30 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.model.Appointment;
+import dp.wgu.softwareii.model.Contact;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ResourceBundle;
 
 public class ContactSchedulePageController extends BaseController{
+
+    /**The contact to populate the schedule with*/
+    public static Contact contact;
+
+    /**The list of appointments to populate*/
+    private static ObservableList<Appointment> appts;
 
     /**Header label to indicate who the snapshot is for*/
     @FXML
@@ -57,6 +69,28 @@ public class ContactSchedulePageController extends BaseController{
     /**Customer TableView column*/
     @FXML
     private TableColumn apptUserIdCol;
+
+    /**
+     * Populates the appt data.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        // set the header
+        headerLbl.setText("Appointment Snapshot for " + contact.getName());
+        // set the data source for the appts table
+        appts = DBAppointments.getContactAppointments(contact.getId());
+        apptTV.setItems(appts);
+        apptIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        apptLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        apptCustIDCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        apptStartCol.setCellValueFactory(new PropertyValueFactory<>("start"));
+        apptEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+    }
 
     /**
      * Return to the Reports page.
