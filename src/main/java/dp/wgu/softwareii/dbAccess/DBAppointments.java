@@ -1,5 +1,7 @@
 package dp.wgu.softwareii.dbAccess;
 
+import dp.wgu.softwareii.Utilities.TimeHandler;
+import dp.wgu.softwareii.controller.DashboardPageController;
 import dp.wgu.softwareii.database.JDBC;
 import dp.wgu.softwareii.model.Appointment;
 import dp.wgu.softwareii.model.Country;
@@ -135,10 +137,14 @@ public class DBAppointments {
                 + "Type, "
                 + "Start, "
                 + "End, "
+                + "Create_Date, "
+                + "Created_By, "
+                + "Last_Update, "
+                + "Last_Updated_By, "
                 + "Customer_ID, "
                 + "User_ID, "
                 + "Contact_ID) VALUES ("
-                + "?, ?, ?, ?, ?, ?, ?, ? ,?)";
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)";
 
         try {
 
@@ -150,47 +156,25 @@ public class DBAppointments {
             ps.setString(4, type);
             Timestamp t1 = Timestamp.valueOf(start.toLocalDateTime());
             Timestamp t2 = Timestamp.valueOf(end.toLocalDateTime());
+            Timestamp t3 = Timestamp.valueOf(TimeHandler.getZonedDateTimeUTC(LocalDateTime.now()).toLocalDateTime());
             ps.setTimestamp(5, t1);
             ps.setTimestamp(6, t2);
-            ps.setInt(7, custId);
-            ps.setInt(8, userId);
-            ps.setInt(9, contactId);
+            ps.setTimestamp(7, t3);
+            ps.setString(8, DashboardPageController.user.getName());
+            ps.setTimestamp(9, t3);
+            ps.setString(10, DashboardPageController.user.getName());
+            ps.setInt(11, custId);
+            ps.setInt(12, userId);
+            ps.setInt(13, contactId);
             // execute
             ps.executeUpdate();
             System.out.println("Added successfully");
-
-            // DEBUG
-            System.out.println("DBController Add appt......");
-            System.out.println("Passed in start: " + start + "   passed in end: " + end);
-            System.out.println("Timestamp 1: " + t1);
-            System.out.println("Timestamp 2: " + t2);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
-
-    /**
-     * Delete an appt record in the db based upon id.
-     * @param id
-     * @return true if succesful else false
-     */
-    public static boolean delAppointment(int id) {
-
-        String sql = "DELETE FROM appointments WHERE Appointment_ID = " + id;
-
-        try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.executeUpdate();
-            System.out.println("Removed succesfully");
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
 
     /**
      * Update an appt in the db, return true if successful, else false.
@@ -226,6 +210,8 @@ public class DBAppointments {
                 + "Type = ?, "
                 + "Start = ?, "
                 + "End = ?, "
+                + "Last_Update = ?, "
+                + "Last_Updated_By = ?, "
                 + "Customer_ID = ?, "
                 + "User_ID = ?, "
                 + "Contact_ID = ? WHERE Appointment_ID = " + id;
@@ -241,18 +227,36 @@ public class DBAppointments {
             Timestamp t2 = Timestamp.valueOf(endZDT_utc.toLocalDateTime());
             ps.setTimestamp(5, t1);
             ps.setTimestamp(6, t2);
-            ps.setInt(7, custID);
-            ps.setInt(8, userID);
-            ps.setInt(9, contactID);
+            Timestamp t3 = Timestamp.valueOf(TimeHandler.getZonedDateTimeUTC(LocalDateTime.now()).toLocalDateTime());
+            ps.setTimestamp(7, t3);
+            ps.setString(8, DashboardPageController.user.getName());
+            ps.setInt(9, custID);
+            ps.setInt(10, userID);
+            ps.setInt(11, contactID);
             // execute
             ps.executeUpdate();
             System.out.println("Updated successfully");
 
-            // DEBUG
-            System.out.println("DBController Update appt......");
-            System.out.println("Passed in start: " + startZDT_utc + "   passed in end: " + endZDT_utc);
-            System.out.println("Timestamp 1: " + t1);
-            System.out.println("Timestamp 2: " + t2);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Delete an appt record in the db based upon id.
+     * @param id
+     * @return true if succesful else false
+     */
+    public static boolean delAppointment(int id) {
+
+        String sql = "DELETE FROM appointments WHERE Appointment_ID = " + id;
+
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.executeUpdate();
+            System.out.println("Removed succesfully");
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

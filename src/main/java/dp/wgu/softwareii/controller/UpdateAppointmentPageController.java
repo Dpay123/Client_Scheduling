@@ -117,9 +117,6 @@ public class UpdateAppointmentPageController extends BaseController {
         ZonedDateTime startZDT_local = TimeHandler.utcToLocalOffset(appt.getStartZDT_utc());
         ZonedDateTime endZDT_local = TimeHandler.utcToLocalOffset(appt.getEndZDT_utc());
 
-        System.out.println("utc start: " + appt.getStartZDT_utc() + "  utc end: " + appt.getEndZDT_utc());
-        System.out.println("local start: " + startZDT_local + "   local end: " + endZDT_local);
-
         // set datePicker value to the local date of the user
         datePick.setValue(startZDT_local.toLocalDate());
 
