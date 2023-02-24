@@ -13,9 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -96,21 +94,36 @@ public class AddAppointmentPageController extends BaseController{
         String description = descriptionField.getText();
         String location = locationField.getText();
         Type type = (Type)typeCB.getSelectionModel().getSelectedItem();
-        LocalDate date = datePick.getValue();
-        LocalTime startTime = LocalTime.parse(startTF.getText());
-        LocalTime endTime = LocalTime.parse(endTF.getText());
-        LocalDateTime startDT =  LocalDateTime.of(date, startTime);
-        LocalDateTime endDT = LocalDateTime.of(date, endTime);
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
         User user = DashboardPageController.user;
         Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();
+        // build LocalDateTimes from date and times input
+        LocalDate date = datePick.getValue();
+        LocalTime startTime = LocalTime.parse(startTF.getText());
+        LocalTime endTime = LocalTime.parse(endTF.getText());
+        LocalDateTime startLDT =  LocalDateTime.of(date, startTime);
+        LocalDateTime endLDT = LocalDateTime.of(date, endTime);
+        // build ZoneDateTimes from above using user zoneID
+        ZoneId userZoneID = ZoneId.systemDefault();
+        ZoneId utcZoneID = ZoneId.of("UTC");
+        ZonedDateTime startZDT = ZonedDateTime.of(startLDT, userZoneID);
+        ZonedDateTime endZDT = ZonedDateTime.of(endLDT, userZoneID);
+        // convert to UTC offset
+        ZonedDateTime startZDT_utc = ZonedDateTime.ofInstant(startZDT.toInstant(), utcZoneID);
+        ZonedDateTime endZDT_utc = ZonedDateTime.ofInstant(endZDT.toInstant(), utcZoneID);
+
+        // DEBUG
+        System.out.println("\nAddPage inputs.....");
+        System.out.println("Parsed Locals-- start: " + startLDT + "   Parsed end: " + endLDT + "  in zone: " + userZoneID);
+        System.out.println("Locals->Zoned-- start: " + startZDT + "   zoned end: " + endZDT + " in zone: " + userZoneID);
+        System.out.println("Zoned-> UTC  -- start: " + startZDT_utc + " utc end: " + endZDT_utc + " utc zone check: " + utcZoneID + '\n');
 
         // check for appt overlap for that customer
         var overlappingAppts = DBAppointments.getAll();
         Predicate<Appointment> overlaps = i -> {
             return i.getCustomerId() == customer.getId()
-                    && i.getStartDateTime().isBefore(endDT)
-                    && startDT.isBefore(i.getEndDateTime());
+                    && i.getStartDateTime().isBefore(endZDT_utc)
+                    && startZDT_utc.isBefore(i.getEndDateTime());
         };
         overlappingAppts.setPredicate(overlaps);
 
@@ -130,8 +143,8 @@ public class AddAppointmentPageController extends BaseController{
                 description,
                 location,
                 type.toString(),
-                startDT,
-                endDT,
+                startZDT_utc,
+                endZDT_utc,
                 customer.getId(),
                 user.getId(),
                 contact.getId());

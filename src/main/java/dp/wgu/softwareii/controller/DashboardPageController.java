@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -28,9 +29,6 @@ public class DashboardPageController extends BaseController{
 
     /**Keep track if login or simple navigation to dash*/
     public static boolean uponLogin;
-
-    /**Store the zoneID of the user*/
-    static ZoneId zoneID;
 
     /**Label for user local time display*/
     @FXML
@@ -50,13 +48,24 @@ public class DashboardPageController extends BaseController{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         dashGreeting.setText("Logged in as " + user);
-        dashTime.setText("TimeZone: " + zoneID.getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+        dashTime.setText("TimeZone: " + ZoneId.systemDefault().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+        ZoneId userZoneID = ZoneId.systemDefault();
 
         FilteredList<Appointment> appts = DBAppointments.getAll();
+
+        // retrieve the current time and check to see if any appts are within 15 minutes
         Predicate<Appointment> within15Mins = i -> {
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime apptTime = i.getStartDateTime();
-            return (apptTime.isEqual(now) || apptTime.isAfter(now)) && apptTime.isBefore(now.plusMinutes(15));
+            ZonedDateTime nowLocal = ZonedDateTime.of(LocalDateTime.now(), userZoneID);
+            // retrieve appt time (UTC)
+            ZonedDateTime apptUTC = i.getStartDateTime();
+            // convert to user timezone
+            ZonedDateTime apptLocal = ZonedDateTime.ofInstant(apptUTC.toInstant(), userZoneID);
+            // DEBUG
+            System.out.println("\nDash: Checking for 15 min appts...");
+            System.out.println("Local time in user zone: " + nowLocal + " verification: zone" + nowLocal.getZone());
+            System.out.println("appt time in UTC from db: " + apptUTC + " verification: zone" + apptUTC.getZone());
+            System.out.println("appt time in user zone: " + apptLocal + " verification: zone" + apptLocal.getZone() + '\n');
+            return (apptLocal.isEqual(nowLocal) || apptLocal.isAfter(nowLocal)) && apptLocal.isBefore(nowLocal.plusMinutes(15));
         };
         appts.setPredicate(within15Mins);
         if (!appts.isEmpty()) {

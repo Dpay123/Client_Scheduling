@@ -1,6 +1,7 @@
 package dp.wgu.softwareii.model;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -12,8 +13,8 @@ public class Appointment {
     private String description;
     private String location;
     private String type;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private ZonedDateTime startDateTime;
+    private ZonedDateTime endDateTime;
     private String start;
     private String end;
     private int customerId;
@@ -38,8 +39,8 @@ public class Appointment {
                        String description,
                        String location,
                        String type,
-                       LocalDateTime startDateTime,
-                       LocalDateTime endDateTime,
+                       ZonedDateTime startDateTime,
+                       ZonedDateTime endDateTime,
                        int customerId,
                        int userId,
                        int contactId) {
@@ -57,14 +58,6 @@ public class Appointment {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
         this.start = startDateTime.format(dtf);
         this.end = endDateTime.format(dtf);
-    }
-
-    public String getStart() {
-        return start;
-    }
-
-    public String getEnd() {
-        return end;
     }
 
     public int getId() {
@@ -107,20 +100,36 @@ public class Appointment {
         this.type = type;
     }
 
-    public LocalDateTime getStartDateTime() {
+    public ZonedDateTime getStartDateTime() {
         return startDateTime;
     }
 
-    public void setStartDateTime(LocalDateTime startDateTime) {
+    public void setStartDateTime(ZonedDateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
 
-    public LocalDateTime getEndDateTime() {
+    public ZonedDateTime getEndDateTime() {
         return endDateTime;
     }
 
-    public void setEndDateTime(LocalDateTime endDateTime) {
+    public void setEndDateTime(ZonedDateTime endDateTime) {
         this.endDateTime = endDateTime;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
     }
 
     public int getCustomerId() {

@@ -12,11 +12,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  * The class for handling access to the Appointments table in the db.
  */
 public class DBAppointments {
+
+    private static ZoneId utcZoneId = ZoneId.of("UTC");
 
     /**
      * Query the db for a list of all appointments and return the result set.
@@ -42,14 +46,14 @@ public class DBAppointments {
                 int custID = rs.getInt("Customer_ID");
                 int userID = rs.getInt("User_ID");
                 int contactID = rs.getInt("Contact_ID");
-                // retrieve datetime from db as TimeStamp
-                Timestamp start = rs.getTimestamp("Start");
-                Timestamp end = rs.getTimestamp("End");
-                // convert to localDateTime
-                LocalDateTime startDT = start.toLocalDateTime();
-                LocalDateTime endDT = end.toLocalDateTime();
+                // retrieve datetime from db as LocalDateTime
+                LocalDateTime start = rs.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime end = rs.getTimestamp("End").toLocalDateTime();
+                // convert to ZonedDateTime
+                ZonedDateTime startZDT = ZonedDateTime.of(start, utcZoneId);
+                ZonedDateTime endZDT = ZonedDateTime.of(end, utcZoneId);
                 // create appointment obj
-                Appointment a = new Appointment(id, title, description, location, type, startDT, endDT, custID, userID, contactID);
+                Appointment a = new Appointment(id, title, description, location, type, startZDT, endZDT, custID, userID, contactID);
                 aList.add(a);
             }
         }
@@ -85,14 +89,14 @@ public class DBAppointments {
                 int custID = rs.getInt("Customer_ID");
                 int userID = rs.getInt("User_ID");
                 int contactID = rs.getInt("Contact_ID");
-                // retrieve datetime from db as TimeStamp
-                Timestamp start = rs.getTimestamp("Start");
-                Timestamp end = rs.getTimestamp("End");
-                // convert to localDateTime
-                LocalDateTime startDT = start.toLocalDateTime();
-                LocalDateTime endDT = end.toLocalDateTime();
+                // retrieve datetime from db as LocalDateTime
+                LocalDateTime start = rs.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime end = rs.getTimestamp("End").toLocalDateTime();
+                // convert to ZonedDateTime
+                ZonedDateTime startZDT = ZonedDateTime.of(start, utcZoneId);
+                ZonedDateTime endZDT = ZonedDateTime.of(end, utcZoneId);
                 // create appointment obj
-                Appointment a = new Appointment(id, title, description, location, type, startDT, endDT, custID, userID, contactID);
+                Appointment a = new Appointment(id, title, description, location, type, startZDT, endZDT, custID, userID, contactID);
                 aList.add(a);
             }
         } catch (SQLException e) {
@@ -103,6 +107,7 @@ public class DBAppointments {
 
     /**
      * Add an appt to the db.
+     * The ZonedDateTime should be passed in as UTC - offset ZDT
      * @param title
      * @param description
      * @param location
@@ -118,8 +123,8 @@ public class DBAppointments {
                                          String description,
                                          String location,
                                          String type,
-                                         LocalDateTime start,
-                                         LocalDateTime end,
+                                         ZonedDateTime start,
+                                         ZonedDateTime end,
                                          int custId,
                                          int userId,
                                          int contactId) {
@@ -136,20 +141,29 @@ public class DBAppointments {
                 + "?, ?, ?, ?, ?, ?, ?, ? ,?)";
 
         try {
+
             // use a prepared statement
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setString(1, title);
             ps.setString(2, description);
             ps.setString(3, location);
             ps.setString(4, type);
-            ps.setTimestamp(5, Timestamp.valueOf(start));
-            ps.setTimestamp(6, Timestamp.valueOf(end));
+            Timestamp t1 = Timestamp.valueOf(start.toLocalDateTime());
+            Timestamp t2 = Timestamp.valueOf(end.toLocalDateTime());
+            ps.setTimestamp(5, t1);
+            ps.setTimestamp(6, t2);
             ps.setInt(7, custId);
             ps.setInt(8, userId);
             ps.setInt(9, contactId);
             // execute
             ps.executeUpdate();
             System.out.println("Added successfully");
+
+            // DEBUG
+            System.out.println("DBController Add appt......");
+            System.out.println("Passed in start: " + start + "   passed in end: " + end);
+            System.out.println("Timestamp 1: " + t1);
+            System.out.println("Timestamp 2: " + t2);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -198,8 +212,8 @@ public class DBAppointments {
             String description,
             String location,
             String type,
-            LocalDateTime start,
-            LocalDateTime end,
+            ZonedDateTime start,
+            ZonedDateTime end,
             int custID,
             int userID,
             int contactID)
@@ -222,8 +236,8 @@ public class DBAppointments {
             ps.setString(2, description);
             ps.setString(3, location);
             ps.setString(4, type);
-            ps.setTimestamp(5, Timestamp.valueOf(start));
-            ps.setTimestamp(6, Timestamp.valueOf(end));
+            ps.setTimestamp(5, Timestamp.from(start.toInstant()));
+            ps.setTimestamp(6, Timestamp.from(end.toInstant()));
             ps.setInt(7, custID);
             ps.setInt(8, userID);
             ps.setInt(9, contactID);

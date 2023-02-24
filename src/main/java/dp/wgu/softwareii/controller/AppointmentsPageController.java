@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -28,21 +29,9 @@ public class AppointmentsPageController extends BaseController {
     @FXML
     private TableView apptTV;
 
-    /**Toggle group for appt filtering*/
-    @FXML
-    private ToggleGroup apptFilter;
-
     /**Button for filtering appts by all*/
     @FXML
     private RadioButton apptFilterAll;
-
-    /**Button for filtering appts by week*/
-    @FXML
-    private RadioButton apptFilterWeek;
-
-    /**Button for filtering appts by month*/
-    @FXML
-    private RadioButton apptFilterMonthRb;
 
     /**Customer TableView column*/
     @FXML
@@ -70,7 +59,7 @@ public class AppointmentsPageController extends BaseController {
 
     /**Customer TableView column*/
     @FXML
-    private TableColumn<Appointment, LocalDateTime> apptStartCol;
+    private TableColumn<Appointment, ZonedDateTime> apptStartCol;
 
     /**Customer TableView column*/
     @FXML

@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.TextStyle;
@@ -40,8 +41,9 @@ public class LoginPageController extends BaseController{
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // TODO: show time info
-        zoneID = ZonedDateTime.now().getZone();
+        // get the zoneId of the user based upon their system default
+        zoneID = ZoneId.systemDefault();
+        // display the timezone
         zoneLabel.setText(zoneID.getDisplayName(TextStyle.FULL, Locale.ENGLISH));
     }
 
@@ -67,7 +69,6 @@ public class LoginPageController extends BaseController{
         else {
             // pass user to dashboard
             DashboardPageController.user = validUser;
-            DashboardPageController.zoneID = zoneID;
             DashboardPageController.uponLogin = true;
             // navigate to the Dashboard
             this.goToMainMenu(actionEvent);

@@ -13,9 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -132,21 +130,28 @@ public class UpdateAppointmentPageController extends BaseController {
         String description = descriptionField.getText();
         String location = locationField.getText();
         Type type = (Type)typeCB.getSelectionModel().getSelectedItem();
-        LocalDate date = datePick.getValue();
-        LocalTime startTime = LocalTime.parse(startTF.getText());
-        LocalTime endTime = LocalTime.parse(endTF.getText());
-        LocalDateTime startDT =  LocalDateTime.of(date, startTime);
-        LocalDateTime endDT = LocalDateTime.of(date, endTime);
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
         User user = DashboardPageController.user;
         Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();
+        // build LocalDateTimes from date and times input
+        LocalDate date = datePick.getValue();
+        LocalTime startTime = LocalTime.parse(startTF.getText());
+        LocalTime endTime = LocalTime.parse(endTF.getText());
+        LocalDateTime startLDT =  LocalDateTime.of(date, startTime);
+        LocalDateTime endLDT = LocalDateTime.of(date, endTime);
+        // build ZoneDateTimes from above using user zoneID
+        ZonedDateTime startZDT = ZonedDateTime.of(startLDT, ZoneId.systemDefault());
+        ZonedDateTime endZDT = ZonedDateTime.of(endLDT, ZoneId.systemDefault());
+        // convert to UTC offset
+        ZonedDateTime startZDT_utc = ZonedDateTime.ofInstant(startZDT.toInstant(), ZoneId.of("UTC"));
+        ZonedDateTime endZDT_utc = ZonedDateTime.ofInstant(endZDT.toInstant(), ZoneId.of("UTC"));
 
         // check for appt overlap for that customer
         var overlappingAppts = DBAppointments.getAll();
         Predicate<Appointment> overlaps = i -> {
             return i.getCustomerId() == customer.getId()
-                    && i.getStartDateTime().isBefore(endDT)
-                    && startDT.isBefore(i.getEndDateTime())
+                    && i.getStartDateTime().isBefore(endZDT_utc)
+                    && startZDT_utc.isBefore(i.getEndDateTime())
                     && id != i.getId();
         };
         overlappingAppts.setPredicate(overlaps);
@@ -168,8 +173,8 @@ public class UpdateAppointmentPageController extends BaseController {
                 description,
                 location,
                 type.toString(),
-                startDT,
-                endDT,
+                startZDT_utc,
+                endZDT_utc,
                 customer.getId(),
                 user.getId(),
                 contact.getId());
