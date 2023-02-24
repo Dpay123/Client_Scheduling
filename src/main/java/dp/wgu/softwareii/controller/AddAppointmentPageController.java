@@ -1,5 +1,6 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.Utilities.TimeHandler;
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.dbAccess.DBContacts;
 import dp.wgu.softwareii.dbAccess.DBCustomers;
@@ -101,22 +102,23 @@ public class AddAppointmentPageController extends BaseController{
         LocalDate date = datePick.getValue();
         LocalTime startTime = LocalTime.parse(startTF.getText());
         LocalTime endTime = LocalTime.parse(endTF.getText());
+        ZonedDateTime startZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(date, startTime));
+        ZonedDateTime endZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(date, endTime));
         LocalDateTime startLDT =  LocalDateTime.of(date, startTime);
         LocalDateTime endLDT = LocalDateTime.of(date, endTime);
         // build ZoneDateTimes from above using user zoneID
-        ZoneId userZoneID = ZoneId.systemDefault();
-        ZoneId utcZoneID = ZoneId.of("UTC");
-        ZonedDateTime startZDT = ZonedDateTime.of(startLDT, userZoneID);
-        ZonedDateTime endZDT = ZonedDateTime.of(endLDT, userZoneID);
+        //ZoneId userZoneID = ZoneId.systemDefault();
+        //ZoneId utcZoneID = ZoneId.of("UTC");
+        //ZonedDateTime startZDT = ZonedDateTime.of(startLDT, userZoneID);
+        //ZonedDateTime endZDT = ZonedDateTime.of(endLDT, userZoneID);
         // convert to UTC offset
-        ZonedDateTime startZDT_utc = ZonedDateTime.ofInstant(startZDT.toInstant(), utcZoneID);
-        ZonedDateTime endZDT_utc = ZonedDateTime.ofInstant(endZDT.toInstant(), utcZoneID);
+        //ZonedDateTime startZDT_utc = ZonedDateTime.ofInstant(startZDT.toInstant(), utcZoneID);
+        //ZonedDateTime endZDT_utc = ZonedDateTime.ofInstant(endZDT.toInstant(), utcZoneID);
 
         // DEBUG
         System.out.println("\nAddPage inputs.....");
-        System.out.println("Parsed Locals-- start: " + startLDT + "   Parsed end: " + endLDT + "  in zone: " + userZoneID);
-        System.out.println("Locals->Zoned-- start: " + startZDT + "   zoned end: " + endZDT + " in zone: " + userZoneID);
-        System.out.println("Zoned-> UTC  -- start: " + startZDT_utc + " utc end: " + endZDT_utc + " utc zone check: " + utcZoneID + '\n');
+        System.out.println("Parsed Locals-- start: " + startLDT + "   Parsed end: " + endLDT);
+        System.out.println("Zoned-> UTC  -- start: " + startZDT_utc + " utc end: " + endZDT_utc + '\n');
 
         // check for appt overlap for that customer
         var overlappingAppts = DBAppointments.getAll();
