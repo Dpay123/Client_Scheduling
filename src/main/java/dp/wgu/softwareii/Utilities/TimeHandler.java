@@ -5,9 +5,14 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Handles time conversions and formatting for GUI.
+ */
 public class TimeHandler {
 
-     public static DateTimeFormatter format = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
+     public static DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("HH:mm MM-dd-yyyy ");
+
+     public static DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
 
     /**
      * Takes a localDateTime and returns a ZonedDateTime obj with UTC offsett

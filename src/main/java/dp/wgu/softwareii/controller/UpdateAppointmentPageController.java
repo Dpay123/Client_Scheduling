@@ -171,8 +171,12 @@ public class UpdateAppointmentPageController extends BaseController {
         if (!overlappingAppts.isEmpty()) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Appointment overlap");
-            String overlap = "The selected times overlaps an existing appointment for this day/customer:\n"
-                    + overlappingAppts.get(0);
+            String overlap = "The selected times overlaps an existing appointment for this day/customer:";
+            for (Appointment a : overlappingAppts) {
+                overlap += "\nAppt ID: " + a.getId()
+                        + " from " + TimeHandler.utcToLocalOffset(a.getStartZDT_utc()).format(TimeHandler.timeFormat)
+                        + " to " + TimeHandler.utcToLocalOffset(a.getEndZDT_utc()).format(TimeHandler.timeFormat);
+            }
             error.setContentText(overlap);
             error.showAndWait();
             return;

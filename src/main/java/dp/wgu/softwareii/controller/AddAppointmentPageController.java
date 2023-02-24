@@ -106,10 +106,6 @@ public class AddAppointmentPageController extends BaseController{
         ZonedDateTime startZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(date, startTime));
         ZonedDateTime endZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(date, endTime));
 
-        // DEBUG
-        System.out.println("After parsing from the form and converting into UTC:");
-        System.out.println("Zoned-> UTC  -- start: " + startZDT_utc + " utc end: " + endZDT_utc + '\n');
-
         // check for appt overlap for that customer
         var overlappingAppts = DBAppointments.getAll();
         Predicate<Appointment> overlaps = i -> {
@@ -122,8 +118,12 @@ public class AddAppointmentPageController extends BaseController{
         if (!overlappingAppts.isEmpty()) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Appointment overlap");
-            String overlap = "The selected times overlaps an existing appointment for this day/customer:\n"
-                    + overlappingAppts.get(0);
+            String overlap = "The selected times overlaps an existing appointment for this day/customer:";
+            for (Appointment a : overlappingAppts) {
+                overlap += "\nAppt ID: " + a.getId()
+                        + " from " + TimeHandler.utcToLocalOffset(a.getStartZDT_utc()).format(TimeHandler.timeFormat)
+                        + " to " + TimeHandler.utcToLocalOffset(a.getEndZDT_utc()).format(TimeHandler.timeFormat);
+            }
             error.setContentText(overlap);
             error.showAndWait();
             return;
