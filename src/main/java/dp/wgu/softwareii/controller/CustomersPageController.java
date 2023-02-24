@@ -45,18 +45,6 @@ public class CustomersPageController extends BaseController {
     @FXML
     private Button custAddBtn;
 
-    /**Button for updating customer*/
-    @FXML
-    private Button custUpdateBtn;
-
-    /**Button for deleting customer*/
-    @FXML
-    private Button custDeleteBtn;
-
-    /**Button for navigating to Dashboard*/
-    @FXML
-    private Button dashboardBtn;
-
     /**
      * Populates the customer data.
      */
@@ -131,8 +119,6 @@ public class CustomersPageController extends BaseController {
             error.showAndWait();
             return;
         }
-
-        // TODO: customer cannot be deleted if it has associated appointments
 
         // pop up box to confirm deletion
         String message = "Are you sure you want to delete this customer? Any associated appointments will be deleted!!";

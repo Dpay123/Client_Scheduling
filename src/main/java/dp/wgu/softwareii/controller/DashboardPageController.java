@@ -1,5 +1,6 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.Utilities.TimeHandler;
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.model.Appointment;
 import dp.wgu.softwareii.model.User;
@@ -49,22 +50,14 @@ public class DashboardPageController extends BaseController{
     public void initialize(URL url, ResourceBundle resourceBundle) {
         dashGreeting.setText("Logged in as " + user);
         dashTime.setText("TimeZone: " + ZoneId.systemDefault().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
-        ZoneId userZoneID = ZoneId.systemDefault();
 
         FilteredList<Appointment> appts = DBAppointments.getAll();
 
         // retrieve the current time and check to see if any appts are within 15 minutes
         Predicate<Appointment> within15Mins = i -> {
-            ZonedDateTime nowLocal = ZonedDateTime.of(LocalDateTime.now(), userZoneID);
-            // retrieve appt time (UTC)
-            ZonedDateTime apptUTC = i.getStartZDT_utc();
-            // convert to user timezone
-            ZonedDateTime apptLocal = ZonedDateTime.ofInstant(apptUTC.toInstant(), userZoneID);
-            // DEBUG
-            System.out.println("\nDash: Checking for 15 min appts...");
-            System.out.println("Local time in user zone: " + nowLocal + " verification: zone" + nowLocal.getZone());
-            System.out.println("appt time in UTC from db: " + apptUTC + " verification: zone" + apptUTC.getZone());
-            System.out.println("appt time in user zone: " + apptLocal + " verification: zone" + apptLocal.getZone() + '\n');
+            ZonedDateTime nowLocal = ZonedDateTime.now();
+            // retrieve appt time (UTC) and convert to user timezone
+            ZonedDateTime apptLocal = TimeHandler.utcToLocalOffset(i.getStartZDT_utc());
             return (apptLocal.isEqual(nowLocal) || apptLocal.isAfter(nowLocal)) && apptLocal.isBefore(nowLocal.plusMinutes(15));
         };
         appts.setPredicate(within15Mins);
@@ -74,7 +67,8 @@ public class DashboardPageController extends BaseController{
             if (uponLogin) {
                 String headsUp = "";
                 for (Appointment a : appts) {
-                    headsUp += "Appt ID: " + a.getId() + " --- Starts: " + a.getStart() + '\n';
+                    headsUp += "Appt ID: " + a.getId()
+                            + " --- Starts: " + TimeHandler.utcToLocalOffset(a.getStartZDT_utc()).toLocalTime() + '\n';
                 }
                 Alert warning = new Alert(Alert.AlertType.INFORMATION);
                 warning.setTitle("Appointments soon!");

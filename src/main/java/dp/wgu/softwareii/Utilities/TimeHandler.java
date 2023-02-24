@@ -3,8 +3,11 @@ package dp.wgu.softwareii.Utilities;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class TimeHandler {
+
+     public static DateTimeFormatter format = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
 
     /**
      * Takes a localDateTime and returns a ZonedDateTime obj with UTC offsett

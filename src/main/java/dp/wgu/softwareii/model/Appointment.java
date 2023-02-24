@@ -19,8 +19,6 @@ public class Appointment {
     /**Standardized to UTC- offset*/
     private ZonedDateTime endZDT_utc;
 
-    private String start;
-    private String end;
     private int customerId;
     private int userId;
     private int contactId;
@@ -58,50 +56,26 @@ public class Appointment {
         this.customerId = customerId;
         this.userId = userId;
         this.contactId = contactId;
-
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
-        this.start = startZDT_utc.format(dtf);
-        this.end = endZDT_utc.format(dtf);
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public String getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     /**
@@ -112,60 +86,24 @@ public class Appointment {
         return startZDT_utc;
     }
 
-    public void setStartZDT_utc(ZonedDateTime startZDT_utc) {
-        this.startZDT_utc = startZDT_utc;
-    }
-
-    /**
-     * Returns a UTC-offset ZDT.
+    /**Returns a UTC-offset ZDT.
      * @return
      */
     public ZonedDateTime getEndZDT_utc() {
         return endZDT_utc;
     }
 
-    public void setEndZDT_utc(ZonedDateTime endZDT_utc) {
-        this.endZDT_utc = endZDT_utc;
-    }
-
-    public String getStart() {
-        return start;
-    }
-
-    public void setStart(String start) {
-        this.start = start;
-    }
-
-    public String getEnd() {
-        return end;
-    }
-
-    public void setEnd(String end) {
-        this.end = end;
-    }
-
     public int getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
 
     public int getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public int getContactId() {
         return contactId;
-    }
-
-    public void setContactId(int contactId) {
-        this.contactId = contactId;
     }
 
     @Override

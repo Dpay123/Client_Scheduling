@@ -94,7 +94,7 @@ public class AppointmentsPageController extends BaseController {
         // show the UTC times as local user offset time
         apptStartCol.setCellValueFactory(utc -> {
             ZonedDateTime local = TimeHandler.utcToLocalOffset(utc.getValue().getStartZDT_utc());
-            return new SimpleStringProperty(local.toString());
+            return new SimpleStringProperty(local.format(TimeHandler.format));
         });
         apptEndCol.setCellValueFactory(utc -> {
             ZonedDateTime local = TimeHandler.utcToLocalOffset(utc.getValue().getEndZDT_utc());
