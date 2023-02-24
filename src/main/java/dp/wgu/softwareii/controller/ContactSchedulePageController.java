@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ResourceBundle;
 
@@ -93,11 +92,11 @@ public class ContactSchedulePageController extends BaseController{
         apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
         // show the UTC times as local user offset time
         apptStartCol.setCellValueFactory(utc -> {
-            ZonedDateTime local = TimeHandler.getZonedDateTimeLocal(utc.getValue().getStartZDT_utc());
+            ZonedDateTime local = TimeHandler.utcToLocalOffset(utc.getValue().getStartZDT_utc());
             return new SimpleStringProperty(local.toString());
         });
         apptEndCol.setCellValueFactory(utc -> {
-            ZonedDateTime local = TimeHandler.getZonedDateTimeLocal(utc.getValue().getEndZDT_utc());
+            ZonedDateTime local = TimeHandler.utcToLocalOffset(utc.getValue().getEndZDT_utc());
             return new SimpleStringProperty(local.toString());
         });
     }

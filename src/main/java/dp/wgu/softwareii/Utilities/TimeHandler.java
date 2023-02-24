@@ -27,7 +27,7 @@ public class TimeHandler {
      * @param utc ZonedDateTime with UTC-offset
      * @return
      */
-    public static ZonedDateTime getZonedDateTimeLocal(ZonedDateTime utc) {
+    public static ZonedDateTime utcToLocalOffset(ZonedDateTime utc) {
         return ZonedDateTime.ofInstant(utc.toInstant(), ZoneId.systemDefault());
     }
 }

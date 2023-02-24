@@ -4,16 +4,13 @@ import dp.wgu.softwareii.Utilities.TimeHandler;
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.model.Appointment;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -77,10 +74,6 @@ public class AppointmentsPageController extends BaseController {
     @FXML
     private TableColumn apptUserIdCol;
 
-    /**Button for returning to dashboard*/
-    @FXML
-    private Button dashboardBtn;
-
     /**
      * Populates the appt data.
      */
@@ -100,11 +93,11 @@ public class AppointmentsPageController extends BaseController {
 
         // show the UTC times as local user offset time
         apptStartCol.setCellValueFactory(utc -> {
-            ZonedDateTime local = TimeHandler.getZonedDateTimeLocal(utc.getValue().getStartZDT_utc());
+            ZonedDateTime local = TimeHandler.utcToLocalOffset(utc.getValue().getStartZDT_utc());
             return new SimpleStringProperty(local.toString());
         });
         apptEndCol.setCellValueFactory(utc -> {
-            ZonedDateTime local = TimeHandler.getZonedDateTimeLocal(utc.getValue().getEndZDT_utc());
+            ZonedDateTime local = TimeHandler.utcToLocalOffset(utc.getValue().getEndZDT_utc());
             return new SimpleStringProperty(local.toString());
         });
 
@@ -132,7 +125,7 @@ public class AppointmentsPageController extends BaseController {
         // want to filter by any appt with a date that falls within 7 days of todays date
         Predicate<Appointment> withinWeek = i -> {
             int today = LocalDate.now().getDayOfYear();
-            int apptDay = i.getStartZDT_utc().toLocalDate().getDayOfYear();
+            int apptDay = TimeHandler.utcToLocalOffset(i.getStartZDT_utc()).getDayOfYear();
             return apptDay >= today && apptDay <= today+6;
         };
         appts.setPredicate(withinWeek);
@@ -147,7 +140,7 @@ public class AppointmentsPageController extends BaseController {
         // want to filter by any appt with a date that falls within 7 days of todays date
         Predicate<Appointment> withinMonth = i -> {
             int thisMonth = LocalDate.now().getMonthValue();
-            int apptMonth = i.getStartZDT_utc().toLocalDate().getMonthValue();
+            int apptMonth = TimeHandler.utcToLocalOffset(i.getStartZDT_utc()).getMonthValue();
             return thisMonth == apptMonth;
         };
         appts.setPredicate(withinMonth);

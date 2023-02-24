@@ -113,8 +113,8 @@ public class UpdateAppointmentPageController extends BaseController {
             if (t.toString().equals(appt.getType())) typeCB.setValue(type);
         }
         // convert UTC-offset ZDT to the users local time zone
-        ZonedDateTime startZDT_local = TimeHandler.getZonedDateTimeLocal(appt.getStartZDT_utc());
-        ZonedDateTime endZDT_local = TimeHandler.getZonedDateTimeLocal(appt.getEndZDT_utc());
+        ZonedDateTime startZDT_local = TimeHandler.utcToLocalOffset(appt.getStartZDT_utc());
+        ZonedDateTime endZDT_local = TimeHandler.utcToLocalOffset(appt.getEndZDT_utc());
 
         System.out.println("utc start: " + appt.getStartZDT_utc() + "  utc end: " + appt.getEndZDT_utc());
         System.out.println("local start: " + startZDT_local + "   local end: " + endZDT_local);

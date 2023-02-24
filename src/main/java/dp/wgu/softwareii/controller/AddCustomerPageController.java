@@ -51,14 +51,6 @@ public class AddCustomerPageController extends BaseController {
     @FXML
     private ComboBox stateComboBox;
 
-    /**Button to add customer*/
-    @FXML
-    private Button AddButton;
-
-    /**Button to cancel adding the customer*/
-    @FXML
-    private Button CancelBtn;
-
     /**Initializes the combo box data set*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
