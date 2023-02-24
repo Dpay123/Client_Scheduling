@@ -1,5 +1,6 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.Utilities.TimeHandler;
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.dbAccess.DBContacts;
 import dp.wgu.softwareii.dbAccess.DBCustomers;
@@ -28,6 +29,11 @@ public class UpdateAppointmentPageController extends BaseController {
      * The appointment obj that is to be updated.
      */
     public static Appointment appt;
+
+    /**
+     * The user who is adjusting the appointment.
+     */
+    public static User user = DashboardPageController.user;
 
     /**A list of Customers for the combo box*/
     ObservableList<Customer> customers;
@@ -106,13 +112,20 @@ public class UpdateAppointmentPageController extends BaseController {
             Type t = (Type)type;
             if (t.toString().equals(appt.getType())) typeCB.setValue(type);
         }
-        // get localDate from and set as datePicker value
-        LocalDate date = appt.getStartDateTime().toLocalDate();
-        datePick.setValue(date);
-        // get localTime from each and set as start/end time
+        // convert UTC-offset ZDT to the users local time zone
+        ZonedDateTime startZDT_local = TimeHandler.getZonedDateTimeLocal(appt.getStartZDT_utc());
+        ZonedDateTime endZDT_local = TimeHandler.getZonedDateTimeLocal(appt.getEndZDT_utc());
+
+        System.out.println("utc start: " + appt.getStartZDT_utc() + "  utc end: " + appt.getEndZDT_utc());
+        System.out.println("local start: " + startZDT_local + "   local end: " + endZDT_local);
+
+        // set datePicker value to the local date of the user
+        datePick.setValue(startZDT_local.toLocalDate());
+
+        // set start/end time, formatted, to the local time of the user
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime startTime = appt.getStartDateTime().toLocalTime();
-        LocalTime endTime = appt.getEndDateTime().toLocalTime();
+        LocalTime startTime = startZDT_local.toLocalTime();
+        LocalTime endTime = endZDT_local.toLocalTime();
         startTF.setText(startTime.format(dtf));
         endTF.setText(endTime.format(dtf));
     }
@@ -131,27 +144,26 @@ public class UpdateAppointmentPageController extends BaseController {
         String location = locationField.getText();
         Type type = (Type)typeCB.getSelectionModel().getSelectedItem();
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
-        User user = DashboardPageController.user;
         Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();
+
         // build LocalDateTimes from date and times input
         LocalDate date = datePick.getValue();
         LocalTime startTime = LocalTime.parse(startTF.getText());
         LocalTime endTime = LocalTime.parse(endTF.getText());
-        LocalDateTime startLDT =  LocalDateTime.of(date, startTime);
-        LocalDateTime endLDT = LocalDateTime.of(date, endTime);
-        // build ZoneDateTimes from above using user zoneID
-        ZonedDateTime startZDT = ZonedDateTime.of(startLDT, ZoneId.systemDefault());
-        ZonedDateTime endZDT = ZonedDateTime.of(endLDT, ZoneId.systemDefault());
-        // convert to UTC offset
-        ZonedDateTime startZDT_utc = ZonedDateTime.ofInstant(startZDT.toInstant(), ZoneId.of("UTC"));
-        ZonedDateTime endZDT_utc = ZonedDateTime.ofInstant(endZDT.toInstant(), ZoneId.of("UTC"));
+        ZonedDateTime startZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(date, startTime));
+        ZonedDateTime endZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(date, endTime));
+
+        // DEBUG
+        System.out.println("Attempting to apply updates......");
+        System.out.println("After parsing from the form and converting into UTC:");
+        System.out.println("Zoned-> UTC  -- start: " + startZDT_utc + " utc end: " + endZDT_utc + '\n');
 
         // check for appt overlap for that customer
         var overlappingAppts = DBAppointments.getAll();
         Predicate<Appointment> overlaps = i -> {
             return i.getCustomerId() == customer.getId()
-                    && i.getStartDateTime().isBefore(endZDT_utc)
-                    && startZDT_utc.isBefore(i.getEndDateTime())
+                    && i.getStartZDT_utc().isBefore(endZDT_utc)
+                    && startZDT_utc.isBefore(i.getEndZDT_utc())
                     && id != i.getId();
         };
         overlappingAppts.setPredicate(overlaps);

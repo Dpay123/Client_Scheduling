@@ -21,4 +21,13 @@ public class TimeHandler {
 
         return utc;
     }
+
+    /**
+     * Takes a ZonedDateTime of utc offset and returns a ZonedDateTime obj using system default zone
+     * @param utc ZonedDateTime with UTC-offset
+     * @return
+     */
+    public static ZonedDateTime getZonedDateTimeLocal(ZonedDateTime utc) {
+        return ZonedDateTime.ofInstant(utc.toInstant(), ZoneId.systemDefault());
+    }
 }

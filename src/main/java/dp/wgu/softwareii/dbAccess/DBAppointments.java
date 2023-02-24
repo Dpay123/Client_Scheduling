@@ -107,7 +107,7 @@ public class DBAppointments {
 
     /**
      * Add an appt to the db.
-     * The ZonedDateTime should be passed in as UTC - offset ZDT
+     * The ZonedDateTime should be passed in as UTC - offset
      * @param title
      * @param description
      * @param location
@@ -194,13 +194,14 @@ public class DBAppointments {
 
     /**
      * Update an appt in the db, return true if successful, else false.
+     * The start and end times should be passed in as UTC-offset ZDT
      * @param id
      * @param title
      * @param description
      * @param location
      * @param type
-     * @param start
-     * @param end
+     * @param startZDT_utc
+     * @param endZDT_utc
      * @param custID
      * @param userID
      * @param contactID
@@ -212,8 +213,8 @@ public class DBAppointments {
             String description,
             String location,
             String type,
-            ZonedDateTime start,
-            ZonedDateTime end,
+            ZonedDateTime startZDT_utc,
+            ZonedDateTime endZDT_utc,
             int custID,
             int userID,
             int contactID)
@@ -236,14 +237,22 @@ public class DBAppointments {
             ps.setString(2, description);
             ps.setString(3, location);
             ps.setString(4, type);
-            ps.setTimestamp(5, Timestamp.from(start.toInstant()));
-            ps.setTimestamp(6, Timestamp.from(end.toInstant()));
+            Timestamp t1 = Timestamp.valueOf(startZDT_utc.toLocalDateTime());
+            Timestamp t2 = Timestamp.valueOf(endZDT_utc.toLocalDateTime());
+            ps.setTimestamp(5, t1);
+            ps.setTimestamp(6, t2);
             ps.setInt(7, custID);
             ps.setInt(8, userID);
             ps.setInt(9, contactID);
             // execute
             ps.executeUpdate();
             System.out.println("Updated successfully");
+
+            // DEBUG
+            System.out.println("DBController Update appt......");
+            System.out.println("Passed in start: " + startZDT_utc + "   passed in end: " + endZDT_utc);
+            System.out.println("Timestamp 1: " + t1);
+            System.out.println("Timestamp 2: " + t2);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

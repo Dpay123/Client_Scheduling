@@ -57,7 +57,7 @@ public class DashboardPageController extends BaseController{
         Predicate<Appointment> within15Mins = i -> {
             ZonedDateTime nowLocal = ZonedDateTime.of(LocalDateTime.now(), userZoneID);
             // retrieve appt time (UTC)
-            ZonedDateTime apptUTC = i.getStartDateTime();
+            ZonedDateTime apptUTC = i.getStartZDT_utc();
             // convert to user timezone
             ZonedDateTime apptLocal = ZonedDateTime.ofInstant(apptUTC.toInstant(), userZoneID);
             // DEBUG

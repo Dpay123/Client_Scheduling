@@ -1,19 +1,23 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.Utilities.TimeHandler;
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.model.Appointment;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -59,11 +63,11 @@ public class AppointmentsPageController extends BaseController {
 
     /**Customer TableView column*/
     @FXML
-    private TableColumn<Appointment, ZonedDateTime> apptStartCol;
+    private TableColumn<Appointment, String> apptStartCol;
 
     /**Customer TableView column*/
     @FXML
-    private TableColumn apptEndCol;
+    private TableColumn<Appointment, String> apptEndCol;
 
     /**Customer TableView column*/
     @FXML
@@ -93,8 +97,17 @@ public class AppointmentsPageController extends BaseController {
         apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         apptCustIDCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
-        apptStartCol.setCellValueFactory(new PropertyValueFactory<>("start"));
-        apptEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+
+        // show the UTC times as local user offset time
+        apptStartCol.setCellValueFactory(utc -> {
+            ZonedDateTime local = TimeHandler.getZonedDateTimeLocal(utc.getValue().getStartZDT_utc());
+            return new SimpleStringProperty(local.toString());
+        });
+        apptEndCol.setCellValueFactory(utc -> {
+            ZonedDateTime local = TimeHandler.getZonedDateTimeLocal(utc.getValue().getEndZDT_utc());
+            return new SimpleStringProperty(local.toString());
+        });
+
         // set default filter
         apptFilterAll.setSelected(true);
     }
@@ -119,7 +132,7 @@ public class AppointmentsPageController extends BaseController {
         // want to filter by any appt with a date that falls within 7 days of todays date
         Predicate<Appointment> withinWeek = i -> {
             int today = LocalDate.now().getDayOfYear();
-            int apptDay = i.getStartDateTime().toLocalDate().getDayOfYear();
+            int apptDay = i.getStartZDT_utc().toLocalDate().getDayOfYear();
             return apptDay >= today && apptDay <= today+6;
         };
         appts.setPredicate(withinWeek);
@@ -134,7 +147,7 @@ public class AppointmentsPageController extends BaseController {
         // want to filter by any appt with a date that falls within 7 days of todays date
         Predicate<Appointment> withinMonth = i -> {
             int thisMonth = LocalDate.now().getMonthValue();
-            int apptMonth = i.getStartDateTime().toLocalDate().getMonthValue();
+            int apptMonth = i.getStartZDT_utc().toLocalDate().getMonthValue();
             return thisMonth == apptMonth;
         };
         appts.setPredicate(withinMonth);

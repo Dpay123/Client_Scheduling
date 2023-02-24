@@ -1,8 +1,10 @@
 package dp.wgu.softwareii.controller;
 
+import dp.wgu.softwareii.Utilities.TimeHandler;
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.model.Appointment;
 import dp.wgu.softwareii.model.Contact;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ResourceBundle;
 
 public class ContactSchedulePageController extends BaseController{
@@ -56,11 +59,11 @@ public class ContactSchedulePageController extends BaseController{
 
     /**Customer TableView column*/
     @FXML
-    private TableColumn<Appointment, LocalDateTime> apptStartCol;
+    private TableColumn<Appointment, String> apptStartCol;
 
     /**Customer TableView column*/
     @FXML
-    private TableColumn apptEndCol;
+    private TableColumn<Appointment, String> apptEndCol;
 
     /**Customer TableView column*/
     @FXML
@@ -88,8 +91,15 @@ public class ContactSchedulePageController extends BaseController{
         apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         apptCustIDCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
-        apptStartCol.setCellValueFactory(new PropertyValueFactory<>("start"));
-        apptEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+        // show the UTC times as local user offset time
+        apptStartCol.setCellValueFactory(utc -> {
+            ZonedDateTime local = TimeHandler.getZonedDateTimeLocal(utc.getValue().getStartZDT_utc());
+            return new SimpleStringProperty(local.toString());
+        });
+        apptEndCol.setCellValueFactory(utc -> {
+            ZonedDateTime local = TimeHandler.getZonedDateTimeLocal(utc.getValue().getEndZDT_utc());
+            return new SimpleStringProperty(local.toString());
+        });
     }
 
     /**

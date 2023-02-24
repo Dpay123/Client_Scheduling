@@ -130,7 +130,7 @@ public class ReportsPageController extends BaseController{
         int[] months = new int[13];
         // parse appt month and increment in array
         for (Appointment a : appts) {
-            int monthNum = a.getStartDateTime().getMonthValue();
+            int monthNum = a.getStartZDT_utc().getMonthValue();
             months[monthNum]++;
         }
         int ans = 0;
@@ -152,7 +152,7 @@ public class ReportsPageController extends BaseController{
 
         // filter for month selection
         Predicate<Appointment> month = i -> {
-            return i.getStartDateTime().getMonthValue() == monthNum;
+            return i.getStartZDT_utc().getMonthValue() == monthNum;
         };
         // filter for type selection
         Predicate<Appointment> type = i -> {

@@ -1,11 +1,10 @@
 package dp.wgu.softwareii.model;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * POJO class for appointment data from db
+ * POJO class for appointment data from db.
  */
 public class Appointment {
     private int id;
@@ -13,8 +12,13 @@ public class Appointment {
     private String description;
     private String location;
     private String type;
-    private ZonedDateTime startDateTime;
-    private ZonedDateTime endDateTime;
+
+    /**Standardized to UTC- offset*/
+    private ZonedDateTime startZDT_utc;
+
+    /**Standardized to UTC- offset*/
+    private ZonedDateTime endZDT_utc;
+
     private String start;
     private String end;
     private int customerId;
@@ -28,8 +32,8 @@ public class Appointment {
      * @param description the appt description
      * @param location the appt location
      * @param type the appt type
-     * @param startDateTime the appt start time/date
-     * @param endDateTime the appt end time/date
+     * @param startZDT_utc the appt start time/ in UTC offset
+     * @param endZDT_utc the appt end time/date in UTC offset
      * @param customerId the id of the customer of the appt
      * @param userId the id of the user who creates the appt
      * @param contactId the id of the contact for the appt
@@ -39,8 +43,8 @@ public class Appointment {
                        String description,
                        String location,
                        String type,
-                       ZonedDateTime startDateTime,
-                       ZonedDateTime endDateTime,
+                       ZonedDateTime startZDT_utc,
+                       ZonedDateTime endZDT_utc,
                        int customerId,
                        int userId,
                        int contactId) {
@@ -49,15 +53,15 @@ public class Appointment {
         this.description = description;
         this.location = location;
         this.type = type;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+        this.startZDT_utc = startZDT_utc;
+        this.endZDT_utc = endZDT_utc;
         this.customerId = customerId;
         this.userId = userId;
         this.contactId = contactId;
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
-        this.start = startDateTime.format(dtf);
-        this.end = endDateTime.format(dtf);
+        this.start = startZDT_utc.format(dtf);
+        this.end = endZDT_utc.format(dtf);
     }
 
     public int getId() {
@@ -100,20 +104,28 @@ public class Appointment {
         this.type = type;
     }
 
-    public ZonedDateTime getStartDateTime() {
-        return startDateTime;
+    /**
+     * Returns a UTC-offset ZDT.
+     * @return
+     */
+    public ZonedDateTime getStartZDT_utc() {
+        return startZDT_utc;
     }
 
-    public void setStartDateTime(ZonedDateTime startDateTime) {
-        this.startDateTime = startDateTime;
+    public void setStartZDT_utc(ZonedDateTime startZDT_utc) {
+        this.startZDT_utc = startZDT_utc;
     }
 
-    public ZonedDateTime getEndDateTime() {
-        return endDateTime;
+    /**
+     * Returns a UTC-offset ZDT.
+     * @return
+     */
+    public ZonedDateTime getEndZDT_utc() {
+        return endZDT_utc;
     }
 
-    public void setEndDateTime(ZonedDateTime endDateTime) {
-        this.endDateTime = endDateTime;
+    public void setEndZDT_utc(ZonedDateTime endZDT_utc) {
+        this.endZDT_utc = endZDT_utc;
     }
 
     public String getStart() {
@@ -160,7 +172,7 @@ public class Appointment {
     public String toString() {
         return "ID: " + id
                 + " | " + type
-                + " | " + startDateTime.toLocalTime()
-                + "-" + endDateTime.toLocalTime();
+                + " | " + startZDT_utc.toLocalTime()
+                + "-" + endZDT_utc.toLocalTime();
     }
 }
