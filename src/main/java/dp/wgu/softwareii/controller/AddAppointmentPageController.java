@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.*;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -90,19 +91,52 @@ public class AddAppointmentPageController extends BaseController{
      */
     @FXML
     public void OnSaveClick(ActionEvent actionEvent) throws IOException {
-        // retrieve input data
+        // retrieve and validate input text data
         String title = titleField.getText();
         String description = descriptionField.getText();
         String location = locationField.getText();
+        if (!valid(title) || !valid(description) || !valid(location)) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Invalid entry");
+            error.setContentText("Must provide a title, description, and location between 1-50 characters");
+            error.showAndWait();
+            return;
+        }
+        // retrieve and validate input selection data
         Type type = (Type)typeCB.getSelectionModel().getSelectedItem();
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
         User user = DashboardPageController.user;
         Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();
-
-        // build LocalDateTimes from date and times input
         LocalDate date = datePick.getValue();
-        LocalTime startTime = LocalTime.parse(startTF.getText());
-        LocalTime endTime = LocalTime.parse(endTF.getText());
+        if (type == null || customer == null || contact == null || date == null) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Invalid selection");
+            error.setContentText("Must select a type, customer, contact, and date");
+            error.showAndWait();
+            return;
+        }
+        // retrieve and validate input times
+        LocalTime startTime;
+        LocalTime endTime;
+        try {
+            startTime = LocalTime.parse(startTF.getText());
+            endTime = LocalTime.parse(endTF.getText());
+        }
+        catch (DateTimeParseException e) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Invalid time format");
+            error.setContentText("Must enter valid time formatted as HH:MM");
+            error.showAndWait();
+            return;
+        }
+        if (endTime.isBefore(startTime)) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Invalid time entry");
+            error.setContentText("End time cannot be <= Start time.");
+            error.showAndWait();
+            return;
+        }
+        // build LocalDateTimes from valid date and valid times input
         ZonedDateTime startZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(date, startTime));
         ZonedDateTime endZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(date, endTime));
 
@@ -153,6 +187,15 @@ public class AddAppointmentPageController extends BaseController{
             stage.setTitle("Appointments");
             stage.show();
         }
+    }
+
+    /**
+     * Validates that text string is between 1-50 characters
+     * @param str
+     * @return
+     */
+    private boolean valid(String str) {
+        return str.length() > 0 && str.length() <= 50;
     }
 
     /**
