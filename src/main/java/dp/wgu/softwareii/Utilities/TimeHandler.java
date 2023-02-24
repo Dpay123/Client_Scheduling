@@ -11,8 +11,12 @@ import java.time.format.DateTimeFormatter;
 public class TimeHandler {
 
      public static DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("HH:mm MM-dd-yyyy ");
-
      public static DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+
+     // static data representing provided business hours of 8AM-10PM EST
+     public static ZoneId businessZone = ZoneId.of("America/New_York");
+     public static int openHour = 8;
+     public static int closeHour = 22;
 
     /**
      * Takes a localDateTime and returns a ZonedDateTime obj with UTC offsett
@@ -38,4 +42,5 @@ public class TimeHandler {
     public static ZonedDateTime utcToLocalOffset(ZonedDateTime utc) {
         return ZonedDateTime.ofInstant(utc.toInstant(), ZoneId.systemDefault());
     }
+
 }

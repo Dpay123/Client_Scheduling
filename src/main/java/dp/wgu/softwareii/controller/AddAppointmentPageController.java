@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Time;
 import java.time.*;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
@@ -67,6 +68,8 @@ public class AddAppointmentPageController extends BaseController{
     @FXML
     private TextField endTF;
 
+    private static ZonedDateTime businessHoursStart;
+    private static ZonedDateTime businessHoursEnd;
 
     /**
      * Initialize the combo boxes.
@@ -82,6 +85,34 @@ public class AddAppointmentPageController extends BaseController{
         contactCB.setItems(contacts);
 
         typeCB.getItems().setAll(Arrays.asList(Type.values()));
+    }
+
+    /**
+     * Determine whether an appointment falls within business hours.
+     * An appointment has a start and end that indicates the duration of the appointment.
+     * @param apptStart
+     * @param apptEnd
+     * @return
+     */
+    public static boolean isDuringBusinessHours(ZonedDateTime apptStart, ZonedDateTime apptEnd) {
+        ZoneId appointmentZone = apptStart.getZone();
+        ZoneId businessZone = TimeHandler.businessZone;
+
+        // Convert business hours to appointment time zone
+        businessHoursStart = ZonedDateTime.of(
+                apptStart.toLocalDate(),
+                LocalTime.of(TimeHandler.openHour, 0),
+                businessZone
+        ).withZoneSameInstant(appointmentZone);
+
+        businessHoursEnd = ZonedDateTime.of(
+                apptStart.toLocalDate(),
+                LocalTime.of(TimeHandler.closeHour, 0),
+                businessZone
+        ).withZoneSameInstant(appointmentZone);
+
+        // Check for overlap between appointment and business hours
+        return !apptStart.isBefore(businessHoursStart) && !apptEnd.isAfter(businessHoursEnd);
     }
 
     /**
@@ -122,6 +153,7 @@ public class AddAppointmentPageController extends BaseController{
             startTime = LocalTime.parse(startTF.getText());
             endTime = LocalTime.parse(endTF.getText());
         }
+        // check formatting errors
         catch (DateTimeParseException e) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Invalid time format");
@@ -129,6 +161,7 @@ public class AddAppointmentPageController extends BaseController{
             error.showAndWait();
             return;
         }
+        // check that appointment end time > start time
         if (endTime.isBefore(startTime)) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Invalid time entry");
@@ -139,6 +172,21 @@ public class AddAppointmentPageController extends BaseController{
         // build LocalDateTimes from valid date and valid times input
         ZonedDateTime startZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(date, startTime));
         ZonedDateTime endZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(date, endTime));
+
+        // check that the appointment does not overlap any non-business hours
+        if (!isDuringBusinessHours(TimeHandler.utcToLocalOffset(startZDT_utc), TimeHandler.utcToLocalOffset(endZDT_utc))) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Invalid time entry");
+            String message = "Appointment must fall with business hours of 8am-10pm EST.\n"
+                    + "In your time zone, this equates to: "
+                    + businessHoursStart.format(TimeHandler.dateTimeFormat)
+                    + " to "
+                    + businessHoursEnd.format(TimeHandler.dateTimeFormat);
+
+            error.setContentText(message);
+            error.showAndWait();
+            return;
+        }
 
         // check for appt overlap for that customer
         var overlappingAppts = DBAppointments.getAll();
