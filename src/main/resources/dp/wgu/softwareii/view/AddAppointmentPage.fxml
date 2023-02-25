@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="550.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dp.wgu.softwareii.controller.AddAppointmentPageController">
+<AnchorPane prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dp.wgu.softwareii.controller.AddAppointmentPageController">
    <children>
-      <VBox layoutX="25.0" layoutY="7.0" maxWidth="-Infinity" prefHeight="500.0" prefWidth="450.0" spacing="10.0">
+      <VBox alignment="TOP_CENTER" layoutX="25.0" layoutY="7.0" maxWidth="-Infinity" prefHeight="550.0" prefWidth="500.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="550.0" spacing="60.0">
                <children>
@@ -18,7 +18,7 @@
                   </Label>
                </children>
             </HBox>
-            <GridPane hgap="20.0" prefHeight="450.0" prefWidth="550.0" vgap="5.0">
+            <GridPane focusTraversable="true" hgap="20.0" vgap="5.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="162.0" minWidth="10.0" prefWidth="124.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="262.0" minWidth="10.0" prefWidth="177.0" />
@@ -28,6 +28,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
@@ -57,9 +58,11 @@
                   <TextField fx:id="endTF" layoutX="192.0" layoutY="328.0" promptText="00:00 - 23:59" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                   <Label layoutX="10.0" layoutY="265.0" text="End Date" GridPane.rowIndex="8" />
                   <DatePicker fx:id="endDatePick" layoutX="192.0" layoutY="260.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                  <Label layoutX="10.0" layoutY="279.0" text="Assign User" GridPane.rowIndex="11" />
+                  <ComboBox fx:id="userCB" layoutX="192.0" layoutY="236.0" prefHeight="35.0" prefWidth="180.0" promptText="Select User" GridPane.columnIndex="1" GridPane.rowIndex="11" />
                </children>
             </GridPane>
-            <HBox alignment="TOP_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
+            <HBox alignment="TOP_RIGHT" prefWidth="200.0" spacing="20.0">
                <children>
                   <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#OnSaveClick" prefWidth="70.0" text="Save" />
                   <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#OnCancelClick" prefWidth="70.0" text="Cancel" />
@@ -67,7 +70,7 @@
             </HBox>
          </children>
          <padding>
-            <Insets top="25.0" />
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding></VBox>
    </children>
 </AnchorPane>

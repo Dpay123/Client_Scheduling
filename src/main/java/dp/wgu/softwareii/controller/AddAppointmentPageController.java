@@ -4,6 +4,7 @@ import dp.wgu.softwareii.Utilities.TimeHandler;
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.dbAccess.DBContacts;
 import dp.wgu.softwareii.dbAccess.DBCustomers;
+import dp.wgu.softwareii.dbAccess.DBUsers;
 import dp.wgu.softwareii.model.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,6 +31,9 @@ public class AddAppointmentPageController extends BaseController{
 
     /**A list of Contacts for the combo box*/
     ObservableList<Contact> contacts;
+
+    /**A list of Users for the combo box*/
+    ObservableList<User> users;
 
     /**Keep track of the allowed business hours to check appointment valid time*/
     private static ZonedDateTime businessHoursStart;
@@ -77,6 +81,9 @@ public class AddAppointmentPageController extends BaseController{
     @FXML
     private DatePicker endDatePick;
 
+    /**Combobox for user to assign a user*/
+    @FXML
+    private ComboBox userCB;
 
     /**
      * Initialize the combo boxes.
@@ -85,13 +92,14 @@ public class AddAppointmentPageController extends BaseController{
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // populate the combo boxes by querying the database
         customers = DBCustomers.getAll();
         customerCB.setItems(customers);
-
         contacts = DBContacts.getAll();
         contactCB.setItems(contacts);
-
         typeCB.getItems().setAll(Arrays.asList(Type.values()));
+        users = DBUsers.getAll();
+        userCB.setItems(users);
     }
 
     /**
@@ -149,14 +157,20 @@ public class AddAppointmentPageController extends BaseController{
         // retrieve and validate input selection data
         Type type = (Type)typeCB.getSelectionModel().getSelectedItem();
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
-        User user = DashboardPageController.user;
+        User assignedUser = (User)userCB.getSelectionModel().getSelectedItem();
         Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();
         LocalDate startDate = startDatePick.getValue();
         LocalDate endDate = endDatePick.getValue();
-        if (type == null || customer == null || contact == null || startDate == null || endDate == null) {
+        if (type == null
+                || customer == null
+                || contact == null
+                || startDate == null
+                || endDate == null
+                || assignedUser == null)
+        {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Invalid selection");
-            error.setContentText("Must select a type, customer, contact, and date");
+            error.setContentText("Must select a type, customer, contact, dates, and user");
             error.showAndWait();
             return;
         }
@@ -236,7 +250,7 @@ public class AddAppointmentPageController extends BaseController{
                 startZDT_utc,
                 endZDT_utc,
                 customer.getId(),
-                user.getId(),
+                assignedUser.getId(),
                 contact.getId());
         if (!saved) {
             Alert error = new Alert(Alert.AlertType.ERROR);

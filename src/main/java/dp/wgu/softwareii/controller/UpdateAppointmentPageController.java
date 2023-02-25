@@ -4,6 +4,7 @@ import dp.wgu.softwareii.Utilities.TimeHandler;
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.dbAccess.DBContacts;
 import dp.wgu.softwareii.dbAccess.DBCustomers;
+import dp.wgu.softwareii.dbAccess.DBUsers;
 import dp.wgu.softwareii.model.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,6 +41,9 @@ public class UpdateAppointmentPageController extends BaseController {
 
     /**A list of Contacts for the combo box*/
     ObservableList<Contact> contacts;
+
+    /**A list of Users for the combo box*/
+    ObservableList<User> users;
 
     /**Used to validate if appt falls within business hours*/
     private static ZonedDateTime businessHoursStart;
@@ -91,6 +95,10 @@ public class UpdateAppointmentPageController extends BaseController {
     @FXML
     private DatePicker endDatePick;
 
+    /**Combobox for selection of assigned user*/
+    @FXML
+    private ComboBox userCB;
+
     /**
      * Populates the data fields with the current appt data to be updated.
      * @param url
@@ -107,6 +115,8 @@ public class UpdateAppointmentPageController extends BaseController {
         customerCB.setItems(customers);
         contacts = DBContacts.getAll();
         contactCB.setItems(contacts);
+        users = DBUsers.getAll();
+        userCB.setItems(users);
 
         // set the combo boxes
         int customerID = appt.getCustomerId();
@@ -121,6 +131,9 @@ public class UpdateAppointmentPageController extends BaseController {
         for (Object type : typeCB.getItems()) {
             Type t = (Type)type;
             if (t.toString().equals(appt.getType())) typeCB.setValue(type);
+        }
+        for (User user : users) {
+            if (user.getId() == appt.getUserId()) userCB.setValue(user);
         }
         // convert UTC-offset ZDT to the users local time zone
         ZonedDateTime startZDT_local = TimeHandler.utcToLocalOffset(appt.getStartZDT_utc());
@@ -192,14 +205,20 @@ public class UpdateAppointmentPageController extends BaseController {
         // retrieve and validate input selection data
         Type type = (Type)typeCB.getSelectionModel().getSelectedItem();
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
-        User user = DashboardPageController.user;
+        User assignedUser = (User)userCB.getSelectionModel().getSelectedItem();
         Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();
         LocalDate startDate = startDatePick.getValue();
         LocalDate endDate = endDatePick.getValue();
-        if (type == null || customer == null || contact == null || startDate == null || endDate == null) {
+        if (type == null
+                || customer == null
+                || contact == null
+                || startDate == null
+                || endDate == null
+                || assignedUser == null)
+        {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Invalid selection");
-            error.setContentText("Must select a type, customer, contact, and date");
+            error.setContentText("Must select a type, customer, contact, dates, and user");
             error.showAndWait();
             return;
         }
@@ -281,7 +300,7 @@ public class UpdateAppointmentPageController extends BaseController {
                 startZDT_utc,
                 endZDT_utc,
                 customer.getId(),
-                user.getId(),
+                assignedUser.getId(),
                 contact.getId());
         if (!updated) {
             Alert error = new Alert(Alert.AlertType.ERROR);

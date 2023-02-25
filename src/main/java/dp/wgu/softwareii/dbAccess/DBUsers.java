@@ -1,7 +1,10 @@
 package dp.wgu.softwareii.dbAccess;
 
 import dp.wgu.softwareii.database.JDBC;
+import dp.wgu.softwareii.model.Contact;
 import dp.wgu.softwareii.model.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,5 +40,30 @@ public class DBUsers {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Query and return a list of user objects.
+     * @return
+     */
+    public static ObservableList<User> getAll() {
+
+        ObservableList<User> users = FXCollections.observableArrayList();
+        String sql = "SELECT * from users";
+
+        try {
+            // use a prepared statement to execute the sql query
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            // create a User obj for every result and add to return list
+            while (rs.next()) {
+                User user = new User(rs.getInt("User_ID"), rs.getString("User_Name"));
+                users.add(user);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 }

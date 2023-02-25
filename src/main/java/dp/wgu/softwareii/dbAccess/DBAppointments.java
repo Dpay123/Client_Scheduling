@@ -117,7 +117,7 @@ public class DBAppointments {
      * @param start
      * @param end
      * @param custId
-     * @param userId
+     * @param assignedUserID
      * @param contactId
      * @return
      */
@@ -128,7 +128,7 @@ public class DBAppointments {
                                          ZonedDateTime start,
                                          ZonedDateTime end,
                                          int custId,
-                                         int userId,
+                                         int assignedUserID,
                                          int contactId) {
         String sql = "INSERT INTO appointments ("
                 + "Title, "
@@ -164,7 +164,7 @@ public class DBAppointments {
             ps.setTimestamp(9, t3);
             ps.setString(10, DashboardPageController.user.getName());
             ps.setInt(11, custId);
-            ps.setInt(12, userId);
+            ps.setInt(12, assignedUserID);
             ps.setInt(13, contactId);
             // execute
             ps.executeUpdate();
@@ -187,7 +187,7 @@ public class DBAppointments {
      * @param startZDT_utc
      * @param endZDT_utc
      * @param custID
-     * @param userID
+     * @param assignedUserID
      * @param contactID
      * @return
      */
@@ -200,7 +200,7 @@ public class DBAppointments {
             ZonedDateTime startZDT_utc,
             ZonedDateTime endZDT_utc,
             int custID,
-            int userID,
+            int assignedUserID,
             int contactID)
     {
         String sql = "UPDATE appointments "
@@ -231,7 +231,7 @@ public class DBAppointments {
             ps.setTimestamp(7, t3);
             ps.setString(8, DashboardPageController.user.getName());
             ps.setInt(9, custID);
-            ps.setInt(10, userID);
+            ps.setInt(10, assignedUserID);
             ps.setInt(11, contactID);
             // execute
             ps.executeUpdate();
