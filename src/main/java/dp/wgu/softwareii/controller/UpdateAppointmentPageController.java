@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -42,6 +41,12 @@ public class UpdateAppointmentPageController extends BaseController {
     /**A list of Contacts for the combo box*/
     ObservableList<Contact> contacts;
 
+    /**Used to validate if appt falls within business hours*/
+    private static ZonedDateTime businessHoursStart;
+
+    /**Used to validate if appt falls within business hours*/
+    private static ZonedDateTime businessHoursEnd;
+
     /**Field for appt ID*/
     @FXML
     private TextField IDField;
@@ -66,10 +71,6 @@ public class UpdateAppointmentPageController extends BaseController {
     @FXML
     private ComboBox customerCB;
 
-    /**Datepicker for user to select date*/
-    @FXML
-    private DatePicker datePick;
-
     /**Combo box for user to select contact*/
     @FXML
     private ComboBox contactCB;
@@ -82,8 +83,13 @@ public class UpdateAppointmentPageController extends BaseController {
     @FXML
     private TextField endTF;
 
-    private static ZonedDateTime businessHoursStart;
-    private static ZonedDateTime businessHoursEnd;
+    /**DatePick for user to select appt start date*/
+    @FXML
+    private DatePicker startDatePick;
+
+    /**DatePick for user to select appt end date*/
+    @FXML
+    private DatePicker endDatePick;
 
     /**
      * Populates the data fields with the current appt data to be updated.
@@ -120,24 +126,15 @@ public class UpdateAppointmentPageController extends BaseController {
         ZonedDateTime startZDT_local = TimeHandler.utcToLocalOffset(appt.getStartZDT_utc());
         ZonedDateTime endZDT_local = TimeHandler.utcToLocalOffset(appt.getEndZDT_utc());
 
-        // set datePicker value to the local date of the user
-        datePick.setValue(startZDT_local.toLocalDate());
+        // set datePicker values to the local date of the user
+        startDatePick.setValue(startZDT_local.toLocalDate());
+        endDatePick.setValue(endZDT_local.toLocalDate());
 
         // set start/end time, formatted, to the local time of the user
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime startTime = startZDT_local.toLocalTime();
         LocalTime endTime = endZDT_local.toLocalTime();
-        startTF.setText(startTime.format(dtf));
-        endTF.setText(endTime.format(dtf));
-    }
-
-    /**
-     * Validates that text string is between 1-50 characters
-     * @param str
-     * @return
-     */
-    private boolean valid(String str) {
-        return str.length() > 0 && str.length() <= 50;
+        startTF.setText(startTime.format(TimeHandler.timeFormat));
+        endTF.setText(endTime.format(TimeHandler.timeFormat));
     }
 
     /**
@@ -158,14 +155,19 @@ public class UpdateAppointmentPageController extends BaseController {
                 businessZone
         ).withZoneSameInstant(appointmentZone);
 
-        businessHoursEnd = ZonedDateTime.of(
-                apptStart.toLocalDate(),
-                LocalTime.of(TimeHandler.closeHour, 0),
-                businessZone
-        ).withZoneSameInstant(appointmentZone);
+        businessHoursEnd = businessHoursStart.plusHours(14);
 
         // Check for overlap between appointment and business hours
         return !apptStart.isBefore(businessHoursStart) && !apptEnd.isAfter(businessHoursEnd);
+    }
+
+    /**
+     * Validates that text string is between 1-50 characters (database column VARCHAR 50 char limit).
+     * @param str
+     * @return
+     */
+    private boolean isValidText(String str) {
+        return str.length() > 0 && str.length() <= 50;
     }
 
     /**
@@ -180,7 +182,7 @@ public class UpdateAppointmentPageController extends BaseController {
         String title = titleField.getText();
         String description = descriptionField.getText();
         String location = locationField.getText();
-        if (!valid(title) || !valid(description) || !valid(location)) {
+        if (!isValidText(title) || !isValidText(description) || !isValidText(location)) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Invalid entry");
             error.setContentText("Must provide a title, description, and location between 1-50 characters");
@@ -192,8 +194,9 @@ public class UpdateAppointmentPageController extends BaseController {
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
         User user = DashboardPageController.user;
         Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();
-        LocalDate date = datePick.getValue();
-        if (type == null || customer == null || contact == null || date == null) {
+        LocalDate startDate = startDatePick.getValue();
+        LocalDate endDate = endDatePick.getValue();
+        if (type == null || customer == null || contact == null || startDate == null || endDate == null) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Invalid selection");
             error.setContentText("Must select a type, customer, contact, and date");
@@ -207,6 +210,7 @@ public class UpdateAppointmentPageController extends BaseController {
             startTime = LocalTime.parse(startTF.getText());
             endTime = LocalTime.parse(endTF.getText());
         }
+        // check formatting errors
         catch (DateTimeParseException e) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Invalid time format");
@@ -214,16 +218,19 @@ public class UpdateAppointmentPageController extends BaseController {
             error.showAndWait();
             return;
         }
-        if (endTime.isBefore(startTime)) {
+
+        // build LocalDateTimes from valid date and valid times input
+        ZonedDateTime startZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(startDate, startTime));
+        ZonedDateTime endZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(endDate, endTime));
+
+        // check that appointment end time > start time
+        if (endZDT_utc.isBefore(startZDT_utc)) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Invalid time entry");
             error.setContentText("End time cannot be <= Start time.");
             error.showAndWait();
             return;
         }
-        // build LocalDateTimes from valid date and valid times input
-        ZonedDateTime startZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(date, startTime));
-        ZonedDateTime endZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(date, endTime));
 
         // check that the appointment does not overlap any non-business hours
         if (!isDuringBusinessHours(TimeHandler.utcToLocalOffset(startZDT_utc), TimeHandler.utcToLocalOffset(endZDT_utc))) {
@@ -302,5 +309,9 @@ public class UpdateAppointmentPageController extends BaseController {
         Stage stage = this.getStageWithSetScene(actionEvent, newScene);
         stage.setTitle("Appointments");
         stage.show();
+    }
+
+    @FXML
+    public void OnStartDatePick(ActionEvent actionEvent) {
     }
 }

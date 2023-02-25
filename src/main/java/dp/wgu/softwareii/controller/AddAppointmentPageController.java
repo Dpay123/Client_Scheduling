@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
 import java.time.*;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
@@ -31,6 +30,12 @@ public class AddAppointmentPageController extends BaseController{
 
     /**A list of Contacts for the combo box*/
     ObservableList<Contact> contacts;
+
+    /**Keep track of the allowed business hours to check appointment valid time*/
+    private static ZonedDateTime businessHoursStart;
+
+    /**Keep track of the allowed business hours to check appointment valid time*/
+    private static ZonedDateTime businessHoursEnd;
 
     /**Field for user to input title*/
     @FXML
@@ -52,10 +57,6 @@ public class AddAppointmentPageController extends BaseController{
     @FXML
     private ComboBox customerCB;
 
-    /**Datepicker for user to select date*/
-    @FXML
-    private DatePicker datePick;
-
     /**Combo box for user to select contact*/
     @FXML
     private ComboBox contactCB;
@@ -68,8 +69,14 @@ public class AddAppointmentPageController extends BaseController{
     @FXML
     private TextField endTF;
 
-    private static ZonedDateTime businessHoursStart;
-    private static ZonedDateTime businessHoursEnd;
+    /**DatePick for user to select appt start date*/
+    @FXML
+    private DatePicker startDatePick;
+
+    /**DatePick for user to select appt end date*/
+    @FXML
+    private DatePicker endDatePick;
+
 
     /**
      * Initialize the combo boxes.
@@ -105,14 +112,20 @@ public class AddAppointmentPageController extends BaseController{
                 businessZone
         ).withZoneSameInstant(appointmentZone);
 
-        businessHoursEnd = ZonedDateTime.of(
-                apptStart.toLocalDate(),
-                LocalTime.of(TimeHandler.closeHour, 0),
-                businessZone
-        ).withZoneSameInstant(appointmentZone);
+        businessHoursEnd = businessHoursStart.plusHours(14);
 
         // Check for overlap between appointment and business hours
         return !apptStart.isBefore(businessHoursStart) && !apptEnd.isAfter(businessHoursEnd);
+    }
+
+
+    /**
+     * Validates that text string is between 1-50 characters (database column VARCHAR 50 char limit).
+     * @param str
+     * @return
+     */
+    private boolean isValidText(String str) {
+        return str.length() > 0 && str.length() <= 50;
     }
 
     /**
@@ -126,7 +139,7 @@ public class AddAppointmentPageController extends BaseController{
         String title = titleField.getText();
         String description = descriptionField.getText();
         String location = locationField.getText();
-        if (!valid(title) || !valid(description) || !valid(location)) {
+        if (!isValidText(title) || !isValidText(description) || !isValidText(location)) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Invalid entry");
             error.setContentText("Must provide a title, description, and location between 1-50 characters");
@@ -138,8 +151,9 @@ public class AddAppointmentPageController extends BaseController{
         Customer customer = (Customer)customerCB.getSelectionModel().getSelectedItem();
         User user = DashboardPageController.user;
         Contact contact = (Contact)contactCB.getSelectionModel().getSelectedItem();
-        LocalDate date = datePick.getValue();
-        if (type == null || customer == null || contact == null || date == null) {
+        LocalDate startDate = startDatePick.getValue();
+        LocalDate endDate = endDatePick.getValue();
+        if (type == null || customer == null || contact == null || startDate == null || endDate == null) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Invalid selection");
             error.setContentText("Must select a type, customer, contact, and date");
@@ -161,17 +175,19 @@ public class AddAppointmentPageController extends BaseController{
             error.showAndWait();
             return;
         }
+
+        // build LocalDateTimes from valid date and valid times input
+        ZonedDateTime startZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(startDate, startTime));
+        ZonedDateTime endZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(endDate, endTime));
+
         // check that appointment end time > start time
-        if (endTime.isBefore(startTime)) {
+        if (endZDT_utc.isBefore(startZDT_utc)) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Invalid time entry");
             error.setContentText("End time cannot be <= Start time.");
             error.showAndWait();
             return;
         }
-        // build LocalDateTimes from valid date and valid times input
-        ZonedDateTime startZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(date, startTime));
-        ZonedDateTime endZDT_utc = TimeHandler.getZonedDateTimeUTC(LocalDateTime.of(date, endTime));
 
         // check that the appointment does not overlap any non-business hours
         if (!isDuringBusinessHours(TimeHandler.utcToLocalOffset(startZDT_utc), TimeHandler.utcToLocalOffset(endZDT_utc))) {
@@ -238,15 +254,6 @@ public class AddAppointmentPageController extends BaseController{
     }
 
     /**
-     * Validates that text string is between 1-50 characters
-     * @param str
-     * @return
-     */
-    private boolean valid(String str) {
-        return str.length() > 0 && str.length() <= 50;
-    }
-
-    /**
      * Cancel and return to Appointments page.
      * @param actionEvent
      */
@@ -257,5 +264,16 @@ public class AddAppointmentPageController extends BaseController{
         Stage stage = this.getStageWithSetScene(actionEvent, newScene);
         stage.setTitle("Appointments");
         stage.show();
+    }
+
+    /**
+     * Auto select the end date as well when the start date is selected.
+     * For the majority of the use cases, this will select the same day.
+     * Users in offset time zones might have to manually select the end date as the following day.
+     * @param actionEvent
+     */
+    @FXML
+    public void OnStartDatePick(ActionEvent actionEvent) {
+        endDatePick.setValue(startDatePick.getValue());
     }
 }
