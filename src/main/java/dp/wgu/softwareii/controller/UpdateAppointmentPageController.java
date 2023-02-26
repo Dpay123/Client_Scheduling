@@ -6,13 +6,13 @@ import dp.wgu.softwareii.dbAccess.DBContacts;
 import dp.wgu.softwareii.dbAccess.DBCustomers;
 import dp.wgu.softwareii.dbAccess.DBUsers;
 import dp.wgu.softwareii.model.*;
+import dp.wgu.softwareii.utilities.Validate;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.*;
@@ -118,7 +118,7 @@ public class UpdateAppointmentPageController extends BaseController {
         users = DBUsers.getAll();
         userCB.setItems(users);
 
-        // set the combo boxes
+        // set the combo boxes to current appt data
         int customerID = appt.getCustomerId();
         for (Customer customer : customers) {
             if (customer.getId() == customerID) customerCB.setValue(customer);
@@ -152,35 +152,27 @@ public class UpdateAppointmentPageController extends BaseController {
 
     /**
      * Determine whether an appointment falls within business hours.
-     * An appointment has a start and end that indicates the duration of the appointment.
-     * @param apptStart
-     * @param apptEnd
-     * @return
+     * Business hours are a known period of time in a known zone, and are converted
+     * to the zone of the user to check if the appointment times are valid.
+     * @param apptStart the start of the appointment, local to the zone of the user
+     * @param apptEnd the end of the appointment, local to the zone of the user
+     * @return true if the appointment is within business hours, else false
      */
     public static boolean isDuringBusinessHours(ZonedDateTime apptStart, ZonedDateTime apptEnd) {
+        // determine the zone of the user
         ZoneId appointmentZone = apptStart.getZone();
+        // retrieve the known zone of the business for time conversion
         ZoneId businessZone = TimeHandler.businessZone;
-
-        // Convert business hours to appointment time zone
+        // determine the opening of the business relative to the user zone
         businessHoursStart = ZonedDateTime.of(
                 apptStart.toLocalDate(),
                 LocalTime.of(TimeHandler.openHour, 0),
                 businessZone
         ).withZoneSameInstant(appointmentZone);
-
-        businessHoursEnd = businessHoursStart.plusHours(14);
-
+        // determine the closing of the business by incrementing the business start time by the # of open hours
+        businessHoursEnd = businessHoursStart.plusHours(TimeHandler.closeHour - TimeHandler.openHour);
         // Check for overlap between appointment and business hours
         return !apptStart.isBefore(businessHoursStart) && !apptEnd.isAfter(businessHoursEnd);
-    }
-
-    /**
-     * Validates that text string is between 1-50 characters (database column VARCHAR 50 char limit).
-     * @param str
-     * @return
-     */
-    private boolean isValidText(String str) {
-        return str.length() > 0 && str.length() <= 50;
     }
 
     /**
@@ -195,7 +187,11 @@ public class UpdateAppointmentPageController extends BaseController {
         String title = titleField.getText();
         String description = descriptionField.getText();
         String location = locationField.getText();
-        if (!isValidText(title) || !isValidText(description) || !isValidText(location)) {
+        if (!Validate.isValidText(title, 50)
+                || !Validate.isValidText(description, 50)
+                || !Validate.isValidText(location, 50)
+        )
+        {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Invalid entry");
             error.setContentText("Must provide a title, description, and location between 1-50 characters");
@@ -260,7 +256,6 @@ public class UpdateAppointmentPageController extends BaseController {
                     + businessHoursStart.format(TimeHandler.dateTimeFormat)
                     + " to "
                     + businessHoursEnd.format(TimeHandler.dateTimeFormat);
-
             error.setContentText(message);
             error.showAndWait();
             return;
@@ -330,7 +325,15 @@ public class UpdateAppointmentPageController extends BaseController {
         stage.show();
     }
 
+
+    /**
+     * Auto select the end date as well when the start date is selected.
+     * For the majority of the use cases, this will select the same day.
+     * Users in offset time zones might have to manually select the end date as the following day.
+     * @param actionEvent
+     */
     @FXML
     public void OnStartDatePick(ActionEvent actionEvent) {
+        endDatePick.setValue(startDatePick.getValue());
     }
 }

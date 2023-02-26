@@ -216,7 +216,6 @@ public class AddAppointmentPageController extends BaseController{
 
         // check for appt overlap for that customer
         var overlappingAppts = DBAppointments.getAll();
-
         Predicate<Appointment> overlaps = i -> {
             return i.getCustomerId() == customer.getId()
                     && i.getStartZDT_utc().isBefore(endZDT_utc)

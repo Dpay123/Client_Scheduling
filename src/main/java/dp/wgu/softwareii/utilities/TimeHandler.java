@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class TimeHandler {
 
+    // static data representing common formats used in the GUI display
      public static DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("HH:mm MM-dd-yyyy ");
      public static DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -42,5 +43,4 @@ public class TimeHandler {
     public static ZonedDateTime utcToLocalOffset(ZonedDateTime utc) {
         return ZonedDateTime.ofInstant(utc.toInstant(), ZoneId.systemDefault());
     }
-
 }
