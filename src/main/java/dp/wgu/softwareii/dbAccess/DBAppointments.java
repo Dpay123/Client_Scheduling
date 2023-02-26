@@ -1,10 +1,9 @@
 package dp.wgu.softwareii.dbAccess;
 
-import dp.wgu.softwareii.Utilities.TimeHandler;
+import dp.wgu.softwareii.utilities.TimeHandler;
 import dp.wgu.softwareii.controller.DashboardPageController;
 import dp.wgu.softwareii.database.JDBC;
 import dp.wgu.softwareii.model.Appointment;
-import dp.wgu.softwareii.model.Country;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;

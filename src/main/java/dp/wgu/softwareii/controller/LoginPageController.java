@@ -2,14 +2,13 @@ package dp.wgu.softwareii.controller;
 
 import dp.wgu.softwareii.dbAccess.DBUsers;
 import dp.wgu.softwareii.model.User;
+import dp.wgu.softwareii.utilities.LogActivity;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -60,13 +59,18 @@ public class LoginPageController extends BaseController{
         String username = userField.getText();
         String password = passwordField.getText();
         User validUser = DBUsers.validate(username, password);
+
         if (validUser == null) {
+            // record login attempt
+            LogActivity.loginAttempt(username, false);
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Invalid");
             error.setContentText("Login credentials invalid");
             error.showAndWait();
         }
         else {
+            // record login attempt
+            LogActivity.loginAttempt(username, true);
             // pass user to dashboard
             DashboardPageController.user = validUser;
             DashboardPageController.uponLogin = true;

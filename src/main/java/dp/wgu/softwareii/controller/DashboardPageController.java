@@ -1,6 +1,7 @@
 package dp.wgu.softwareii.controller;
 
-import dp.wgu.softwareii.Utilities.TimeHandler;
+import dp.wgu.softwareii.utilities.LogActivity;
+import dp.wgu.softwareii.utilities.TimeHandler;
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.model.Appointment;
 import dp.wgu.softwareii.model.User;
@@ -90,6 +91,8 @@ public class DashboardPageController extends BaseController{
      */
     @FXML
     public void OnLogoutClick(ActionEvent actionEvent) throws IOException{
+        // record logout
+        LogActivity.logout(user);
         // navigate to the Login Page
         Parent newScene = this.loadScene("LoginPage");
         Stage stage = this.getStageWithSetScene(actionEvent, newScene);

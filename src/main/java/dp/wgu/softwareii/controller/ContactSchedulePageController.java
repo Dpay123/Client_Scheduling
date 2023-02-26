@@ -1,6 +1,6 @@
 package dp.wgu.softwareii.controller;
 
-import dp.wgu.softwareii.Utilities.TimeHandler;
+import dp.wgu.softwareii.utilities.TimeHandler;
 import dp.wgu.softwareii.dbAccess.DBAppointments;
 import dp.wgu.softwareii.model.Appointment;
 import dp.wgu.softwareii.model.Contact;

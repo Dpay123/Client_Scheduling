@@ -1,4 +1,4 @@
-package dp.wgu.softwareii.Utilities;
+package dp.wgu.softwareii.utilities;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

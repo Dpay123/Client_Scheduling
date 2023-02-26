@@ -12,7 +12,7 @@ target/
 *.iml
 *.ipr
 .sr
-**/src/main/java/dp/wgu/softwareii/OLD/
+**/src/main/java/dp/wgu/softwareii/reports
 
 ### Eclipse ###
 .apt_generated
