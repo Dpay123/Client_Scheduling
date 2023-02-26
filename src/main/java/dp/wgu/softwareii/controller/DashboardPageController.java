@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
@@ -44,13 +45,14 @@ public class DashboardPageController extends BaseController{
     private Label headsUpLabel;
 
     /**
-     * Perform actions upon page initialization.
+     * Perform actions upon page initialization including setting the dash greeting and timezone.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         dashGreeting.setText("Logged in as " + user);
         dashTime.setText("TimeZone: " + ZoneId.systemDefault().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
 
+        // get a list of appts to check for upcoming
         FilteredList<Appointment> appts = DBAppointments.getAll();
 
         // retrieve the current time and check to see if any appts are within 15 minutes
@@ -60,9 +62,13 @@ public class DashboardPageController extends BaseController{
             ZonedDateTime apptLocal = TimeHandler.utcToLocalOffset(i.getStartZDT_utc());
             return (apptLocal.isEqual(nowLocal) || apptLocal.isAfter(nowLocal)) && apptLocal.isBefore(nowLocal.plusMinutes(15));
         };
+        // filter for upcoming appts
         appts.setPredicate(within15Mins);
+
         if (!appts.isEmpty()) {
             headsUpLabel.setText("Appointments soon!");
+            headsUpLabel.setTextFill(Color.RED);
+            headsUpLabel.setStyle("-fx-font-weight: bold; -fx-font-style: normal");
             // show pop up only upon login
             if (uponLogin) {
                 String headsUp = "";
@@ -80,6 +86,8 @@ public class DashboardPageController extends BaseController{
         }
         else {
             headsUpLabel.setText("No upcoming appointments");
+            headsUpLabel.setTextFill(Color.BLACK);
+            headsUpLabel.setStyle("-fx-font-weight: normal; -fx-font-style: italic;");
         }
         uponLogin = false;
     }

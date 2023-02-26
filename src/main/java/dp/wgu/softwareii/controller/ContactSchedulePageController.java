@@ -14,12 +14,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.ResourceBundle;
 
+/**
+ * The controller for the Contacts Schedule Page.
+ */
 public class ContactSchedulePageController extends BaseController{
 
     /**The contact to populate the schedule with*/

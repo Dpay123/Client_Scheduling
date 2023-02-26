@@ -11,7 +11,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -20,6 +19,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
+/**
+ * The controller for the Appointments Page.
+ */
 public class AppointmentsPageController extends BaseController {
 
     /**the data set for the tableview.
