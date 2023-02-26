@@ -32,8 +32,7 @@ public abstract class BaseController implements Initializable {
      and if the project has to be restructured, only this method has
      to be updated to the new location of the views.
      @param viewName The name of view to load, without file type suffix
-     @return Returns the scene to be loaded
-     @throws IOException exception*/
+     @return Returns the scene to be loaded */
     public Parent loadScene(String viewName) throws IOException {
         String viewPath = "/dp/wgu/softwareii/view/" + viewName + ".fxml";
         return FXMLLoader.load(getClass().getResource(viewPath));
@@ -42,8 +41,7 @@ public abstract class BaseController implements Initializable {
     /**This method navigates to the main menu.
      There are many controllers and buttons that navigate to the
      main menu so this functions to reduce code clutter, typos, and increase readability.
-     @param actionEvent The event that triggers the method, used to retrieve the stage
-     @throws IOException exception*/
+     @param actionEvent The event that triggers the method, used to retrieve the stage */
     public void goToMainMenu(ActionEvent actionEvent) throws IOException  {
         Parent newScene = this.loadScene("DashboardPage");
         Stage stage = this.getStageWithSetScene(actionEvent, newScene);

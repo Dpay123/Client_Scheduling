@@ -6,6 +6,7 @@ import dp.wgu.softwareii.dbAccess.DBDivisions;
 import dp.wgu.softwareii.model.Country;
 import dp.wgu.softwareii.model.Customer;
 import dp.wgu.softwareii.model.Division;
+import dp.wgu.softwareii.utilities.Validate;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -105,17 +106,41 @@ public class UpdateCustomerPageController extends BaseController{
 
     /**
      * Retrieve the form data and update the Customer.
-     * Return to Customers page after saving customer.
+     * No data may be blank/null and must be formatted correctly, or else an error message will display
+     * and the customer will not be saved. Return to Customers page after successful save, otherwise stay on page.
      * @param actionEvent
      */
     @FXML
     public void OnSaveClick(ActionEvent actionEvent) throws IOException {
-        // update current Customer obj, save to db
+        // retrieve and validate input text data
         String name = nameField.getText();
         String address = addressField.getText();
         String postal = postalField.getText();
         String phone = phoneField.getText();
+        if (
+                !Validate.isValidText(name, 50)
+                || !Validate.isValidText(address, 100)
+                || !Validate.isValidText(postal, 50)
+                || !Validate.isValidText(phone, 50)
+        )
+        {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Invalid entry");
+            error.setContentText("Must provide a name, postal code, and phone within 50 characters "
+                    + "and an address within 100 characters.");
+            error.showAndWait();
+            return;
+        }
+        // retrieve and validate the division data
         var division = (Division)stateComboBox.getSelectionModel().getSelectedItem();
+        if (division == null) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Invalid entry");
+            error.setContentText("Please choose a country and division");
+            error.showAndWait();
+            return;
+        }
+        // attempt to update the customer
         boolean updated =  DBCustomers.updateCustomer(customer.getId(), name, address, postal, phone, division.getId());
         if (!updated) {
             Alert error = new Alert(Alert.AlertType.ERROR);
