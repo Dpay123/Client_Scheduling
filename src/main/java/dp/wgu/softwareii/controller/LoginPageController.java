@@ -43,7 +43,7 @@ public class LoginPageController extends BaseController{
         // get the zoneId of the user based upon their system default
         zoneID = ZoneId.systemDefault();
         // display the timezone
-        zoneLabel.setText(zoneID.getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+        zoneLabel.setText(zoneID.toString());
     }
 
     /**

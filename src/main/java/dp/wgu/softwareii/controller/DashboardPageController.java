@@ -50,7 +50,7 @@ public class DashboardPageController extends BaseController{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         dashGreeting.setText("Logged in as " + user);
-        dashTime.setText("TimeZone: " + ZoneId.systemDefault().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+        dashTime.setText("TimeZone: " + ZoneId.systemDefault().toString());
 
         // get a list of appts to check for upcoming
         FilteredList<Appointment> appts = DBAppointments.getAll();

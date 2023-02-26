@@ -225,7 +225,8 @@ public class AppointmentsPageController extends BaseController {
                 appts = DBAppointments.getAll();
                 apptTV.setItems(appts);
                 apptFilterAll.setSelected(true);
-                Alert success = new Alert(Alert.AlertType.INFORMATION, "Appointment deleted.");
+                String message = "Appointment deleted | " + appt.getId() + " | " + appt.getType();
+                Alert success = new Alert(Alert.AlertType.INFORMATION, message);
                 success.setTitle("Appointment deleted success");
                 success.showAndWait();
             }
