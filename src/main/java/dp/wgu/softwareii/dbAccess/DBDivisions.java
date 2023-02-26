@@ -1,10 +1,8 @@
 package dp.wgu.softwareii.dbAccess;
-
 import dp.wgu.softwareii.database.JDBC;
 import dp.wgu.softwareii.model.Division;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

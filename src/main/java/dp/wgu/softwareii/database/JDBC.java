@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * The class for handling connection to the db.
+ */
 public abstract class JDBC {
 
     private static final String protocol = "jdbc";
@@ -16,6 +19,10 @@ public abstract class JDBC {
     private static String password = "Passw0rd!"; // Password
     public static Connection connection;  // Connection Interface
 
+    /**
+     * Attempt to open and return a connection to the db.
+     * @return a Connection obj
+     */
     public static Connection openConnection()
     {
         try {
@@ -35,10 +42,12 @@ public abstract class JDBC {
         return connection;
     }
 
+    /**Retrieve the current connection*/
     public static Connection getConnection() {
         return connection;
     }
 
+    /**Close the current connection*/
     public static void closeConnection() {
         try {
             connection.close();

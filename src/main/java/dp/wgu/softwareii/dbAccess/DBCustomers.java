@@ -53,6 +53,7 @@ public class DBCustomers {
      * @param postal
      * @param phone
      * @param id
+     * @return true if successful, else false
      */
     public static boolean addCustomer(String name, String address, String postal, String phone, int id) {
 

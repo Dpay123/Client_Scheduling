@@ -25,7 +25,7 @@ public class DBAppointments {
 
     /**
      * Query the db for a list of all appointments and return the result set.
-     * @return an ObservableList of appointments.
+     * @return a filteredList of appointments.
      */
     public static FilteredList<Appointment> getAll() {
 
@@ -107,7 +107,7 @@ public class DBAppointments {
     }
 
     /**
-     * Add an appt to the db.
+     * Add an appt to the db, return true if successful, else false.
      * The ZonedDateTime should be passed in as UTC - offset
      * @param title
      * @param description

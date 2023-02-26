@@ -20,30 +20,25 @@ public class Division {
         this.countryId = countryId;
     }
 
+    /**Return the id of the division*/
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    /**Return the name of the division*/
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    /**Return the country id of the division*/
     public int getCountryId() {
         return countryId;
     }
 
-    public void setCountryId(int countryId) {
-        this.countryId = countryId;
-    }
-
+    /**
+     * Return a string representation of the Division for the GUI.
+     * @return
+     */
     @Override
     public String toString() {
         return this.getName();

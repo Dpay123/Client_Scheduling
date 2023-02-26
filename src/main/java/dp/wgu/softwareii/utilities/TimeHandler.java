@@ -20,9 +20,9 @@ public class TimeHandler {
      public static int closeHour = 22;
 
     /**
-     * Takes a localDateTime and returns a ZonedDateTime obj with UTC offsett
+     * Takes a localDateTime and returns a ZonedDateTime obj with UTC offset
      * @param ldt LocalDateTime of the user's system
-     * @return
+     * @return utc LocalDateTime converted to UTC offset
      */
     public static ZonedDateTime getZonedDateTimeUTC(LocalDateTime ldt) {
         ZoneId userZoneID = ZoneId.systemDefault();

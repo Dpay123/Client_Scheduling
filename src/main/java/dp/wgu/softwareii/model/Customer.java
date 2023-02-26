@@ -43,27 +43,11 @@ public class Customer {
     }
 
     /**
-     * Set the id.
-     * @param id
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
      * Return the name.
      * @return
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Set the name.
-     * @param name
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -75,27 +59,11 @@ public class Customer {
     }
 
     /**
-     * Set the address.
-     * @param address
-     */
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    /**
      * Return the postcode.
      * @return
      */
     public String getPostcode() {
         return postcode;
-    }
-
-    /**
-     * Set the postcode.
-     * @param postcode
-     */
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
     }
 
     /**
@@ -107,27 +75,11 @@ public class Customer {
     }
 
     /**
-     * Set the phone number.
-     * @param phone
-     */
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    /**
      * Return the division.
      * @return
      */
     public int getDivision() {
         return division;
-    }
-
-    /**
-     * Set the division.
-     * @param division
-     */
-    public void setDivision(int division) {
-        this.division = division;
     }
 
     /**

@@ -39,27 +39,11 @@ public class Contact {
     }
 
     /**
-     * Set the id of the contact.
-     * @param id
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
      * Return the name of the contact.
      * @return
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Set the name of the contact.
-     * @param name
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -70,11 +54,4 @@ public class Contact {
         return email;
     }
 
-    /**
-     * Set the email of the contact.
-     * @param email
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

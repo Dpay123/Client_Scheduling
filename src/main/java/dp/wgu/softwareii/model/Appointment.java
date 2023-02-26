@@ -1,7 +1,6 @@
 package dp.wgu.softwareii.model;
 
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * POJO class for appointment data from db.
@@ -58,22 +57,27 @@ public class Appointment {
         this.contactId = contactId;
     }
 
+    /**Get the id of the appt*/
     public int getId() {
         return id;
     }
 
+    /**Get the title of the appt*/
     public String getTitle() {
         return title;
     }
 
+    /**Get the description of the appt*/
     public String getDescription() {
         return description;
     }
 
+    /**Get the location of the appt*/
     public String getLocation() {
         return location;
     }
 
+    /**Get the type of the appt*/
     public String getType() {
         return type;
     }
@@ -93,19 +97,25 @@ public class Appointment {
         return endZDT_utc;
     }
 
+    /**Get the customer id of the appt*/
     public int getCustomerId() {
         return customerId;
     }
 
-
+    /**Get the user id of the appt*/
     public int getUserId() {
         return userId;
     }
 
+    /**Get the contact id of the appt*/
     public int getContactId() {
         return contactId;
     }
 
+    /**
+     * Return a string representation of the appt for the GUI.
+     * @return
+     */
     @Override
     public String toString() {
         return "ID: " + id

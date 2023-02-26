@@ -5,8 +5,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import dp.wgu.softwareii.database.JDBC;
 import java.io.IOException;
-import java.time.ZoneId;
 
+/**
+ * The main application file.
+ */
 public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
@@ -18,9 +20,13 @@ public class Application extends javafx.application.Application {
         stage.show();
     }
 
+    /**Main method for entry into the application*/
     public static void main(String[] args) {
+        // open the connection to the db
         JDBC.openConnection();
+        // run the application
         launch();
+        // close the connection upon termination of the program
         JDBC.closeConnection();
     }
 }

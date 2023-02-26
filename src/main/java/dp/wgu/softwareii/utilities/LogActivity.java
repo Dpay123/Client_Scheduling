@@ -1,7 +1,6 @@
 package dp.wgu.softwareii.utilities;
 
 import dp.wgu.softwareii.model.User;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.ZoneId;
@@ -17,12 +16,17 @@ public class LogActivity {
     /**The path of the file to track user login data.*/
     private static String loginFile = "login_activity.txt";
 
-    public static void loginAttempt(String username, boolean isValidUser) {
+    /**
+     * Record a login attempt. A login attempt has a timestamp, user, and can be succesful or not.
+     * @param username
+     * @param successfulLogin
+     */
+    public static void loginAttempt(String username, boolean successfulLogin) {
         // get timestamp of attempt in UTC
         ZonedDateTime timestamp = ZonedDateTime.now(ZoneId.of("UTC"));
         // set record string
         String log;
-        if (!isValidUser) {
+        if (!successfulLogin) {
             log = "Unsuccessful login occurred at "
                     + timestamp.format(TimeHandler.dateTimeFormat)
                     + " UTC for username '" + username + "'\n";
@@ -36,6 +40,10 @@ public class LogActivity {
         recordDataToFile(log, loginFile);
     }
 
+    /**
+     * Record a logout. A logout has a timestamp and user.
+     * @param user
+     */
     public static void logout(User user) {
         // get timestamp in UTC
         ZonedDateTime timestamp = ZonedDateTime.now(ZoneId.of("UTC"));
