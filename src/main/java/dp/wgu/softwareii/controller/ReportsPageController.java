@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
-/**The controller for the ReportsPage view*/
+/**The controller for the Reports Page*/
 public class ReportsPageController extends BaseController{
 
     /**The list of appts to filter*/

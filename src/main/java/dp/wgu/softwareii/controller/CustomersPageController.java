@@ -15,6 +15,9 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * The controller for the Customers Page.
+ */
 public class CustomersPageController extends BaseController {
 
     /**Tableview for displaying customers from db*/
