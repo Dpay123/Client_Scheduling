@@ -15,6 +15,7 @@ How to run:
 -run the main method in the Application.java file
 -follow prompts from the GUI to login
 -test login has username "test" and password "test"
+-login page will detect user timezone and display their local zone as well as detect language change to French
 -logins and logouts are tracked in the "login_activity.txt" file (created if not existing)
 -from the Dashboard, you can view appointments, customers, or reports via navigation
 -Customers: can add, update, or delete (appointments for a deleted customer are deleted)

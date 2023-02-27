@@ -118,8 +118,9 @@ public class AppointmentsPageController extends BaseController {
     }
 
     /**
-     * Filter the Appointments table to select those within a week.
-     * Uses a lambda expression to set a Predicate which is used to filter the results list.
+     * LAMBDA #1 - set a Predicate using an anonymous function.
+     * JUSTIFICATION - reduces code clutter, anonymous use/ does not need to be reused in the application.
+     * PURPOSE: filter the Appointments table to select those within a week.
      * @param actionEvent
      */
     @FXML
@@ -134,7 +135,9 @@ public class AppointmentsPageController extends BaseController {
     }
 
     /**
-     * Filter the Appointments table to select those within month
+     * LAMBDA #2 - set a Predicate using an anonymous function.
+     * JUSTIFICATION - reduces code clutter, anonymous use/ does not need to be reused in the application.
+     * PURPOSE: filter the Appointments table to select those within the month.
      * @param actionEvent
      */
     @FXML
