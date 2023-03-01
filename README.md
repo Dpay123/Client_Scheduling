@@ -54,3 +54,6 @@ You are working for a software company that has been contracted to develop a GUI
 - generate a schedule for a selected Contact (directs to the Contact Schedule page)
 ![Reports](reports.JPG)
 ![Snapshot](snapshot.JPG)
+
+## Logging:
+Each login attempt, whether successful or not, is logged in a .txt log file that is appended, not overwritten. If not present, the file will be created automatically.
